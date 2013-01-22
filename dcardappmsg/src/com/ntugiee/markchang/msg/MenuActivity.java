@@ -31,7 +31,9 @@ public class MenuActivity extends Activity {
     
 	private Button LoginButton;
 //    private Button LogoutButton;
-    private Button ChatroomButton;
+    private Button SendButton;
+    private Button ReceiveButton;
+
     private TextView username_text;
     private String username;
     private boolean islogin=false;
@@ -51,7 +53,8 @@ public class MenuActivity extends Activity {
 
         LoginButton = (Button) this.findViewById(R.id.ButtonLogin);
 //        LogoutButton = (Button) this.findViewById(R.id.ButtonLogout);
-        ChatroomButton = (Button) this.findViewById(R.id.ButtonChatroom);
+        SendButton = (Button) this.findViewById(R.id.ButtonSend);
+        ReceiveButton = (Button) this.findViewById(R.id.ButtonReceive);
 
 /*        if(islogin){
         	username_text.setText("Hello "+username);
@@ -61,12 +64,11 @@ public class MenuActivity extends Activity {
         	username_text.setText("Please login");
 			LoginButton.setText("Login");
         
-        
-        ChatroomButton.setOnClickListener(new View.OnClickListener() {
+        SendButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
         		if(islogin){
 	            	final Intent intent = new Intent();
-	            	intent.setClass(MenuActivity.this, MainActivity.class);
+	            	intent.setClass(MenuActivity.this, SendActivity.class);
 	            	Bundle bundle = new Bundle();
 	            	bundle.putString("name", username);
 	            	intent.putExtras(bundle);
@@ -77,8 +79,21 @@ public class MenuActivity extends Activity {
         		}
         	}
         });
-        
-        
+        ReceiveButton.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View view) {
+        		if(islogin){
+	            	final Intent intent = new Intent();
+	            	intent.setClass(MenuActivity.this, ReceiveActivity.class);
+	            	Bundle bundle = new Bundle();
+	            	bundle.putString("name", username);
+	            	intent.putExtras(bundle);
+	                startActivity(intent);
+        		}
+        		else{
+                    Toast.makeText(MenuActivity.this, "please login", Toast.LENGTH_LONG).show();
+        		}
+        	}
+        });        
         LoginButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
         		if(islogin){
@@ -89,7 +104,7 @@ public class MenuActivity extends Activity {
         		}
         		else{
 	            	final Intent intent = new Intent();
-	            	intent.setClass(MenuActivity.this, PhptestActivity.class);
+	            	intent.setClass(MenuActivity.this, LoginActivity.class);
 	            	startActivityForResult(intent, LOGIN);
         		}
         	}

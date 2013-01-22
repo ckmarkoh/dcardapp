@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
     <TextView
         android:id="@+id/MenuUserText"
         android:layout_width="fill_parent"
@@ -27,17 +26,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Login" />
-<!--      <Button
-        android:id="@+id/ButtonLogout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Logout" />-->
-    
     <Button
-        android:id="@+id/ButtonChatroom"
+        android:id="@+id/ButtonSend"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Go to chatroom" />
+        android:text="Send Message" />
+    <Button
+        android:id="@+id/ButtonReceive"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Receive Message" />
 
 </LinearLayout>

@@ -15,32 +15,34 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int BackBut=0x7f070007;
-        public static final int ButtonChatroom=0x7f07000e;
-        public static final int ButtonLogin=0x7f07000d;
-        public static final int MenuUserText=0x7f07000c;
-        public static final int MsgBut=0x7f070005;
-        public static final int MsgEdit=0x7f070004;
-        public static final int ReloadBut=0x7f070006;
-        public static final int SelectedMsgLabel=0x7f070000;
-        public static final int SelectedMsgText=0x7f070001;
-        public static final int UserNameLabel=0x7f070002;
-        public static final int UserNameText=0x7f070003;
-        public static final int btnBack=0x7f070012;
-        public static final int btnLogin=0x7f070011;
-        public static final int etName=0x7f07000f;
-        public static final int etPassword=0x7f070010;
+        public static final int BackBut=0x7f07000c;
+        public static final int ButtonLogin=0x7f070005;
+        public static final int ButtonReceive=0x7f070007;
+        public static final int ButtonSend=0x7f070006;
+        public static final int CountDownView=0x7f070011;
+        public static final int MenuUserText=0x7f070004;
+        public static final int MsgEdit=0x7f07000f;
+        public static final int ReceiverEdit=0x7f07000e;
+        public static final int ReloadBut=0x7f07000b;
+        public static final int SendBut=0x7f070010;
+        public static final int ShowMsgView=0x7f070012;
+        public static final int btnBack=0x7f070003;
+        public static final int btnLogin=0x7f070002;
+        public static final int etName=0x7f070000;
+        public static final int etPassword=0x7f070001;
         public static final int menu_settings=0x7f070013;
-        public static final int msglist=0x7f070008;
-        public static final int textView1=0x7f070009;
-        public static final int textView2=0x7f07000a;
-        public static final int textView3=0x7f07000b;
+        public static final int msgiSender=0x7f070008;
+        public static final int msgiStatus=0x7f070009;
+        public static final int msgiTime=0x7f07000a;
+        public static final int msglist=0x7f07000d;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
-        public static final int itemlayout=0x7f030001;
-        public static final int menu=0x7f030002;
-        public static final int phptest=0x7f030003;
+        public static final int login=0x7f030000;
+        public static final int menu=0x7f030001;
+        public static final int msgitemlayout=0x7f030002;
+        public static final int receive=0x7f030003;
+        public static final int send=0x7f030004;
+        public static final int show=0x7f030005;
     }
     public static final class menu {
         public static final int activity_main=0x7f060000;
