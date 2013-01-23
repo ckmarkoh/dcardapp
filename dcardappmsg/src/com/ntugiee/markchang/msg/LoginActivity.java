@@ -67,7 +67,6 @@ public class LoginActivity extends Activity {
 					if(response.getStatusLine().getStatusCode() == 200){
 						String raw_result = EntityUtils.toString(response.getEntity());
 						Log.d("login",raw_result);
-
 						JSONObject result_json= new JSONObject(raw_result);
 						String result=result_json.getString("result");
 						if(Boolean.parseBoolean(result)){

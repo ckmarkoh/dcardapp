@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-<EditText android:hint="name" android:id="@+id/etName" android:layout_width="match_parent" android:layout_height="wrap_content">
+<EditText android:hint="ID or Email" android:id="@+id/etName" android:layout_width="match_parent" android:layout_height="wrap_content">
     <requestFocus></requestFocus>
 </EditText>
 <EditText android:hint="passwords" android:id="@+id/etPassword" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textPassword"></EditText>

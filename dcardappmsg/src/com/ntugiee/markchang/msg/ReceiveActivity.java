@@ -157,9 +157,14 @@ public class ReceiveActivity extends Activity {
     public void addNewItem(String s,String u,String t) {
         HashMap<String,String> item = new HashMap<String,String>();
         item.put("sender", s);
-        item.put("status",u);
+        if(Integer.parseInt(u)==0){
+            item.put("status","unread");
+        }
+        else{
+            item.put("status","read");
+        }
         item.put("time",t);
-
+        
         mList.add(item); 
     }
   

@@ -21,14 +21,29 @@
         android:inputType="text" >
     </EditText>
 
-    <Button
-        android:id="@+id/SendBut"
+    <TextView
+        android:id="@+id/SetTimeOutView"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:text="Send message" />
+        android:layout_height="wrap_content"
+        android:text="Time Out:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <SeekBar
+        android:id="@+id/SetTimeOutBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+   	 	android:max="9"  
+    	android:progress="4"   />
        <Button
-        android:id="@+id/BackBut"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:text="Back" />
+           android:id="@+id/SendBut"
+           android:layout_width="fill_parent"
+           android:layout_height="50dp"
+           android:text="Send message" />
+
+       <Button
+           android:id="@+id/BackBut"
+           android:layout_width="fill_parent"
+           android:layout_height="50dp"
+           android:text="Back" />
+
 </LinearLayout>
