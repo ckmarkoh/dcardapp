@@ -34,10 +34,10 @@ public final class R {
         public static final int SignUpID=0x7f070016;
         public static final int SignUpPassword=0x7f070018;
         public static final int SignUpSubmit=0x7f070019;
-        public static final int btnBack=0x7f070003;
-        public static final int btnLogin=0x7f070002;
+        public static final int btnBack=0x7f070002;
+        public static final int btnLogin=0x7f070001;
         public static final int etName=0x7f070000;
-        public static final int etPassword=0x7f070001;
+        public static final int etPassword=0x7f070003;
         public static final int menu_settings=0x7f07001b;
         public static final int msgiSender=0x7f070009;
         public static final int msgiStatus=0x7f07000a;
@@ -45,13 +45,14 @@ public final class R {
         public static final int msglist=0x7f07000e;
     }
     public static final class layout {
-        public static final int login=0x7f030000;
-        public static final int menu=0x7f030001;
-        public static final int msgitemlayout=0x7f030002;
-        public static final int receive=0x7f030003;
-        public static final int send=0x7f030004;
-        public static final int show=0x7f030005;
-        public static final int signup=0x7f030006;
+        public static final int addfriend=0x7f030000;
+        public static final int login=0x7f030001;
+        public static final int menu=0x7f030002;
+        public static final int msgitemlayout=0x7f030003;
+        public static final int receive=0x7f030004;
+        public static final int send=0x7f030005;
+        public static final int show=0x7f030006;
+        public static final int signup=0x7f030007;
     }
     public static final class menu {
         public static final int activity_main=0x7f060000;

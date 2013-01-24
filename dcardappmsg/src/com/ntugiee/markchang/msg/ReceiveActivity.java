@@ -142,11 +142,9 @@ public class ReceiveActivity extends Activity {
             	 this_item = msg_json_array.getJSONObject(position);
                     int this_status = Integer.parseInt(this_item.getString("status"));
             		//Log.d("this_status",this_status);
-
                     if(this_status==0){
                     	readitem(this_item.getString("id"),this_item.getString("message"),this_item.getString("timeout"));
-                    }
-                    
+                    }                    
             } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     Toast.makeText(ReceiveActivity.this, "error: "+e.getMessage().toString(), Toast.LENGTH_LONG).show();
