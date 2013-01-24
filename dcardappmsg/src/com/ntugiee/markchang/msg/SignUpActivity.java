@@ -32,79 +32,70 @@ import android.widget.TextView;
 
 import android.widget.Toast;
 
-public class LoginActivity extends Activity {
+public class SignUpActivity extends Activity {
 		 
-	private Button btnLogin;
-	private Button btnBack;
+	private Button signupSubmit;
+	private Button signupBack;
 
-	private EditText etName;
-	private EditText etPwd;
+	private EditText signUpId;
+	private EditText signUpEmail;
+
+	private EditText signUpPwd;
  
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.signup);
         
-        btnBack = (Button) findViewById(R.id.btnBack);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        etName = (EditText) findViewById(R.id.etName);
-        etPwd = (EditText) findViewById(R.id.etPassword);
-        
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        signupSubmit = (Button) findViewById(R.id.SignUpSubmit);
+        signupBack = (Button) findViewById(R.id.SignUpBack);
+        signUpId = (EditText) findViewById(R.id.SignUpID);
+        signUpEmail = (EditText) findViewById(R.id.SignUpEmail);
+        signUpPwd = (EditText) findViewById(R.id.SignUpPassword);
+
+        signupSubmit.setOnClickListener(new View.OnClickListener() {
  
 			public void onClick(View v) {
-				HttpPost request = new HttpPost(Global_Setting.site_url+"user/login");
+				HttpPost request = new HttpPost(Global_Setting.site_url+"user/signup");
 		//		Toast.makeText(PhptestActivity.this, Global_Setting.site_url+"login", Toast.LENGTH_LONG).show();
-
-				Log.d("login url",Global_Setting.site_url+"login");
+				Log.d("signup url",Global_Setting.site_url+"user/signup");
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
-				params.add(new BasicNameValuePair("name", etName.getText().toString()));
-				params.add(new BasicNameValuePair("pwd", etPwd.getText().toString()));
+				params.add(new BasicNameValuePair("id", signUpId.getText().toString()));
+				params.add(new BasicNameValuePair("email", signUpEmail.getText().toString()));
+				params.add(new BasicNameValuePair("password", signUpPwd.getText().toString()));
  
 				try {
 					request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
 					HttpResponse response = new DefaultHttpClient().execute(request);
 					if(response.getStatusLine().getStatusCode() == 200){
 						String raw_result = EntityUtils.toString(response.getEntity());
-						Log.d("login",raw_result);
+						Log.d("sign up result",raw_result);
 						JSONObject result_json= new JSONObject(raw_result);
 						String result=result_json.getString("result");
 						if(Boolean.parseBoolean(result)){
-							String userid=result_json.getString("userid");
-							Toast.makeText(LoginActivity.this, "login success", Toast.LENGTH_LONG).show();
-							login_back(true,userid);
+							Toast.makeText(SignUpActivity.this, "sign up success", Toast.LENGTH_LONG).show();
+							setResult(RESULT_OK);
+							finish();
 						}
 						else{
-							Toast.makeText(LoginActivity.this, "login failed", Toast.LENGTH_LONG).show();
+							String error=result_json.getString("error");
+							Toast.makeText(SignUpActivity.this, "sign up failed. error:"+error, Toast.LENGTH_LONG).show();
 						}
 						//String result = EntityUtils.toString(response.getEntity());
 						//Toast.makeText(PhptestActivity.this, result, Toast.LENGTH_LONG).show();
 					}
 				} catch (Exception e) {
-					Toast.makeText(LoginActivity.this, e.getMessage().toString(), Toast.LENGTH_LONG).show();
+					Toast.makeText(SignUpActivity.this, e.getMessage().toString(), Toast.LENGTH_LONG).show();
 					e.printStackTrace();
 				}
 			}
 		});
-        
-        btnBack.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				login_back(false,null);
+ 
+        signupBack.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {    
+				setResult(RESULT_OK);
+				finish();
 			}
 		});   
-    }
-    private void login_back(boolean login,String userid){
-		Intent i=new Intent();
-		Bundle b=new Bundle();
-		if(login){
-			b.putString("login", "true");
-			b.putString("name", userid);
-		}
-		else{
-			b.putString("login", "false");
-		}
-		i.putExtras(b);
-		setResult(RESULT_OK,i);
-		finish();
     }
 }

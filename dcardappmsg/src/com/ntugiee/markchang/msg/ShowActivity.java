@@ -32,6 +32,7 @@ public class ShowActivity  extends Activity {
         message = bundle.getString("message");
         show_message.setText(message);
         timeout_str=bundle.getString("timeout");
+        count_down.setText("seconds remaining: " + timeout_str);
         int timeout_int=Integer.parseInt(timeout_str)*1000;
         //  username_text.setText(username);
        // Timer CountdownTimer = new Timer(true);

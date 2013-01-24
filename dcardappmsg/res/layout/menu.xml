@@ -22,6 +22,11 @@
         android:background="#dddddd"
         android:text="" />--> 
     <Button
+        android:id="@+id/ButtonSignUp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="SignUp" />
+    <Button
         android:id="@+id/ButtonLogin"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

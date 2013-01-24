@@ -1,9 +1,9 @@
 <resources>
 
-    <string name="app_name">chatroom</string>
+    <string name="app_name">DcardApp</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">Chatroom</string>
+    <string name="title_activity_main">DcardApp</string>
 
             
 </resources>
