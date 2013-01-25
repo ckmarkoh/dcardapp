@@ -47,13 +47,14 @@ public class ReceiveActivity extends Activity {
     private Button ReloadButton;
     private Button BackButton;
 
-	private ListView mListView;
 	//private TextView selected_text;
    // private TextView username_text;
     private String username;
     private String selected_msg;
-    private JSONArray msg_json_array;
     private SimpleAdapter sAdapter;
+	private ListView mListView;
+
+    private JSONArray msg_json_array;
     private JSONObject this_item=null;
     
 	ArrayList<HashMap<String,String>> mList = new ArrayList<HashMap<String,String>>();

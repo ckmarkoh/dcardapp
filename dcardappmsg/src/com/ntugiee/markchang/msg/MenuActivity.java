@@ -147,7 +147,7 @@ public class MenuActivity extends Activity {
 			SignUpButton.setVisibility(View.INVISIBLE);
 			SendButton.setVisibility(View.VISIBLE);
 			ReceiveButton.setVisibility(View.VISIBLE);
-			AddFriendButton.setVisibility(View.INVISIBLE);
+			AddFriendButton.setVisibility(View.VISIBLE);
 
     	}
     	else{
