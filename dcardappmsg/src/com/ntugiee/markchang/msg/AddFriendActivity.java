@@ -34,32 +34,39 @@ import android.widget.Toast;
 
 public class AddFriendActivity extends Activity {
 		 
-	private Button btnLogin;
-	private Button btnBack;
+	private Button addFriendadd;
+	private Button addFriendBack;
 
-	private EditText etName;
-	private EditText etPwd;
- 
+	private EditText addFriendEdit;
+	//private EditText etPwd;
+    private String username;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.addfriend);
         
-        btnBack = (Button) findViewById(R.id.btnBack);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        etName = (EditText) findViewById(R.id.etName);
-        etPwd = (EditText) findViewById(R.id.etPassword);
-        
-        btnLogin.setOnClickListener(new View.OnClickListener() {
- 
-			public void onClick(View v) {
-				HttpPost request = new HttpPost(Global_Setting.site_url+"user/login");
-		//		Toast.makeText(PhptestActivity.this, Global_Setting.site_url+"login", Toast.LENGTH_LONG).show();
+        addFriendadd = (Button) findViewById(R.id.AddFriendAdd);
+        addFriendBack = (Button) findViewById(R.id.AddFriendBack);
+        addFriendEdit = (EditText) findViewById(R.id.AddFriendEdit);
+        //etPwd = (EditText) findViewById(R.id.etPassword);
+        Intent intent = this.getIntent();
+        Bundle bundle = intent.getExtras();
+        username = bundle.getString("name");
 
-				Log.d("login url",Global_Setting.site_url+"login");
+        
+        
+        
+        addFriendadd.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				HttpPost request = new HttpPost(Global_Setting.site_url+"friend/add_friend");
+				Toast.makeText(AddFriendActivity.this, Global_Setting.site_url+"friend/add_friend", Toast.LENGTH_LONG).show();
+
+				Log.d("login url",Global_Setting.site_url+"friend/add_friend");
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
-				params.add(new BasicNameValuePair("name", etName.getText().toString()));
-				params.add(new BasicNameValuePair("pwd", etPwd.getText().toString()));
+				
+				params.add(new BasicNameValuePair("id1", username));
+				params.add(new BasicNameValuePair("id2", addFriendEdit.getText().toString()));
  
 				try {
 					request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
@@ -71,11 +78,15 @@ public class AddFriendActivity extends Activity {
 						String result=result_json.getString("result");
 						if(Boolean.parseBoolean(result)){
 							String userid=result_json.getString("userid");
-							Toast.makeText(AddFriendActivity.this, "login success", Toast.LENGTH_LONG).show();
-							login_back(true,userid);
+							Toast.makeText(AddFriendActivity.this, "add success", Toast.LENGTH_LONG).show();
+							//login_back(true,userid);
+							addFriendEdit.setText("");
+
 						}
 						else{
-							Toast.makeText(AddFriendActivity.this, "login failed", Toast.LENGTH_LONG).show();
+							String error=result_json.getString("result");
+
+							Toast.makeText(AddFriendActivity.this, "add failed, error:"+error, Toast.LENGTH_LONG).show();
 						}
 						//String result = EntityUtils.toString(response.getEntity());
 						//Toast.makeText(PhptestActivity.this, result, Toast.LENGTH_LONG).show();
@@ -87,13 +98,14 @@ public class AddFriendActivity extends Activity {
 			}
 		});
         
-        btnBack.setOnClickListener(new View.OnClickListener() {
+        addFriendBack.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				login_back(false,null);
+				setResult(RESULT_OK);
+				finish();			
 			}
 		});   
     }
-    private void login_back(boolean login,String userid){
+   /* private void login_back(boolean login,String userid){
 		Intent i=new Intent();
 		Bundle b=new Bundle();
 		if(login){
@@ -106,5 +118,5 @@ public class AddFriendActivity extends Activity {
 		i.putExtras(b);
 		setResult(RESULT_OK,i);
 		finish();
-    }
+    }*/
 }

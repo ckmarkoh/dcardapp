@@ -32,6 +32,11 @@
         android:layout_height="wrap_content"
         android:text="Login" />
     <Button
+        android:id="@+id/ButtonAddFriend"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Friend" />
+    <Button
         android:id="@+id/ButtonSend"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

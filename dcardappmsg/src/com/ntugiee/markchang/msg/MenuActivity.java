@@ -34,6 +34,7 @@ public class MenuActivity extends Activity {
     private Button SendButton;
     private Button ReceiveButton;
     private Button SignUpButton;
+    private Button AddFriendButton;
 
     private TextView username_text;
     private String username;
@@ -56,16 +57,31 @@ public class MenuActivity extends Activity {
         SendButton = (Button) this.findViewById(R.id.ButtonSend);
         ReceiveButton = (Button) this.findViewById(R.id.ButtonReceive);
         SignUpButton = (Button) this.findViewById(R.id.ButtonSignUp);
-        
+        AddFriendButton = (Button) this.findViewById(R.id.ButtonAddFriend);
+
 		show_or_hide_button();
 /*        if(islogin){
         	username_text.setText("Hello "+username);
 			LoginButton.setText("Logout");
         }
         else{*/
-        	username_text.setText("Please login");
-			LoginButton.setText("Login");
-        
+        username_text.setText("Please login");
+		LoginButton.setText("Login");
+		AddFriendButton.setOnClickListener(new View.OnClickListener() {
+	        	public void onClick(View view) {
+	        		if(islogin){
+		            	final Intent intent = new Intent();
+		            	intent.setClass(MenuActivity.this, AddFriendActivity.class);
+		            	Bundle bundle = new Bundle();
+		            	bundle.putString("name", username);
+		            	intent.putExtras(bundle);
+		                startActivity(intent);
+	        		}
+	        		else{
+	                    Toast.makeText(MenuActivity.this, "please login", Toast.LENGTH_LONG).show();
+	        		}
+	        	}
+	        });        
         SendButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
         		if(islogin){
@@ -131,11 +147,15 @@ public class MenuActivity extends Activity {
 			SignUpButton.setVisibility(View.INVISIBLE);
 			SendButton.setVisibility(View.VISIBLE);
 			ReceiveButton.setVisibility(View.VISIBLE);
+			AddFriendButton.setVisibility(View.INVISIBLE);
+
     	}
     	else{
 			SignUpButton.setVisibility(View.VISIBLE);
 			SendButton.setVisibility(View.INVISIBLE);
-			ReceiveButton.setVisibility(View.INVISIBLE);    		
+			ReceiveButton.setVisibility(View.INVISIBLE);    
+			AddFriendButton.setVisibility(View.INVISIBLE);
+
     	}
     }
     

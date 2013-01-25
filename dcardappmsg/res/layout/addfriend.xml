@@ -3,21 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-<EditText android:hint="ID or Email" 
-    android:id="@+id/etName" 
+<EditText android:hint="Friend's ID" 
+    android:id="@+id/AddFriendEdit" 
     android:layout_width="match_parent" 
     android:layout_height="wrap_content">
     <requestFocus></requestFocus>
 </EditText>
-<Button android:text="Login" 
-    android:id="@+id/btnLogin" 
+<Button android:text="Add" 
+    android:id="@+id/AddFriendAdd" 
     android:layout_height="wrap_content" 
     android:layout_width="match_parent">
     
 </Button>
 
 <Button
-    android:id="@+id/btnBack"
+    android:id="@+id/AddFriendBack"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Back" />
