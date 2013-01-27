@@ -24,11 +24,48 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Back" />
-
-    <ListView
-        android:id="@+id/friendConfirmList"
-        android:layout_width="match_parent"
-        android:layout_height="355dp" >
-    </ListView>
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:layout_weight="1" >
+		<TextView
+		    android:id="@+id/friendConfirmText"
+		    android:layout_width="fill_parent"
+		    android:text="Confirm Friends"
+		    android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_height="fill_parent"
+		    android:layout_weight="5" />
+		<ListView
+		    android:id="@+id/friendConfirmList"
+		    android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+		    android:layout_weight="1">
+		</ListView>
+		</LinearLayout>
+		    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:layout_weight="1" >
+		<TextView
+		    android:id="@+id/friendAddedText"
+		    android:layout_width="fill_parent"
+		    android:text="Added Friends"
+		    android:textAppearance="?android:attr/textAppearanceMedium"
+		    android:layout_height="fill_parent" 
+		    android:layout_weight="5" />
+		<ListView
+		    android:id="@+id/friendAddedList"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:layout_weight="1">
+		</ListView>
+			</LinearLayout>
+		
+	</LinearLayout>
 </LinearLayout>

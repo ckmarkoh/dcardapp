@@ -8,6 +8,8 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 //import android.content.Intent;
 import android.util.Log;
@@ -126,7 +128,6 @@ public class ReceiveActivity extends Activity {
 		        );
 		        mListView.setAdapter(sAdapter);
 		        mListView.setOnItemClickListener(listener);
-
 //				Log.d("success",result);
 			}
 		} catch (Exception e) {
@@ -144,7 +145,26 @@ public class ReceiveActivity extends Activity {
                     int this_status = Integer.parseInt(this_item.getString("status"));
             		//Log.d("this_status",this_status);
                     if(this_status==0){
-                    	readitem(this_item.getString("id"),this_item.getString("message"),this_item.getString("timeout"));
+                    	
+    			        new AlertDialog.Builder(ReceiveActivity.this)
+    			        .setMessage("Are you sure to open this message?")
+    			        .setPositiveButton("Yes" ,
+    			                new DialogInterface.OnClickListener() {
+    			                    public void onClick(DialogInterface dialog, int which) {
+    			                    	try {
+											readitem(this_item.getString("id"),this_item.getString("message"),this_item.getString("timeout"));
+										} catch (JSONException e) {
+											// TODO Auto-generated catch block
+						                    Toast.makeText(ReceiveActivity.this, "error: "+e.getMessage().toString(), Toast.LENGTH_LONG).show();
+										}
+    			                    }   
+    			                })  
+    			         .setNegativeButton("No",                    
+    			                 new DialogInterface.OnClickListener() {
+    			                    public void onClick(DialogInterface dialog, int which) {
+    			                }   
+    			         }) 
+    			         .show();
                     }                    
             } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -167,7 +187,7 @@ public class ReceiveActivity extends Activity {
         mList.add(item); 
     }
   
-    public void readitem(String id,String message,String timeout){
+    public void readitem(String id,final String message,final String timeout){
 		Log.d("readitem",id+" message"+message+" timeout"+timeout);
 
     	HttpPost request = new HttpPost(Global_Setting.site_url+"msg/open_item");
@@ -188,7 +208,11 @@ public class ReceiveActivity extends Activity {
                     bundle.putString("message", message);
                     bundle.putString("timeout", timeout);
                     intent.putExtras(bundle);
-                    startActivity(intent);			
+                    startActivity(intent);	
+					}
+				else{
+					String error=result_json.getString("error");
+					Toast.makeText(ReceiveActivity.this, "error: "+error, Toast.LENGTH_LONG).show();
 					}
 				}
 			} catch (Exception e) {

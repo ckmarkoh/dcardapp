@@ -72,6 +72,7 @@ public class PhptestActivity extends Activity {
 						}
 						else{
 							Toast.makeText(PhptestActivity.this, "login failed", Toast.LENGTH_LONG).show();
+						
 						}
 						//String result = EntityUtils.toString(response.getEntity());
 						//Toast.makeText(PhptestActivity.this, result, Toast.LENGTH_LONG).show();

@@ -22,9 +22,6 @@ import android.widget.EditText;
 import android.widget.AdapterView.OnItemClickListener;
 
 
-
-
-
 //import togeather.history.R;
 
 public class MenuActivity extends Activity {

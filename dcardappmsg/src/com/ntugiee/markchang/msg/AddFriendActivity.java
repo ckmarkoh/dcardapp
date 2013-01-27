@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,15 +48,18 @@ public class AddFriendActivity extends Activity {
 	private EditText addFriendEdit;
 	//private EditText etPwd;
     private String username;
-
     
-    
-    private SimpleAdapter sAdapter;
-	private ListView mListView;
-    private JSONArray msg_json_array;
-    private JSONObject this_item=null;
-	ArrayList<HashMap<String,String>> mList = new ArrayList<HashMap<String,String>>();
+    private SimpleAdapter cfAdapter;
+	private ListView cfListView;
+    private JSONArray cf_json_array;
+    private JSONObject cf_this_item=null;
+	ArrayList<HashMap<String,String>> cfList = new ArrayList<HashMap<String,String>>();
 	
+    private SimpleAdapter afAdapter;
+	private ListView afListView;
+    private JSONArray af_json_array;
+	ArrayList<HashMap<String,String>> afList = new ArrayList<HashMap<String,String>>();
+
 	
     
     @Override
@@ -70,23 +74,22 @@ public class AddFriendActivity extends Activity {
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
         username = bundle.getString("name");
-
         
-        mListView = (ListView) this.findViewById(R.id.friendConfirmList);
-         
-        reload_new_friends();
+        cfListView = (ListView) this.findViewById(R.id.friendConfirmList);
+        afListView = (ListView) this.findViewById(R.id.friendAddedList);
+
+        reload_cf_friends();
+        reload_af_friends();
+
         
         addFriendadd.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				HttpPost request = new HttpPost(Global_Setting.site_url+"friend/add_friend");
 			//	Toast.makeText(AddFriendActivity.this, Global_Setting.site_url+"friend/add_friend", Toast.LENGTH_LONG).show();
-
 				Log.d("login url",Global_Setting.site_url+"friend/add_friend");
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
-				
 				params.add(new BasicNameValuePair("id1", username));
 				params.add(new BasicNameValuePair("id2", addFriendEdit.getText().toString()));
- 
 				try {
 					request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
 					HttpResponse response = new DefaultHttpClient().execute(request);
@@ -100,7 +103,7 @@ public class AddFriendActivity extends Activity {
 							Toast.makeText(AddFriendActivity.this, "add success", Toast.LENGTH_LONG).show();
 							//login_back(true,userid);
 							addFriendEdit.setText("");
-
+							reload_af_friends();
 						}
 						else{
 							String error=result_json.getString("error");
@@ -115,7 +118,6 @@ public class AddFriendActivity extends Activity {
 				}
 			}
 		});
-        
         addFriendBack.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				setResult(RESULT_OK);
@@ -124,10 +126,7 @@ public class AddFriendActivity extends Activity {
 		});   
     }
     
-    
-    
-    
-    public void reload_new_friends(){
+    public void reload_cf_friends(){
     	HttpPost request = new HttpPost(Global_Setting.site_url+"friend/load_confirm_id2");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("id2", username));
@@ -137,52 +136,66 @@ public class AddFriendActivity extends Activity {
 			HttpResponse response = new DefaultHttpClient().execute(request);
 			if(response.getStatusLine().getStatusCode() == 200){
 				String raw_result = EntityUtils.toString(response.getEntity());
-				Log.d("login",raw_result);
+				Log.d("raw_result",raw_result);
 				JSONObject result_json= new JSONObject(raw_result);
 				String result=result_json.getString("result");
 				if(Boolean.parseBoolean(result)){
-				//Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
 					Log.d("success",result);
 					String result_content=result_json.getString("content");
-
-					mList.clear();
-					msg_json_array = new JSONArray(result_content);
-					for(int i=0;i<msg_json_array.length();i++){
-		//				Log.d("msg",json_array.getJSONObject(i).getString("name")+json_array.getJSONObject(i).getString("msg"));
-						addNewItem(msg_json_array.getJSONObject(i).getString("id1"),
-								  msg_json_array.getJSONObject(i).getString("time")
+					cfList.clear();
+					cf_json_array = new JSONArray(result_content);
+					for(int i=0;i<cf_json_array.length();i++){
+						add_cf_Item(cf_json_array.getJSONObject(i).getString("id1"),
+								  cf_json_array.getJSONObject(i).getString("confirm"),
+								  cf_json_array.getJSONObject(i).getString("time")
 								);
 			        }
-			        sAdapter = new SimpleAdapter(this, mList,
+			        cfAdapter = new SimpleAdapter(this, cfList,
 			        		R.layout.frienditemlayout,
-			        		new String[] { "friend" ,"time"},
-			        		new int[] {R.id.friendiIdView, R.id.friendiTimeView}
-			        );
-			        mListView.setAdapter(sAdapter);
-			        mListView.setOnItemClickListener(listener);
+			        		new String[] { "friend" ,"confirm","time"},
+			        		new int[] {R.id.friendiIdView,R.id.friendiStatus,R.id.friendiTimeView}
+			        );			        
+			        cfListView.setAdapter(cfAdapter);
+			        cfListView.setOnItemClickListener(cf_listener);
+			        Log.d("size",String.valueOf(cfList.size()));
+			        for(int i=0;i<cfList.size();i++){
+			        	HashMap<String,String> item_i=cfList.get(i);
+			        	if(item_i.get("confirm")=="Confirm"){
+			        		//cfListView.getChildAt(0).setBackgroundResource(R.drawable.ic_launcher);//.setBackgroundColor(Color.argb(155, 0, 255, 0));
+					        Log.d("Color","BLUE");
+			        	}
+			        	else{
+					        //cfListView.getChildAt(0).setBackgroundColor(R.drawable.ic_launcher);
+					        Log.d("Color","RED");
+			        	}
+			        }
+
 				}
 				else{
 					String error=result_json.getString("error");
-					Toast.makeText(AddFriendActivity.this, "add failed, error: "+error, Toast.LENGTH_LONG).show();
+					Toast.makeText(AddFriendActivity.this, "load failed, error: "+error, Toast.LENGTH_LONG).show();
 				}
-//				Log.d("success",result);
 			}
 		} catch (Exception e) {
 			Toast.makeText(AddFriendActivity.this, "error: "+e.getMessage().toString(), Toast.LENGTH_LONG).show();
 			e.printStackTrace();
-			//Log.d("error",e.getMessage());
 		}
 	}
 
-    
-    public void addNewItem(String s,String t) {
+    public void add_cf_Item(String s,String c,String t) {
         HashMap<String,String> item = new HashMap<String,String>();
         item.put("friend", s);
+        if(Integer.parseInt(c)==0){
+        	item.put("confirm", "Unconfirm");
+        }
+        else{
+        	item.put("confirm", "Confirm");
+        }
         item.put("time", t);
-        mList.add(item); 
+        cfList.add(item); 
     }
     
-    public void readitem(String id,String id1){
+    public void read_cf_item(String id,String id1){
 		Log.d("id",id+" friend"+id1);//+" timeout"+timeout);
     	HttpPost request = new HttpPost(Global_Setting.site_url+"friend/confirm_friend");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -196,36 +209,88 @@ public class AddFriendActivity extends Activity {
 				JSONObject result_json= new JSONObject(raw_result);
 				String result=result_json.getString("result");
 				if(Boolean.parseBoolean(result)){
-					reload_new_friends();
-					Toast.makeText(AddFriendActivity.this, "add success", Toast.LENGTH_LONG).show();
+					reload_cf_friends();
+					Toast.makeText(AddFriendActivity.this, "confirm success", Toast.LENGTH_LONG).show();
 					}
 				else{
 					String error=result_json.getString("error");
-					Toast.makeText(AddFriendActivity.this, "add failed, error: "+error, Toast.LENGTH_LONG).show();
+					Toast.makeText(AddFriendActivity.this, "confirm failed, error: "+error, Toast.LENGTH_LONG).show();
 					}
 				}
 			} catch (Exception e) {
 			Toast.makeText(AddFriendActivity.this, "error: "+e.getMessage().toString(), Toast.LENGTH_LONG).show();
 			e.printStackTrace();
 			//Log.d("error",e.getMessage());
-		}
-    	
+		}	
     }
     
-    OnItemClickListener listener = new OnItemClickListener() {
+    OnItemClickListener cf_listener = new OnItemClickListener() {
         public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {      	
             try {
-            	
-            	
-            	 this_item = msg_json_array.getJSONObject(position);
-                    //int this_status = Integer.parseInt(this_item.getString("status"));
-            		//Log.d("this_status",this_status);
-                    readitem(this_item.getString("id"),this_item.getString("id1"));
+            	 cf_this_item = cf_json_array.getJSONObject(position);
+            	 String is_confirm=cf_this_item.getString("confirm");
+            	 if(Integer.parseInt(is_confirm)==0){
+            		 read_cf_item(cf_this_item.getString("id"),cf_this_item.getString("id1"));
+            	 }
             } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     Toast.makeText(AddFriendActivity.this, "error: "+e.getMessage().toString(), Toast.LENGTH_LONG).show();
             }
         }
       };
+
+    public void reload_af_friends(){
+      	HttpPost request = new HttpPost(Global_Setting.site_url+"friend/load_confirm_id1");
+  		List<NameValuePair> params = new ArrayList<NameValuePair>();
+  		params.add(new BasicNameValuePair("id1", username));
+  		Log.d("url",Global_Setting.site_url+"friend/load_confirm_id1");
+  		try {
+  			request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+  			HttpResponse response = new DefaultHttpClient().execute(request);
+  			if(response.getStatusLine().getStatusCode() == 200){
+  				String raw_result = EntityUtils.toString(response.getEntity());
+  				Log.d("raw_result",raw_result);
+  				JSONObject result_json= new JSONObject(raw_result);
+  				String result=result_json.getString("result");
+  				if(Boolean.parseBoolean(result)){
+  					Log.d("success",result);
+  					String result_content=result_json.getString("content");
+  					afList.clear();
+  					af_json_array = new JSONArray(result_content);
+  					for(int i=0;i<af_json_array.length();i++){
+  						add_af_Item(af_json_array.getJSONObject(i).getString("id2"),
+								af_json_array.getJSONObject(i).getString("confirm"),
+								af_json_array.getJSONObject(i).getString("time")
+								);
+  			        }
+  			        afAdapter = new SimpleAdapter(this, afList,
+			        		R.layout.frienditemlayout,
+			        		new String[] { "friend" ,"confirm","time"},
+			        		new int[] {R.id.friendiIdView,R.id.friendiStatus,R.id.friendiTimeView}
+  			        );
+  			        afListView.setAdapter(afAdapter);
+  				}
+  				else{
+  					String error=result_json.getString("error");
+  					Toast.makeText(AddFriendActivity.this, "load failed, error: "+error, Toast.LENGTH_LONG).show();
+  				}
+  			}
+  		} catch (Exception e) {
+  			Toast.makeText(AddFriendActivity.this, "error: "+e.getMessage().toString(), Toast.LENGTH_LONG).show();
+  			e.printStackTrace();
+  		}
+  	}
+    public void add_af_Item(String s,String c,String t) {
+        HashMap<String,String> item = new HashMap<String,String>();
+        item.put("friend", s);
+        if(Integer.parseInt(c)==0){
+        	item.put("confirm", "Unconfirm");
+        }
+        else{
+        	item.put("confirm", "confirm");
+        }
+        item.put("time", t);
+        afList.add(item); 
+    }
+
 }

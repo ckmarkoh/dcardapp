@@ -2,20 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#BBBBBB"
     android:orientation="vertical" >
 
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
     <TextView
         android:id="@+id/friendiIdView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="6dip"
-        android:layout_marginTop="6dip"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_weight="1"
         android:textColor="#111111" >
-
-    </TextView>        
+    </TextView>   
+    <TextView
+        android:id="@+id/friendiStatus"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_weight="2"
+        android:textColor="#111111" >
+    </TextView>
+</LinearLayout>
      <TextView
         android:id="@+id/friendiTimeView"
         android:layout_width="fill_parent"
