@@ -83,8 +83,7 @@ public class ReceiveActivity extends Activity {
         							new int[]  {R.id.msgiSender, R.id.msgiTime,R.id.msgiStatus}  );
         mListView.setAdapter( sAdapter );
         mListView.setTextFilterEnabled( true );
-*/
-        
+*/        
         BackButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {    
 				setResult( RESULT_OK );

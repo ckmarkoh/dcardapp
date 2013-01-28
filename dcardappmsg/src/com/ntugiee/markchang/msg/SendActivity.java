@@ -8,9 +8,12 @@ import java.util.List;
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 //import android.content.Intent;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,7 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.EditText;
 import android.widget.AdapterView.OnItemClickListener;
-
+import android.widget.TextView.OnEditorActionListener;  
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -46,16 +49,24 @@ public class SendActivity extends Activity {
     
     private Button SendMessageButton;
     private Button BackButton;
+    private Button ChooseFriendButton;
+
 
     private String username;
-    
+    private String receiver="";
+
     private EditText msgEdit;
     private EditText receiverEdit;
+    private TextView receiverView;
+    
+    private SeekBar setTimeOutBar;
     
     private String timeout;
     private TextView setTimeOutValue;
 	ArrayList<HashMap<String,String>> mList = new ArrayList<HashMap<String,String>>();
-
+	ArrayList<String> fList=new ArrayList<String>();
+	private JSONArray fjson_array;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,17 +77,17 @@ public class SendActivity extends Activity {
 
         SendMessageButton = (Button) this.findViewById(R.id.SendBut);
         BackButton = (Button) this.findViewById(R.id.BackBut);
+        ChooseFriendButton = (Button) this.findViewById(R.id.ChooseFriendBut);
 
       //  mListView = (ListView) this.findViewById(R.id.msglist);
         msgEdit =(EditText) this.findViewById(R.id.MsgEdit);
         receiverEdit =(EditText) this.findViewById(R.id.ReceiverEdit);
+        receiverView=(TextView) this.findViewById(R.id.ReceiverView);
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
         username = bundle.getString("name");
         
-        
-        
-        SeekBar setTimeOutBar = (SeekBar)findViewById(R.id.SetTimeOutBar);  
+        setTimeOutBar = (SeekBar)findViewById(R.id.SetTimeOutBar);  
         setTimeOutValue = (TextView)findViewById(R.id.SetTimeOutView);  
           
         setTimeOutBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){  
@@ -96,6 +107,72 @@ public class SendActivity extends Activity {
         	   }  
         });  
         
+        receiverEdit.setOnEditorActionListener(new OnEditorActionListener() {  
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {  
+                Toast.makeText(SendActivity.this, String.valueOf(actionId), Toast.LENGTH_SHORT).show();  
+                receiver="12345";
+                return false;  
+            }
+        });  
+        
+        
+        ChooseFriendButton.setOnClickListener( new View.OnClickListener() {
+			public void onClick( View v ) {    
+				
+				Log.d("msg",msgEdit.getText().toString());
+				HttpPost request = new HttpPost(Global_Setting.site_url+"friend/get_friend_list");
+				List<NameValuePair> params = new ArrayList<NameValuePair>();
+				params.add(new BasicNameValuePair("id1", username));
+
+				try {
+					request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+					HttpResponse response = new DefaultHttpClient().execute(request);
+					if(response.getStatusLine().getStatusCode() == 200){
+						String raw_result = EntityUtils.toString(response.getEntity());
+						Log.d("result",raw_result.toString());
+						JSONObject result_json= new JSONObject(raw_result);
+						String result=result_json.getString("result");
+						if(Boolean.parseBoolean(result)){
+//							Toast.makeText(SendActivity.this, "send success", Toast.LENGTH_LONG).show();
+							msgEdit.setText("");
+							String result_content=result_json.getString("content");
+							fList.clear();
+						//	fList.clear();
+							fjson_array = new JSONArray(result_content);
+							for(int i=0;i<fjson_array.length();i++){
+								fList.add(fjson_array.getJSONObject(i).getString("id2"));
+					        }
+							final String[] farray = fList.toArray(new String[fList.size()]);
+					        new AlertDialog.Builder(SendActivity.this)
+					        .setTitle("please choose a friend")
+					        .setItems(farray,  new DialogInterface.OnClickListener() {
+					            public void onClick(DialogInterface dialog, int item) {
+					            	receiver=farray[item];
+					            	receiverView.setText("To "+farray[item]);
+					            			//Toast.makeText(getApplicationContext(), farray[item], Toast.LENGTH_SHORT).show();
+					            }
+					        }).show();							
+							
+						}
+						else{
+							String error=result_json.getString("error");
+
+							Toast.makeText(SendActivity.this, "send failed, error:"+error, Toast.LENGTH_LONG).show();
+						}
+						//	Toast.makeText(SendActivity.this, "post success", Toast.LENGTH_LONG).show();
+						//}
+					}
+				} catch (Exception e) {
+					Toast.makeText(SendActivity.this, e.getMessage().toString(), Toast.LENGTH_LONG).show();
+					e.printStackTrace();
+					}		
+				}
+    		});     
+			/*	
+
+			
+			*/
+        
         BackButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {    
 				setResult(RESULT_OK);
@@ -105,12 +182,15 @@ public class SendActivity extends Activity {
              
         SendMessageButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {    	
+					if(receiver==""){
+						Toast.makeText(SendActivity.this, "Please choose a friend.", Toast.LENGTH_LONG).show();		
+					}
 					Log.d("msg",msgEdit.getText().toString());
 					HttpPost request = new HttpPost(Global_Setting.site_url+"msg/insert");
 					List<NameValuePair> params = new ArrayList<NameValuePair>();
 					params.add(new BasicNameValuePair("sender", username));
 					params.add(new BasicNameValuePair("message", msgEdit.getText().toString()));
-					params.add(new BasicNameValuePair("receiver", receiverEdit.getText().toString()));
+					params.add(new BasicNameValuePair("receiver", receiver));
 					params.add(new BasicNameValuePair("timeout", timeout));
 					try {
 						request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));

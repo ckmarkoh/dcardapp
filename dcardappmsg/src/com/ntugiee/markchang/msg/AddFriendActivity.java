@@ -25,6 +25,8 @@ import org.json.JSONObject;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -231,7 +233,28 @@ public class AddFriendActivity extends Activity {
             	 cf_this_item = cf_json_array.getJSONObject(position);
             	 String is_confirm=cf_this_item.getString("confirm");
             	 if(Integer.parseInt(is_confirm)==0){
-            		 read_cf_item(cf_this_item.getString("id"),cf_this_item.getString("id1"));
+            		 
+ 			        new AlertDialog.Builder(AddFriendActivity.this)
+ 			        .setMessage("Are you sure to confirm this friend?")
+ 			        .setPositiveButton("Yes" ,
+ 			                new DialogInterface.OnClickListener() {
+ 			                    public void onClick(DialogInterface dialog, int which) {
+ 			                    	try {
+ 			                    		read_cf_item(cf_this_item.getString("id"),cf_this_item.getString("id1"));
+										} catch (JSONException e) {
+											// TODO Auto-generated catch block
+						                    Toast.makeText(AddFriendActivity.this, "error: "+e.getMessage().toString(), Toast.LENGTH_LONG).show();
+										}
+ 			                    }   
+ 			                })  
+ 			         .setNegativeButton("No",                    
+ 			                 new DialogInterface.OnClickListener() {
+ 			                    public void onClick(DialogInterface dialog, int which) {
+ 			                }   
+ 			         }) 
+ 			         .show();
+            		 
+            		 
             	 }
             } catch (JSONException e) {
                     Toast.makeText(AddFriendActivity.this, "error: "+e.getMessage().toString(), Toast.LENGTH_LONG).show();

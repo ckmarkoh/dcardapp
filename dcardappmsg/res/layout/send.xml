@@ -11,7 +11,22 @@
         android:ems="10"
         android:hint="To whom"
         android:inputType="text" />
-        <requestFocus />
+    <requestFocus />
+
+    <TextView
+        android:id="@+id/ReceiverView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="To whom"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <Button android:text="Choose Friend" 
+    android:id="@+id/ChooseFriendBut" 
+    android:layout_height="wrap_content" 
+    android:layout_width="match_parent">
+	</Button>
+    
+    
     <EditText
         android:id="@+id/MsgEdit"
         android:layout_width="fill_parent"
