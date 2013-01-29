@@ -58,21 +58,21 @@ public class ReceiveActivity extends Activity {
 
 	//private TextView selected_text;
    // private TextView Global_Setting.userid_text;
-    private String username;
+    public static String username;
     //private String selected_msg;
     public static SimpleAdapter sAdapter;
     public static ListView mListView;
 
     public static JSONArray msg_json_array;
     public static JSONObject this_item=null;
-    
+    public static ArrayList<HashMap<String,String>> mList = new ArrayList<HashMap<String,String>>();
+
     private PendingIntent pendingIntent;
     private AlarmManager alarmManager;
    // private MyTimerTask t;
   //  private int times;
     //private Timer t ;
-
-	ArrayList<HashMap<String,String>> mList = new ArrayList<HashMap<String,String>>();
+    public static OnItemClickListener listener;
 	public static ReceiveActivity mThis = null;
 
     @Override
@@ -80,26 +80,7 @@ public class ReceiveActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.receive);
         
-        
-
-        
-        //Time nextUpdateTime = new Time();
-        //nextUpdateTime.set(nextUpdateTimeMillis);
-/*
-        if (nextUpdateTime.hour < 8 || nextUpdateTime.hour >= 18)
-        {
-          nextUpdateTime.hour = 8;
-          nextUpdateTime.minute = 0;
-          nextUpdateTime.second = 0;
-          nextUpdateTimeMillis = nextUpdateTime.toMillis(false) + DateUtils.DAY_IN_MILLIS;
-        }
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC, nextUpdateTimeMillis, pendingIntent);
-  */      
-
-
-
-        
+             
         
         ReloadButton = (Button) this.findViewById(R.id.ReloadBut);
         BackButton = (Button) this.findViewById(R.id.BackBut);
@@ -109,30 +90,8 @@ public class ReceiveActivity extends Activity {
         Intent intent1 = this.getIntent();
         Bundle bundle = intent1.getExtras();
         Global_Setting.userid = bundle.getString("name");
+        username=Global_Setting.userid;
         
-        
-
-        /*t = new Timer();
-        t.schedule(new TimerTask() {
-
-            public void run() {
-
-            	get_msg();
-                //Your code will be here 
-
-            }
-          }, 15000);*/
-
-        
-       // Global_Setting.userid_text.setText(Global_Setting.userid);
-     /*   
-        SimpleAdapter sAdapter;
-        sAdapter = new SimpleAdapter(this, mList, R.layout.msgitemlayout, 
-        							new String[] {"sender","time","status"}, 
-        							new int[]  {R.id.msgiSender, R.id.msgiTime,R.id.msgiStatus}  );
-        mListView.setAdapter( sAdapter );
-        mListView.setTextFilterEnabled( true );
-*/        
         BackButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {    
 				setResult( RESULT_OK );
@@ -141,10 +100,55 @@ public class ReceiveActivity extends Activity {
 		});
         
         ReloadButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {    
-				get_msg();
+			public void onClick(View v) {   
+				mList.clear();
+		        sAdapter = new SimpleAdapter(ReceiveActivity.this, mList,
+		        		R.layout.msgitemlayout,
+		        		new String[] { "sender","status" ,"time"},
+		        		new int[] {R.id.msgiSender, R.id.msgiStatus,R.id.msgiTime}
+		        );
+		        mListView.setAdapter(sAdapter);
+		        mListView.setOnItemClickListener(listener);
+//				get_msg();
 			}
 		});    
+        
+        listener = new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                long id) {      	
+                try {
+                	 this_item = msg_json_array.getJSONObject(position);
+                        int this_status = Integer.parseInt(this_item.getString("status"));
+                		//Log.d("this_status",this_status);
+                        if(this_status==0){
+                        	
+        			        new AlertDialog.Builder(ReceiveActivity.this)
+        			        .setMessage("Are you sure to open this message?")
+        			        .setPositiveButton("Yes" ,
+        			                new DialogInterface.OnClickListener() {
+        			                    public void onClick(DialogInterface dialog, int which) {
+        			                    	try {
+    											readitem(this_item.getString("id"),this_item.getString("message"),this_item.getString("timeout"));
+    										} catch (JSONException e) {
+    											// TODO Auto-generated catch block
+    						                    Toast.makeText(ReceiveActivity.this, "error: "+e.getMessage().toString(), Toast.LENGTH_LONG).show();
+    										}
+        			                    }   
+        			                })  
+        			         .setNegativeButton("No",                    
+        			                 new DialogInterface.OnClickListener() {
+        			                    public void onClick(DialogInterface dialog, int which) {
+        			                }   
+        			         }) 
+        			         .show();
+                        }                    
+                } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        Toast.makeText(ReceiveActivity.this, "error: "+e.getMessage().toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+          };
+        
     }
     public void get_msg(){
     	HttpPost request = new HttpPost(Global_Setting.site_url+"msg/receiver_get");
@@ -183,43 +187,9 @@ public class ReceiveActivity extends Activity {
 		}
 	}
     
-    OnItemClickListener listener = new OnItemClickListener() {
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-            long id) {      	
-            try {
-            	 this_item = msg_json_array.getJSONObject(position);
-                    int this_status = Integer.parseInt(this_item.getString("status"));
-            		//Log.d("this_status",this_status);
-                    if(this_status==0){
-                    	
-    			        new AlertDialog.Builder(ReceiveActivity.this)
-    			        .setMessage("Are you sure to open this message?")
-    			        .setPositiveButton("Yes" ,
-    			                new DialogInterface.OnClickListener() {
-    			                    public void onClick(DialogInterface dialog, int which) {
-    			                    	try {
-											readitem(this_item.getString("id"),this_item.getString("message"),this_item.getString("timeout"));
-										} catch (JSONException e) {
-											// TODO Auto-generated catch block
-						                    Toast.makeText(ReceiveActivity.this, "error: "+e.getMessage().toString(), Toast.LENGTH_LONG).show();
-										}
-    			                    }   
-    			                })  
-    			         .setNegativeButton("No",                    
-    			                 new DialogInterface.OnClickListener() {
-    			                    public void onClick(DialogInterface dialog, int which) {
-    			                }   
-    			         }) 
-    			         .show();
-                    }                    
-            } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    Toast.makeText(ReceiveActivity.this, "error: "+e.getMessage().toString(), Toast.LENGTH_LONG).show();
-            }
-        }
-      };
+
 	
-    public void addNewItem(String s,String u,String t) {
+    public static void addNewItem(String s,String u,String t) {
         HashMap<String,String> item = new HashMap<String,String>();
         item.put("sender", s);
         if(Integer.parseInt(u)==0){
@@ -274,21 +244,7 @@ public class ReceiveActivity extends Activity {
 		 mThis = this;
 		// get_msg();
         Log.d("on_resume","on_resume");
-        //1- Taking an instance of Timer class.
-       // Timer timer = new Timer("Printer");
-        //t = new MyTimerTask();
-       // times=0;
-        //2- Taking an instance of class contains your repeated method.
-        // timer.schedule(t, 15000, 15000);
-        
 
-        //alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + scTime, pendingIntent);
-        
-      //  long currentTimeMillis = System.currentTimeMillis();
-      //  long currentTriggerTime = currentTimeMillis + 2 * DateUtils.SECOND_IN_MILLIS;
-      //  long periodTriggerTime = currentTimeMillis + 2 * DateUtils.SECOND_IN_MILLIS;
-        
-       // Intent intent2 = new Intent(this, MyAlarmManager.class);
     	Bundle bundle2= new Bundle();
     	bundle2.putString("name", Global_Setting.userid);
     	//intent2.putExtras(bundle2);
