@@ -34,7 +34,7 @@ public class ShowActivity  extends Activity {
         timeout_str=bundle.getString("timeout");
         count_down.setText("seconds remaining: " + timeout_str);
         int timeout_int=Integer.parseInt(timeout_str)*1000;
-        //  username_text.setText(username);
+        //  Global_Setting.userid_text.setText(Global_Setting.userid);
        // Timer CountdownTimer = new Timer(true);
         new CountDownTimer(timeout_int, 1000) {
             public void onTick(long millisUntilFinished) {

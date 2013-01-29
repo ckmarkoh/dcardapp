@@ -52,7 +52,7 @@ public class SendActivity extends Activity {
     private Button ChooseFriendButton;
 
 
-    private String username;
+    //private String Global_Setting.userid;
     private String receiver="";
 
     private EditText msgEdit;
@@ -72,7 +72,7 @@ public class SendActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.send);
 
-     //   username_text = (TextView) this.findViewById(R.id.UserNameText);				
+     //   Global_Setting.userid_text = (TextView) this.findViewById(R.id.Global_Setting.useridText);				
      //   selected_text= (TextView) this.findViewById(R.id.SelectedMsgText);
 
         SendMessageButton = (Button) this.findViewById(R.id.SendBut);
@@ -85,7 +85,7 @@ public class SendActivity extends Activity {
         receiverView=(TextView) this.findViewById(R.id.ReceiverView);
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
-        username = bundle.getString("name");
+        Global_Setting.userid = bundle.getString("name");
         
         setTimeOutBar = (SeekBar)findViewById(R.id.SetTimeOutBar);  
         setTimeOutValue = (TextView)findViewById(R.id.SetTimeOutView);  
@@ -122,7 +122,7 @@ public class SendActivity extends Activity {
 				Log.d("msg",msgEdit.getText().toString());
 				HttpPost request = new HttpPost(Global_Setting.site_url+"friend/get_friend_list");
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
-				params.add(new BasicNameValuePair("id1", username));
+				params.add(new BasicNameValuePair("id1", Global_Setting.userid));
 
 				try {
 					request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
@@ -188,7 +188,7 @@ public class SendActivity extends Activity {
 					Log.d("msg",msgEdit.getText().toString());
 					HttpPost request = new HttpPost(Global_Setting.site_url+"msg/insert");
 					List<NameValuePair> params = new ArrayList<NameValuePair>();
-					params.add(new BasicNameValuePair("sender", username));
+					params.add(new BasicNameValuePair("sender", Global_Setting.userid));
 					params.add(new BasicNameValuePair("message", msgEdit.getText().toString()));
 					params.add(new BasicNameValuePair("receiver", receiver));
 					params.add(new BasicNameValuePair("timeout", timeout));

@@ -22,23 +22,25 @@
             
         </activity>
          <activity
-            android:name="LoginActivity"
+            android:name=".LoginActivity"
             android:screenOrientation="portrait" />
          <activity
-            android:name="SendActivity"
+            android:name=".SendActivity"
             android:screenOrientation="portrait" />
          <activity
-            android:name="ReceiveActivity"
+            android:name=".ReceiveActivity"
             android:screenOrientation="portrait" />
          <activity
-            android:name="ShowActivity"
+            android:name=".ShowActivity"
             android:screenOrientation="portrait" />
          <activity
-            android:name="SignUpActivity"
+            android:name=".SignUpActivity"
             android:screenOrientation="portrait" />
          <activity
-            android:name="AddFriendActivity"
+            android:name=".AddFriendActivity"
             android:screenOrientation="portrait" />
+         <receiver android:name=".MyAlarmManager" android:process=".abc"/>
+         <service android:name=".GetMsgService"/>
     </application>
 
 </manifest>

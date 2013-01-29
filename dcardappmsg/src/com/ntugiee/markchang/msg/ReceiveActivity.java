@@ -1,17 +1,24 @@
-package com.ntugiee.markchang.msg
-;
-
+package com.ntugiee.markchang.msg;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 //import android.content.Intent;
+import android.text.format.DateUtils;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -23,8 +30,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.EditText;
 import android.widget.AdapterView.OnItemClickListener;
-
-
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -41,41 +46,85 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.ntugiee.markchang.msg.MyAlarmManager;
 
 //import togeather.history.R;
 
+
 public class ReceiveActivity extends Activity {
     
-    private Button ReloadButton;
+	public static Button ReloadButton;
     private Button BackButton;
 
 	//private TextView selected_text;
-   // private TextView username_text;
+   // private TextView Global_Setting.userid_text;
     private String username;
-    private String selected_msg;
-    private SimpleAdapter sAdapter;
-	private ListView mListView;
+    //private String selected_msg;
+    public static SimpleAdapter sAdapter;
+    public static ListView mListView;
 
-    private JSONArray msg_json_array;
-    private JSONObject this_item=null;
+    public static JSONArray msg_json_array;
+    public static JSONObject this_item=null;
     
+    private PendingIntent pendingIntent;
+    private AlarmManager alarmManager;
+   // private MyTimerTask t;
+  //  private int times;
+    //private Timer t ;
+
 	ArrayList<HashMap<String,String>> mList = new ArrayList<HashMap<String,String>>();
+	public static ReceiveActivity mThis = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.receive);
+        
+        
+
+        
+        //Time nextUpdateTime = new Time();
+        //nextUpdateTime.set(nextUpdateTimeMillis);
+/*
+        if (nextUpdateTime.hour < 8 || nextUpdateTime.hour >= 18)
+        {
+          nextUpdateTime.hour = 8;
+          nextUpdateTime.minute = 0;
+          nextUpdateTime.second = 0;
+          nextUpdateTimeMillis = nextUpdateTime.toMillis(false) + DateUtils.DAY_IN_MILLIS;
+        }
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC, nextUpdateTimeMillis, pendingIntent);
+  */      
 
 
+
+        
+        
         ReloadButton = (Button) this.findViewById(R.id.ReloadBut);
         BackButton = (Button) this.findViewById(R.id.BackBut);
 
         mListView = (ListView) this.findViewById(R.id.msglist);
         
-        Intent intent = this.getIntent();
-        Bundle bundle = intent.getExtras();
-        username = bundle.getString("name");
-       // username_text.setText(username);
+        Intent intent1 = this.getIntent();
+        Bundle bundle = intent1.getExtras();
+        Global_Setting.userid = bundle.getString("name");
+        
+        
+
+        /*t = new Timer();
+        t.schedule(new TimerTask() {
+
+            public void run() {
+
+            	get_msg();
+                //Your code will be here 
+
+            }
+          }, 15000);*/
+
+        
+       // Global_Setting.userid_text.setText(Global_Setting.userid);
      /*   
         SimpleAdapter sAdapter;
         sAdapter = new SimpleAdapter(this, mList, R.layout.msgitemlayout, 
@@ -95,14 +144,12 @@ public class ReceiveActivity extends Activity {
 			public void onClick(View v) {    
 				get_msg();
 			}
-		});
-        
-       
+		});    
     }
     public void get_msg(){
     	HttpPost request = new HttpPost(Global_Setting.site_url+"msg/receiver_get");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("receiver", username));
+		params.add(new BasicNameValuePair("receiver", Global_Setting.userid));
 		Log.d("url",Global_Setting.site_url+"receiver_get");
 		try {
 			request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
@@ -224,13 +271,76 @@ public class ReceiveActivity extends Activity {
 	@Override
 	public void onResume(){
 		 super.onResume();
-        get_msg();
+		 mThis = this;
+		// get_msg();
         Log.d("on_resume","on_resume");
+        //1- Taking an instance of Timer class.
+       // Timer timer = new Timer("Printer");
+        //t = new MyTimerTask();
+       // times=0;
+        //2- Taking an instance of class contains your repeated method.
+        // timer.schedule(t, 15000, 15000);
+        
+
+        //alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + scTime, pendingIntent);
+        
+      //  long currentTimeMillis = System.currentTimeMillis();
+      //  long currentTriggerTime = currentTimeMillis + 2 * DateUtils.SECOND_IN_MILLIS;
+      //  long periodTriggerTime = currentTimeMillis + 2 * DateUtils.SECOND_IN_MILLIS;
+        
+       // Intent intent2 = new Intent(this, MyAlarmManager.class);
+    	Bundle bundle2= new Bundle();
+    	bundle2.putString("name", Global_Setting.userid);
+    	//intent2.putExtras(bundle2);
+    	
+    //    long scTime = 5000;//2mins
+      /*   pendingIntent = PendingIntent.getBroadcast(this, 0, intent2, PendingIntent.FLAG_UPDATE_CURRENT);
+         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+         alarmManager.set(AlarmManager.RTC, 0, pendingIntent);
+
+         alarmManager.setRepeating(AlarmManager.RTC,
+         		3000,
+         		3000, 
+         	    pendingIntent);
+        */
+    	
+        Intent intent2 = new Intent(ReceiveActivity.this, GetMsgService.class);
+        intent2.putExtras(bundle2);
+        startService(intent2);
+        
 	}
+	@Override
+	public void onPause(){
+		 super.onPause();
+		 //t.cancel();
+		 alarmManager.cancel(pendingIntent);
+		 mThis = null;
+        Intent intent = new Intent(ReceiveActivity.this, GetMsgService.class);
+        stopService(intent);
+	}
+	 
+
+	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);
         
         return true;
     }
+    
+	/*class MyTimerTask extends TimerTask {
+	    //times member represent calling times.
+	    public void run() {
+	    		//times++;
+	    		get_msg();
+	            Log.d("timer","I'm alive...");
+	    }
+	    @Override
+	    public boolean cancel(){
+	    	super.cancel();
+            	Log.d("timer","timer cancel...");
+			return false;
+	    }
+	}*/
+   
 }
