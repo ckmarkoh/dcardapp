@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/UploadButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload" />
+
+    <Button
+        android:id="@+id/CameraButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Take Picture" />
+
+    <Button
+        android:id="@+id/SaveButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save File" />
+
+    <EditText
+        android:id="@+id/fileEdit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="file" >
+        <requestFocus />
+    </EditText>
+
+    <ImageView
+        android:id="@+id/ivTest"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:src="@android:drawable/alert_dark_frame" />
+    
+</LinearLayout>
