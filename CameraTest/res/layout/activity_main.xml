@@ -8,18 +8,18 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Upload" />
-
+    <Button
+        android:id="@+id/DownloadButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Download" />
     <Button
         android:id="@+id/CameraButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Take Picture" />
 
-    <Button
-        android:id="@+id/SaveButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save File" />
+
 
     <EditText
         android:id="@+id/fileEdit"

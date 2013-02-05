@@ -15,8 +15,8 @@ public final class R {
     }
     public static final class id {
         public static final int Button01=0x7f070005;
-        public static final int CameraButton=0x7f070001;
-        public static final int SaveButton=0x7f070002;
+        public static final int CameraButton=0x7f070002;
+        public static final int DownloadButton=0x7f070001;
         public static final int UploadButton=0x7f070000;
         public static final int fileEdit=0x7f070003;
         public static final int ivTest=0x7f070004;
