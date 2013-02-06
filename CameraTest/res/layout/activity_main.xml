@@ -18,7 +18,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Take Picture" />
-
+    <Button
+        android:id="@+id/EditButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit Picture" />
 
 
     <EditText

@@ -50,6 +50,7 @@ public class MainActivity extends Activity {
 	private Button uploadButton;
 	private Button cameraButton;
 	private Button DownloadButton;
+	private Button EditButton;
 
 	private Bitmap bitmap;
 	
@@ -64,14 +65,12 @@ public class MainActivity extends Activity {
 		uploadButton = (Button)findViewById(R.id.UploadButton);
 		cameraButton = (Button)findViewById(R.id.CameraButton);
 		DownloadButton = (Button)findViewById(R.id.DownloadButton);
+		EditButton = (Button)findViewById(R.id.EditButton);
 
 	    uploadButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
     	
-    		ByteArrayOutputStream bao = new ByteArrayOutputStream();
-    		bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bao);
-    		byte [] ba = bao.toByteArray();
-    		String ba1=Base64.encodeToString(ba, Base64.DEFAULT);
+       		String ba1=encode_bitmap();
     		
 			HttpPost request = new HttpPost("http://r444b.ee.ntu.edu.tw/upload_file_test/test_file.php");
 	//		Toast.makeText(PhptestActivity.this, Global_Setting.site_url+"login", Toast.LENGTH_LONG).show();
@@ -92,14 +91,12 @@ public class MainActivity extends Activity {
 				Toast.makeText(MainActivity.this, e.getMessage().toString(), Toast.LENGTH_LONG).show();
 				e.printStackTrace();
 			}
-		
-        	
-               
+              
         	}
         });   
 	    cameraButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
-        		Intent intent =  new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//利用intent去開啟android本身的照相介面
+        		final Intent intent =  new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//利用intent去開啟android本身的照相介面
         		startActivityForResult(intent, 0); 
                }
         }); 
@@ -109,7 +106,28 @@ public class MainActivity extends Activity {
         		bitmap = getBitmap("http://upload.wikimedia.org/wikipedia/commons/8/89/Illu_muscle_structure.jpg");
         		ivTest.setImageBitmap(bitmap);
                }
+        });
+	    EditButton.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View view) {
+        		String ba1=encode_bitmap();
+            	final Intent intent = new Intent();
+            	intent.setClass(MainActivity.this, EditImageActivity.class);
+            	Bundle bundle = new Bundle();
+            	bundle.putString("img", ba1);
+            	intent.putExtras(bundle);
+                startActivity(intent);               
+                }
         });  	
+	}
+	
+	public String encode_bitmap(){
+		
+		ByteArrayOutputStream bao = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bao);
+		byte [] ba = bao.toByteArray();
+		String ba1=Base64.encodeToString(ba, Base64.DEFAULT);
+		return ba1;
+		
 	}
 	
 	@Override
