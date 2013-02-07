@@ -109,12 +109,12 @@ public class MainActivity extends Activity {
         });
 	    EditButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
-        		//String ba1=encode_bitmap();
+        		String ba1=encode_bitmap();
             	final Intent intent = new Intent();
             	intent.setClass(MainActivity.this, EditImageActivity.class);
-            	//Bundle bundle = new Bundle();
-            	//bundle.putString("img", ba1);
-            	//intent.putExtras(bundle);
+            	Bundle bundle = new Bundle();
+            	bundle.putString("img", ba1);
+            	intent.putExtras(bundle);
                 startActivity(intent);               
                 }
         });  	
