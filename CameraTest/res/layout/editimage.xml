@@ -27,8 +27,8 @@
         android:text="Button" />
 </LinearLayout>
 
-<View
+<com.ntugiee.markchang.cameratest.MyCustomPanel
     android:id="@+id/ivEdit"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" />
 </LinearLayout>
