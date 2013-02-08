@@ -41,7 +41,6 @@ public class MyCustomPanel extends View {
        super.onWindowFocusChanged(hasFocus);
        wallPaperBitmap = Bitmap.createBitmap( getWidth (), getHeight(), Bitmap.Config.ARGB_8888);
        
-       //Log.d("size",String.valueOf(getWidth ())+" "+String.valueOf(getHeight ()) );
        bitmapCanvas = new Canvas(wallPaperBitmap);    
    }
     
@@ -62,20 +61,16 @@ public class MyCustomPanel extends View {
 			if(positionXY==9999){
 				i++;
             	positionXY = pathData.get(i);
-            	//int positionX1=(int) (positionXY1/10000);
-            	//int positionY1=(int) (positionXY1%10000);
+
             	temp_path.moveTo((int)(positionXY/10000), (int) (positionXY%10000));
             	temp_path.lineTo((int)(positionXY/10000), (int) (positionXY%10000));
             	i++;
 			}
 			else{
 				positionXY = pathData.get(i);
-        	//int positionX=(int) (positionXY/10000);
-        	//int positionY=(int) (positionXY%10000);
+
 				temp_path.lineTo((int)(positionXY/10000), (int) (positionXY%10000));
-			//Log.d("positionX",String.valueOf(positionX));
-			//Log.d("positionY",String.valueOf(positionY));
-			//Log.d("path_start",String.valueOf(i));
+
 				i++;
 			}
         }
@@ -98,9 +93,7 @@ public class MyCustomPanel extends View {
         	canvas.drawText(mypair.getLeft(),(positionXY/10000),(positionXY%10000),paint);
         	bitmapCanvas.drawText(mypair.getLeft(),(positionXY/10000),(positionXY%10000),paint);
         	
-			//Log.d("positionX",String.valueOf(positionX));
-			//Log.d("positionY",String.valueOf(positionY));
-			//Log.d("path_start",String.valueOf(i));
+
         	
 			i++;
         }

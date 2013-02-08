@@ -93,35 +93,16 @@ public class EditImageActivity extends Activity {
 
         mypanelview = (MyCustomPanel)findViewById(R.id.ivEdit);
 
-        //ivEdit = (ImageView)findViewById(R.id.ivPanelEdit);
         byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
-        //bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        //ivEdit.setImageBitmap(bitmap);
 
         Display display = getWindowManager().getDefaultDisplay();
-
-        //mypanelview = new MyCustomPanel(EditImageActivity.this,display.getWidth(),display.getHeight());
-        
         mypanelview.bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        //addContentView(mypanelview, new ViewGroup.LayoutParams(LayoutParams.FILL_PARENT,
-        //        LayoutParams.FILL_PARENT))
-        //addContentView(b1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
-        //        ViewGroup.LayoutParams.WRAP_CONTENT));
-        
-  
-        //int wallpaperHeight = display.getHeight();
-        //wallpaperWidth = wallpaperManager.getDesiredMinimumWidth();
-        //int wallpaperWidth = display.getWidth();
-        //path_of_shape_for_WallPaperBitmap = new Path();
-        
-        //wallPaperBitmap = Bitmap.createBitmap(wallpaperWidth, wallpaperHeight, Bitmap.Config.ARGB_8888);
-        //bitmapCanvas = new Canvas(wallPaperBitmap);
-       
+
         
         panel_on_touch= new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-            	long positionXY;
+            	//long positionXY;
             	
             	switch (panel_state){
             	case PANEL_STATE_DRAW:
@@ -189,13 +170,13 @@ public class EditImageActivity extends Activity {
         		    public void onClick(DialogInterface arg0, int arg1) {
         		    	text_content=editText.getText().toString();
                 		panel_state=PANEL_STATE_TEXT;
-        		     }
+        		     	}
         		    })
         	    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
         		          // do something when the button is clicked
         		    public void onClick(DialogInterface arg0, int arg1) {
         		    	//...
-        		     }
+        		     	}
         		    })
         		.show();
         		

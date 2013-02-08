@@ -62,8 +62,9 @@ public class SignUpActivity extends Activity {
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
 				params.add(new BasicNameValuePair("id", signUpId.getText().toString()));
 				params.add(new BasicNameValuePair("email", signUpEmail.getText().toString()));
-				params.add(new BasicNameValuePair("password", signUpPwd.getText().toString()));
- 
+				params.add(new BasicNameValuePair("password", Global_Setting.md5(signUpPwd.getText().toString())) );
+				Log.d("password",Global_Setting.md5(signUpPwd.getText().toString())  );
+
 				try {
 					request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
 					HttpResponse response = new DefaultHttpClient().execute(request);

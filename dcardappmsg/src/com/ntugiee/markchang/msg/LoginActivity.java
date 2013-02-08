@@ -59,7 +59,9 @@ public class LoginActivity extends Activity {
 				Log.d("login url",Global_Setting.site_url+"login");
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
 				params.add(new BasicNameValuePair("name", etName.getText().toString()));
-				params.add(new BasicNameValuePair("pwd", etPwd.getText().toString()));
+				params.add(new BasicNameValuePair("pwd", Global_Setting.md5(
+						etPwd.getText().toString())));
+				Log.d("password",Global_Setting.md5(etPwd.getText().toString())  );
  
 				try {
 					request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));

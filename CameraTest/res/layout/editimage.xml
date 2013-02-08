@@ -12,19 +12,19 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Button" />
+        android:text="Draw" />
    <Button
         android:id="@+id/EditButton2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Button" />
+        android:text="Text" />
    <Button
         android:id="@+id/EditButton3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Button" />
+        android:text="Upload" />
 </LinearLayout>
 
 <com.ntugiee.markchang.cameratest.MyCustomPanel

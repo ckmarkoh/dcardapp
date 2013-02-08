@@ -102,14 +102,14 @@ public class ReceiveActivity extends Activity {
         ReloadButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {   
 				mList.clear();
-		        sAdapter = new SimpleAdapter(ReceiveActivity.this, mList,
+		       /* sAdapter = new SimpleAdapter(ReceiveActivity.this, mList,
 		        		R.layout.msgitemlayout,
 		        		new String[] { "sender","status" ,"time"},
 		        		new int[] {R.id.msgiSender, R.id.msgiStatus,R.id.msgiTime}
 		        );
 		        mListView.setAdapter(sAdapter);
-		        mListView.setOnItemClickListener(listener);
-//				get_msg();
+		        mListView.setOnItemClickListener(listener);*/
+				get_msg();
 			}
 		});    
         
@@ -245,8 +245,8 @@ public class ReceiveActivity extends Activity {
 		// get_msg();
         Log.d("on_resume","on_resume");
 
-    	Bundle bundle2= new Bundle();
-    	bundle2.putString("name", Global_Setting.userid);
+    	//Bundle bundle2= new Bundle();
+    	//bundle2.putString("name", Global_Setting.userid);
     	//intent2.putExtras(bundle2);
     	
     //    long scTime = 5000;//2mins
@@ -260,19 +260,19 @@ public class ReceiveActivity extends Activity {
          	    pendingIntent);
         */
     	
-        Intent intent2 = new Intent(ReceiveActivity.this, GetMsgService.class);
-        intent2.putExtras(bundle2);
-        startService(intent2);
+       // Intent intent2 = new Intent(ReceiveActivity.this, GetMsgService.class);
+        //intent2.putExtras(bundle2);
+        //startService(intent2);
         
 	}
 	@Override
 	public void onPause(){
 		 super.onPause();
 		 //t.cancel();
-		 alarmManager.cancel(pendingIntent);
+		 //alarmManager.cancel(pendingIntent);
 		 mThis = null;
-        Intent intent = new Intent(ReceiveActivity.this, GetMsgService.class);
-        stopService(intent);
+        //Intent intent = new Intent(ReceiveActivity.this, GetMsgService.class);
+        //stopService(intent);
 	}
 	 
 

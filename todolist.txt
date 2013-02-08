@@ -50,12 +50,13 @@ to list
 
 V	icon
 	介面
-	相機
-	塗鴉
-	打字
+V	相機
+V	塗鴉
+V	打字
 	session
 	MD5
-	即時通知(10秒reload)
+X	即時通知(10秒reload)
 V	朋友列表()
 	facebook自動比對
 	截圖記錄
+    整合
