@@ -51,8 +51,7 @@ public class SendActivity extends Activity {
     private Button BackButton;
     private Button ChooseFriendButton;
 
-
-    //private String Global_Setting.userid;
+    //private String global_setting.userid;
     private String receiver="";
 
     private EditText msgEdit;
@@ -67,12 +66,16 @@ public class SendActivity extends Activity {
 	ArrayList<String> fList=new ArrayList<String>();
 	private JSONArray fjson_array;
 	
+	private Global_Setting global_setting;
+
+	 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.send);
+        global_setting = ((Global_Setting)getApplicationContext());
 
-     //   Global_Setting.userid_text = (TextView) this.findViewById(R.id.Global_Setting.useridText);				
+     //   global_setting.userid_text = (TextView) this.findViewById(R.id.global_setting.useridText);				
      //   selected_text= (TextView) this.findViewById(R.id.SelectedMsgText);
 
         SendMessageButton = (Button) this.findViewById(R.id.SendBut);
@@ -83,9 +86,9 @@ public class SendActivity extends Activity {
         msgEdit =(EditText) this.findViewById(R.id.MsgEdit);
         receiverEdit =(EditText) this.findViewById(R.id.ReceiverEdit);
         receiverView=(TextView) this.findViewById(R.id.ReceiverView);
-        Intent intent = this.getIntent();
-        Bundle bundle = intent.getExtras();
-        Global_Setting.userid = bundle.getString("name");
+        //Intent intent = this.getIntent();
+        //Bundle bundle = intent.getExtras();
+        //global_setting.userid = bundle.getString("name");
         
         setTimeOutBar = (SeekBar)findViewById(R.id.SetTimeOutBar);  
         setTimeOutValue = (TextView)findViewById(R.id.SetTimeOutView);  
@@ -120,9 +123,9 @@ public class SendActivity extends Activity {
 			public void onClick( View v ) {    
 				
 				Log.d("msg",msgEdit.getText().toString());
-				HttpPost request = new HttpPost(Global_Setting.site_url+"friend/get_friend_list");
+				HttpPost request = new HttpPost(global_setting.site_url+"friend/get_friend_list");
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
-				params.add(new BasicNameValuePair("id1", Global_Setting.userid));
+				params.add(new BasicNameValuePair("id1", global_setting.userid));
 
 				try {
 					request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
@@ -186,9 +189,9 @@ public class SendActivity extends Activity {
 						Toast.makeText(SendActivity.this, "Please choose a friend.", Toast.LENGTH_LONG).show();		
 					}
 					Log.d("msg",msgEdit.getText().toString());
-					HttpPost request = new HttpPost(Global_Setting.site_url+"msg/insert");
+					HttpPost request = new HttpPost(global_setting.site_url+"msg/insert");
 					List<NameValuePair> params = new ArrayList<NameValuePair>();
-					params.add(new BasicNameValuePair("sender", Global_Setting.userid));
+					params.add(new BasicNameValuePair("sender", global_setting.userid));
 					params.add(new BasicNameValuePair("message", msgEdit.getText().toString()));
 					params.add(new BasicNameValuePair("receiver", receiver));
 					params.add(new BasicNameValuePair("timeout", timeout));

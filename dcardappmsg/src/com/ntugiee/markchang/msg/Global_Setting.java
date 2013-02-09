@@ -4,10 +4,13 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import android.app.Application;
 
-public class Global_Setting {
+
+public class Global_Setting extends Application{
 	public static final String site_url="http://r444b.ee.ntu.edu.tw/~markchang/dctest/index.php/";
-	public static String userid="";//="http://r444b.ee.ntu.edu.tw/~markchang/dctest/index.php/";
+	public  String userid;//="http://r444b.ee.ntu.edu.tw/~markchang/dctest/index.php/";
+	
 	
 	
 	public static String md5(String string) {

@@ -49,7 +49,7 @@ public class AddFriendActivity extends Activity {
 
 	private EditText addFriendEdit;
 	//private EditText etPwd;
-   // private String Global_Setting.userid;
+   // private String global_setting.userid;
     
     private SimpleAdapter cfAdapter;
 	private ListView cfListView;
@@ -61,7 +61,8 @@ public class AddFriendActivity extends Activity {
 	private ListView afListView;
     private JSONArray af_json_array;
 	ArrayList<HashMap<String,String>> afList = new ArrayList<HashMap<String,String>>();
-
+	
+	private Global_Setting global_setting;
 	
     
     @Override
@@ -69,13 +70,18 @@ public class AddFriendActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.addfriend);
         
+        
+        
         addFriendadd = (Button) findViewById(R.id.AddFriendAdd);
         addFriendBack = (Button) findViewById(R.id.AddFriendBack);
         addFriendEdit = (EditText) findViewById(R.id.AddFriendEdit);
         //etPwd = (EditText) findViewById(R.id.etPassword);
-        Intent intent = this.getIntent();
-        Bundle bundle = intent.getExtras();
-        Global_Setting.userid = bundle.getString("name");
+        //Intent intent = this.getIntent();
+        //Bundle bundle = intent.getExtras();
+        
+        global_setting = ((Global_Setting)getApplicationContext());
+
+        //global_setting.userid = bundle.getString("name");
         
         cfListView = (ListView) this.findViewById(R.id.friendConfirmList);
         afListView = (ListView) this.findViewById(R.id.friendAddedList);
@@ -86,11 +92,11 @@ public class AddFriendActivity extends Activity {
         
         addFriendadd.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				HttpPost request = new HttpPost(Global_Setting.site_url+"friend/add_friend");
-			//	Toast.makeText(AddFriendActivity.this, Global_Setting.site_url+"friend/add_friend", Toast.LENGTH_LONG).show();
-				Log.d("login url",Global_Setting.site_url+"friend/add_friend");
+				HttpPost request = new HttpPost(global_setting.site_url+"friend/add_friend");
+			//	Toast.makeText(AddFriendActivity.this, global_setting.site_url+"friend/add_friend", Toast.LENGTH_LONG).show();
+				Log.d("login url",global_setting.site_url+"friend/add_friend");
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
-				params.add(new BasicNameValuePair("id1", Global_Setting.userid));
+				params.add(new BasicNameValuePair("id1", global_setting.userid));
 				params.add(new BasicNameValuePair("id2", addFriendEdit.getText().toString()));
 				try {
 					request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
@@ -129,10 +135,10 @@ public class AddFriendActivity extends Activity {
     }
     
     public void reload_cf_friends(){
-    	HttpPost request = new HttpPost(Global_Setting.site_url+"friend/load_confirm_id2");
+    	HttpPost request = new HttpPost(global_setting.site_url+"friend/load_confirm_id2");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("id2", Global_Setting.userid));
-		Log.d("url",Global_Setting.site_url+"friend/load_confirm_id2");
+		params.add(new BasicNameValuePair("id2", global_setting.userid));
+		Log.d("url",global_setting.site_url+"friend/load_confirm_id2");
 		try {
 			request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
 			HttpResponse response = new DefaultHttpClient().execute(request);
@@ -199,7 +205,7 @@ public class AddFriendActivity extends Activity {
     
     public void read_cf_item(String id,String id1){
 		Log.d("id",id+" friend"+id1);//+" timeout"+timeout);
-    	HttpPost request = new HttpPost(Global_Setting.site_url+"friend/confirm_friend");
+    	HttpPost request = new HttpPost(global_setting.site_url+"friend/confirm_friend");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("id", id));
 		try {
@@ -263,10 +269,10 @@ public class AddFriendActivity extends Activity {
       };
 
     public void reload_af_friends(){
-      	HttpPost request = new HttpPost(Global_Setting.site_url+"friend/load_confirm_id1");
+      	HttpPost request = new HttpPost(global_setting.site_url+"friend/load_confirm_id1");
   		List<NameValuePair> params = new ArrayList<NameValuePair>();
-  		params.add(new BasicNameValuePair("id1", Global_Setting.userid));
-  		Log.d("url",Global_Setting.site_url+"friend/load_confirm_id1");
+  		params.add(new BasicNameValuePair("id1", global_setting.userid));
+  		Log.d("url",global_setting.site_url+"friend/load_confirm_id1");
   		try {
   			request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
   			HttpResponse response = new DefaultHttpClient().execute(request);

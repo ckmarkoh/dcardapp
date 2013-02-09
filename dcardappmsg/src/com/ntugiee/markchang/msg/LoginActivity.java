@@ -1,6 +1,4 @@
 package com.ntugiee.markchang.msg;
-//XDD
-//package com.list;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,11 +38,15 @@ public class LoginActivity extends Activity {
 	private EditText etName;
 	private EditText etPwd;
  
+	private Global_Setting global_setting;
+
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        
+        global_setting = ((Global_Setting)getApplicationContext());
+
         btnBack = (Button) findViewById(R.id.btnBack);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         etName = (EditText) findViewById(R.id.etName);
@@ -100,10 +102,12 @@ public class LoginActivity extends Activity {
 		Bundle b=new Bundle();
 		if(login){
 			b.putString("login", "true");
-			b.putString("name", userid);
+			global_setting.userid=userid;
+			//b.putString("name", userid);
 		}
 		else{
 			b.putString("login", "false");
+			global_setting.userid="";
 		}
 		i.putExtras(b);
 		setResult(RESULT_OK,i);

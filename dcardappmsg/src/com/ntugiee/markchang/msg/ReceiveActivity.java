@@ -57,7 +57,7 @@ public class ReceiveActivity extends Activity {
     private Button BackButton;
 
 	//private TextView selected_text;
-   // private TextView Global_Setting.userid_text;
+   // private TextView global_setting.userid_text;
     public static String username;
     //private String selected_msg;
     public static SimpleAdapter sAdapter;
@@ -75,22 +75,26 @@ public class ReceiveActivity extends Activity {
     public static OnItemClickListener listener;
 	public static ReceiveActivity mThis = null;
 
+	private Global_Setting global_setting;
+
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.receive);
         
-             
+        global_setting = ((Global_Setting)getApplicationContext());
+
         
         ReloadButton = (Button) this.findViewById(R.id.ReloadBut);
         BackButton = (Button) this.findViewById(R.id.BackBut);
 
         mListView = (ListView) this.findViewById(R.id.msglist);
         
-        Intent intent1 = this.getIntent();
-        Bundle bundle = intent1.getExtras();
-        Global_Setting.userid = bundle.getString("name");
-        username=Global_Setting.userid;
+        //Intent intent1 = this.getIntent();
+        //Bundle bundle = intent1.getExtras();
+        //global_setting.userid = bundle.getString("name");
+        //username=global_setting.userid;
         
         BackButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {    
@@ -151,10 +155,10 @@ public class ReceiveActivity extends Activity {
         
     }
     public void get_msg(){
-    	HttpPost request = new HttpPost(Global_Setting.site_url+"msg/receiver_get");
+    	HttpPost request = new HttpPost(global_setting.site_url+"msg/receiver_get");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("receiver", Global_Setting.userid));
-		Log.d("url",Global_Setting.site_url+"receiver_get");
+		params.add(new BasicNameValuePair("receiver", global_setting.userid));
+		Log.d("url",global_setting.site_url+"receiver_get");
 		try {
 			request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
 			HttpResponse response = new DefaultHttpClient().execute(request);
@@ -206,7 +210,7 @@ public class ReceiveActivity extends Activity {
     public void readitem(String id,final String message,final String timeout){
 		Log.d("readitem",id+" message"+message+" timeout"+timeout);
 
-    	HttpPost request = new HttpPost(Global_Setting.site_url+"msg/open_item");
+    	HttpPost request = new HttpPost(global_setting.site_url+"msg/open_item");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("id", id));
 		try {
@@ -242,11 +246,11 @@ public class ReceiveActivity extends Activity {
 	public void onResume(){
 		 super.onResume();
 		 mThis = this;
-		// get_msg();
+		 get_msg();
         Log.d("on_resume","on_resume");
 
     	//Bundle bundle2= new Bundle();
-    	//bundle2.putString("name", Global_Setting.userid);
+    	//bundle2.putString("name", global_setting.userid);
     	//intent2.putExtras(bundle2);
     	
     //    long scTime = 5000;//2mins

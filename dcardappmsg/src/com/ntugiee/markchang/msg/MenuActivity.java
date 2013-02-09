@@ -34,13 +34,14 @@ public class MenuActivity extends Activity {
     private Button AddFriendButton;
 
     private TextView username_text;
-   // private String Global_Setting.userid;
+   // private String global_setting.userid;
     private boolean islogin=false;
     
     
     private static final int LOGIN=1;
 
-    
+	private Global_Setting global_setting;
+
 	ArrayList<HashMap<String,String>> mList = new ArrayList<HashMap<String,String>>();
 
     @Override
@@ -48,6 +49,9 @@ public class MenuActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
 
+        global_setting = ((Global_Setting)getApplicationContext());
+
+        
         username_text = (TextView) this.findViewById(R.id.MenuUserText);				
         LoginButton = (Button) this.findViewById(R.id.ButtonLogin);
 //        LogoutButton = (Button) this.findViewById(R.id.ButtonLogout);
@@ -56,9 +60,11 @@ public class MenuActivity extends Activity {
         SignUpButton = (Button) this.findViewById(R.id.ButtonSignUp);
         AddFriendButton = (Button) this.findViewById(R.id.ButtonAddFriend);
 
+
+        
 		show_or_hide_button();
 /*        if(islogin){
-        	Global_Setting.userid_text.setText("Hello "+Global_Setting.userid);
+        	global_setting.userid_text.setText("Hello "+global_setting.userid);
 			LoginButton.setText("Logout");
         }
         else{*/
@@ -69,9 +75,9 @@ public class MenuActivity extends Activity {
 	        		if(islogin){
 		            	final Intent intent = new Intent();
 		            	intent.setClass(MenuActivity.this, AddFriendActivity.class);
-		            	Bundle bundle = new Bundle();
-		            	bundle.putString("name", Global_Setting.userid);
-		            	intent.putExtras(bundle);
+		            	//Bundle bundle = new Bundle();
+		            	//bundle.putString("name", global_setting.userid);
+		            	//intent.putExtras(bundle);
 		                startActivity(intent);
 	        		}
 	        		else{
@@ -84,9 +90,9 @@ public class MenuActivity extends Activity {
         		if(islogin){
 	            	final Intent intent = new Intent();
 	            	intent.setClass(MenuActivity.this, SendActivity.class);
-	            	Bundle bundle = new Bundle();
-	            	bundle.putString("name", Global_Setting.userid);
-	            	intent.putExtras(bundle);
+	            	//Bundle bundle = new Bundle();
+	            	//bundle.putString("name", global_setting.userid);
+	            	//intent.putExtras(bundle);
 	                startActivity(intent);
         		}
         		else{
@@ -99,9 +105,9 @@ public class MenuActivity extends Activity {
         		if(islogin){
 	            	final Intent intent = new Intent();
 	            	intent.setClass(MenuActivity.this, ReceiveActivity.class);
-	            	Bundle bundle = new Bundle();
-	            	bundle.putString("name", Global_Setting.userid);
-	            	intent.putExtras(bundle);
+	            	//Bundle bundle = new Bundle();
+	            	//bundle.putString("name", global_setting.userid);
+	            	//intent.putExtras(bundle);
 	                startActivity(intent);
         		}
         		else{
@@ -124,7 +130,7 @@ public class MenuActivity extends Activity {
         LoginButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
         		if(islogin){
-        			Global_Setting.userid="";
+        			global_setting.userid="";
                 	username_text.setText("Please login");
         			LoginButton.setText("Login");   
         			islogin=false;
@@ -161,14 +167,14 @@ public class MenuActivity extends Activity {
         case LOGIN:
         	islogin=Boolean.parseBoolean(data.getExtras().getString("login"));
         		if(islogin){
-        			Global_Setting.userid=data.getExtras().getString("name");
-                	username_text.setText("Hello "+Global_Setting.userid);
+        			//global_setting.userid=data.getExtras().getString("name");
+                	username_text.setText("Hello "+global_setting.userid);
         			LoginButton.setText("Logout");
         			show_or_hide_button();
 
         		}
         		else{
-        			Global_Setting.userid="";
+        			global_setting.userid="";
         			username_text.setText("Please login");
         			LoginButton.setText("Login");
         			show_or_hide_button();
