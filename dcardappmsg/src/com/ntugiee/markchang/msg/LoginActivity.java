@@ -76,7 +76,7 @@ public class LoginActivity extends Activity {
 						if(Boolean.parseBoolean(result)){
 							String userid=result_json.getString("userid");
 							Toast.makeText(LoginActivity.this, "login success", Toast.LENGTH_LONG).show();
-							login_back(true,userid);
+							login_back(true,result_json.getString("userid"),result_json.getString("session"));
 						}
 						else{
 							Toast.makeText(LoginActivity.this, "login failed", Toast.LENGTH_LONG).show();
@@ -93,22 +93,21 @@ public class LoginActivity extends Activity {
         
         btnBack.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				login_back(false,null);
+				login_back(false,"","");
 			}
 		});   
     }
-    private void login_back(boolean login,String userid){
+    private void login_back(boolean login,String userid,String session){
 		Intent i=new Intent();
 		Bundle b=new Bundle();
 		if(login){
 			b.putString("login", "true");
-			global_setting.userid=userid;
-			//b.putString("name", userid);
 		}
 		else{
 			b.putString("login", "false");
-			global_setting.userid="";
 		}
+		global_setting.userid=userid;
+		global_setting.session=session;
 		i.putExtras(b);
 		setResult(RESULT_OK,i);
 		finish();

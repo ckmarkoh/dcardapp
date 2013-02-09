@@ -75,8 +75,6 @@ public class SendActivity extends Activity {
         setContentView(R.layout.send);
         global_setting = ((Global_Setting)getApplicationContext());
 
-     //   global_setting.userid_text = (TextView) this.findViewById(R.id.global_setting.useridText);				
-     //   selected_text= (TextView) this.findViewById(R.id.SelectedMsgText);
 
         SendMessageButton = (Button) this.findViewById(R.id.SendBut);
         BackButton = (Button) this.findViewById(R.id.BackBut);
@@ -86,9 +84,7 @@ public class SendActivity extends Activity {
         msgEdit =(EditText) this.findViewById(R.id.MsgEdit);
         receiverEdit =(EditText) this.findViewById(R.id.ReceiverEdit);
         receiverView=(TextView) this.findViewById(R.id.ReceiverView);
-        //Intent intent = this.getIntent();
-        //Bundle bundle = intent.getExtras();
-        //global_setting.userid = bundle.getString("name");
+
         
         setTimeOutBar = (SeekBar)findViewById(R.id.SetTimeOutBar);  
         setTimeOutValue = (TextView)findViewById(R.id.SetTimeOutView);  
@@ -125,8 +121,11 @@ public class SendActivity extends Activity {
 				Log.d("msg",msgEdit.getText().toString());
 				HttpPost request = new HttpPost(global_setting.site_url+"friend/get_friend_list");
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
+				params.add(new BasicNameValuePair("session", global_setting.session));
+				params.add(new BasicNameValuePair("userid", global_setting.userid));
+				
 				params.add(new BasicNameValuePair("id1", global_setting.userid));
-
+				
 				try {
 					request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
 					HttpResponse response = new DefaultHttpClient().execute(request);
@@ -191,6 +190,10 @@ public class SendActivity extends Activity {
 					Log.d("msg",msgEdit.getText().toString());
 					HttpPost request = new HttpPost(global_setting.site_url+"msg/insert");
 					List<NameValuePair> params = new ArrayList<NameValuePair>();
+					params.add(new BasicNameValuePair("session", global_setting.session));
+					params.add(new BasicNameValuePair("userid", global_setting.userid));			
+
+					
 					params.add(new BasicNameValuePair("sender", global_setting.userid));
 					params.add(new BasicNameValuePair("message", msgEdit.getText().toString()));
 					params.add(new BasicNameValuePair("receiver", receiver));

@@ -75,9 +75,7 @@ public class AddFriendActivity extends Activity {
         addFriendadd = (Button) findViewById(R.id.AddFriendAdd);
         addFriendBack = (Button) findViewById(R.id.AddFriendBack);
         addFriendEdit = (EditText) findViewById(R.id.AddFriendEdit);
-        //etPwd = (EditText) findViewById(R.id.etPassword);
-        //Intent intent = this.getIntent();
-        //Bundle bundle = intent.getExtras();
+
         
         global_setting = ((Global_Setting)getApplicationContext());
 
@@ -96,6 +94,10 @@ public class AddFriendActivity extends Activity {
 			//	Toast.makeText(AddFriendActivity.this, global_setting.site_url+"friend/add_friend", Toast.LENGTH_LONG).show();
 				Log.d("login url",global_setting.site_url+"friend/add_friend");
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
+				
+				params.add(new BasicNameValuePair("session", global_setting.session));
+				params.add(new BasicNameValuePair("userid", global_setting.userid));
+				
 				params.add(new BasicNameValuePair("id1", global_setting.userid));
 				params.add(new BasicNameValuePair("id2", addFriendEdit.getText().toString()));
 				try {
@@ -137,6 +139,10 @@ public class AddFriendActivity extends Activity {
     public void reload_cf_friends(){
     	HttpPost request = new HttpPost(global_setting.site_url+"friend/load_confirm_id2");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		
+		params.add(new BasicNameValuePair("session", global_setting.session));
+		params.add(new BasicNameValuePair("userid", global_setting.userid));
+		
 		params.add(new BasicNameValuePair("id2", global_setting.userid));
 		Log.d("url",global_setting.site_url+"friend/load_confirm_id2");
 		try {
@@ -207,6 +213,10 @@ public class AddFriendActivity extends Activity {
 		Log.d("id",id+" friend"+id1);//+" timeout"+timeout);
     	HttpPost request = new HttpPost(global_setting.site_url+"friend/confirm_friend");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		
+		params.add(new BasicNameValuePair("session", global_setting.session));
+		params.add(new BasicNameValuePair("userid", global_setting.userid));
+		
 		params.add(new BasicNameValuePair("id", id));
 		try {
 			request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
@@ -271,6 +281,10 @@ public class AddFriendActivity extends Activity {
     public void reload_af_friends(){
       	HttpPost request = new HttpPost(global_setting.site_url+"friend/load_confirm_id1");
   		List<NameValuePair> params = new ArrayList<NameValuePair>();
+  		
+		params.add(new BasicNameValuePair("session", global_setting.session));
+		params.add(new BasicNameValuePair("userid", global_setting.userid));
+  		
   		params.add(new BasicNameValuePair("id1", global_setting.userid));
   		Log.d("url",global_setting.site_url+"friend/load_confirm_id1");
   		try {

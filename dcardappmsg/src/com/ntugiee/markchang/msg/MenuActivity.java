@@ -63,11 +63,7 @@ public class MenuActivity extends Activity {
 
         
 		show_or_hide_button();
-/*        if(islogin){
-        	global_setting.userid_text.setText("Hello "+global_setting.userid);
-			LoginButton.setText("Logout");
-        }
-        else{*/
+
 		username_text.setText("Please login");
 		LoginButton.setText("Login");
 		AddFriendButton.setOnClickListener(new View.OnClickListener() {
@@ -75,9 +71,6 @@ public class MenuActivity extends Activity {
 	        		if(islogin){
 		            	final Intent intent = new Intent();
 		            	intent.setClass(MenuActivity.this, AddFriendActivity.class);
-		            	//Bundle bundle = new Bundle();
-		            	//bundle.putString("name", global_setting.userid);
-		            	//intent.putExtras(bundle);
 		                startActivity(intent);
 	        		}
 	        		else{
@@ -90,9 +83,6 @@ public class MenuActivity extends Activity {
         		if(islogin){
 	            	final Intent intent = new Intent();
 	            	intent.setClass(MenuActivity.this, SendActivity.class);
-	            	//Bundle bundle = new Bundle();
-	            	//bundle.putString("name", global_setting.userid);
-	            	//intent.putExtras(bundle);
 	                startActivity(intent);
         		}
         		else{
@@ -105,9 +95,6 @@ public class MenuActivity extends Activity {
         		if(islogin){
 	            	final Intent intent = new Intent();
 	            	intent.setClass(MenuActivity.this, ReceiveActivity.class);
-	            	//Bundle bundle = new Bundle();
-	            	//bundle.putString("name", global_setting.userid);
-	            	//intent.putExtras(bundle);
 	                startActivity(intent);
         		}
         		else{

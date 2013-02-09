@@ -90,11 +90,7 @@ public class ReceiveActivity extends Activity {
         BackButton = (Button) this.findViewById(R.id.BackBut);
 
         mListView = (ListView) this.findViewById(R.id.msglist);
-        
-        //Intent intent1 = this.getIntent();
-        //Bundle bundle = intent1.getExtras();
-        //global_setting.userid = bundle.getString("name");
-        //username=global_setting.userid;
+
         
         BackButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {    
@@ -157,6 +153,10 @@ public class ReceiveActivity extends Activity {
     public void get_msg(){
     	HttpPost request = new HttpPost(global_setting.site_url+"msg/receiver_get");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		
+		params.add(new BasicNameValuePair("session", global_setting.session));
+		params.add(new BasicNameValuePair("userid", global_setting.userid));
+		
 		params.add(new BasicNameValuePair("receiver", global_setting.userid));
 		Log.d("url",global_setting.site_url+"receiver_get");
 		try {
@@ -212,6 +212,10 @@ public class ReceiveActivity extends Activity {
 
     	HttpPost request = new HttpPost(global_setting.site_url+"msg/open_item");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		
+		params.add(new BasicNameValuePair("session", global_setting.session));
+		params.add(new BasicNameValuePair("userid", global_setting.userid));
+		
 		params.add(new BasicNameValuePair("id", id));
 		try {
 			request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
