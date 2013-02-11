@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -72,6 +73,7 @@ public class SendActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.send);
         global_setting = ((Global_Setting)getApplicationContext());
 
@@ -123,7 +125,7 @@ public class SendActivity extends Activity {
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
 				params.add(new BasicNameValuePair("session", global_setting.session));
 				params.add(new BasicNameValuePair("userid", global_setting.userid));
-				
+	
 				params.add(new BasicNameValuePair("id1", global_setting.userid));
 				
 				try {
@@ -158,7 +160,6 @@ public class SendActivity extends Activity {
 						}
 						else{
 							String error=result_json.getString("error");
-
 							Toast.makeText(SendActivity.this, "send failed, error:"+error, Toast.LENGTH_LONG).show();
 						}
 						//	Toast.makeText(SendActivity.this, "post success", Toast.LENGTH_LONG).show();
@@ -190,6 +191,8 @@ public class SendActivity extends Activity {
 					Log.d("msg",msgEdit.getText().toString());
 					HttpPost request = new HttpPost(global_setting.site_url+"msg/insert");
 					List<NameValuePair> params = new ArrayList<NameValuePair>();
+					params.add(new BasicNameValuePair("url", global_setting.site_url+"msg/insert"));
+
 					params.add(new BasicNameValuePair("session", global_setting.session));
 					params.add(new BasicNameValuePair("userid", global_setting.userid));			
 
@@ -198,6 +201,8 @@ public class SendActivity extends Activity {
 					params.add(new BasicNameValuePair("message", msgEdit.getText().toString()));
 					params.add(new BasicNameValuePair("receiver", receiver));
 					params.add(new BasicNameValuePair("timeout", timeout));
+				
+											
 					try {
 						request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
 						HttpResponse response = new DefaultHttpClient().execute(request);

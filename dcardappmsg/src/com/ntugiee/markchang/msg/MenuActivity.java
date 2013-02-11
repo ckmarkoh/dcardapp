@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -35,7 +36,7 @@ public class MenuActivity extends Activity {
 
     private TextView username_text;
    // private String global_setting.userid;
-    private boolean islogin=false;
+ //   private boolean islogin=false;
     
     
     private static final int LOGIN=1;
@@ -47,7 +48,9 @@ public class MenuActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.menu);
+        //setProgressBarIndeterminateVisibility(true);
 
         global_setting = ((Global_Setting)getApplicationContext());
 
@@ -59,8 +62,6 @@ public class MenuActivity extends Activity {
         ReceiveButton = (Button) this.findViewById(R.id.ButtonReceive);
         SignUpButton = (Button) this.findViewById(R.id.ButtonSignUp);
         AddFriendButton = (Button) this.findViewById(R.id.ButtonAddFriend);
-
-
         
 		show_or_hide_button();
 
@@ -68,7 +69,7 @@ public class MenuActivity extends Activity {
 		LoginButton.setText("Login");
 		AddFriendButton.setOnClickListener(new View.OnClickListener() {
 	        	public void onClick(View view) {
-	        		if(islogin){
+	        		if(global_setting.islogin){
 		            	final Intent intent = new Intent();
 		            	intent.setClass(MenuActivity.this, AddFriendActivity.class);
 		                startActivity(intent);
@@ -80,7 +81,7 @@ public class MenuActivity extends Activity {
 	        });        
         SendButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
-        		if(islogin){
+        		if(global_setting.islogin){
 	            	final Intent intent = new Intent();
 	            	intent.setClass(MenuActivity.this, SendActivity.class);
 	                startActivity(intent);
@@ -92,7 +93,7 @@ public class MenuActivity extends Activity {
         });
         ReceiveButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
-        		if(islogin){
+        		if(global_setting.islogin){
 	            	final Intent intent = new Intent();
 	            	intent.setClass(MenuActivity.this, ReceiveActivity.class);
 	                startActivity(intent);
@@ -104,7 +105,7 @@ public class MenuActivity extends Activity {
         });    
         SignUpButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
-        		if(!islogin){
+        		if(!global_setting.islogin){
 	            	final Intent intent = new Intent();
 	            	intent.setClass(MenuActivity.this, SignUpActivity.class);
 	                startActivity(intent);
@@ -116,11 +117,14 @@ public class MenuActivity extends Activity {
         });    
         LoginButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
-        		if(islogin){
+        		if(global_setting.islogin){
         			global_setting.userid="";
                 	username_text.setText("Please login");
         			LoginButton.setText("Login");   
-        			islogin=false;
+        			//islogin=false;
+        			
+					global_setting.islogin=false;
+
         			show_or_hide_button();
         		}
         		else{
@@ -133,7 +137,7 @@ public class MenuActivity extends Activity {
         });
     }
     public void show_or_hide_button(){
-    	if(islogin){
+    	if(global_setting.islogin){
 			SignUpButton.setVisibility(View.INVISIBLE);
 			SendButton.setVisibility(View.VISIBLE);
 			ReceiveButton.setVisibility(View.VISIBLE);
@@ -152,8 +156,8 @@ public class MenuActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode){
         case LOGIN:
-        	islogin=Boolean.parseBoolean(data.getExtras().getString("login"));
-        		if(islogin){
+        	//islogin=Boolean.parseBoolean(data.getExtras().getString("login"));
+        		if(global_setting.islogin){
         			//global_setting.userid=data.getExtras().getString("name");
                 	username_text.setText("Hello "+global_setting.userid);
         			LoginButton.setText("Logout");

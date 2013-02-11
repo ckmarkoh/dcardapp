@@ -10,6 +10,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ public class ShowActivity  extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.show);
         count_down=(TextView) this.findViewById(R.id.CountDownView);
         show_message=(TextView) this.findViewById(R.id.ShowMsgView);
