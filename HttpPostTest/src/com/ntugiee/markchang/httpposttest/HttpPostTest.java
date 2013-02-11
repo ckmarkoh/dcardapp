@@ -20,7 +20,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -35,12 +34,12 @@ public class HttpPostTest extends Activity implements OnClickListener
    private ProgressDialog progressDialog = null;
    private EditText txtMessage;
    private Button sendBtn;
-   private String uriAPI = "http://r444b.ee.ntu.edu.tw/~markchang/dctest/index.php/user/login";
    /** 「要更新版面」的訊息代碼 */
    private Handler mHandler;
    protected static final int REFRESH_DATA = 0x00000001;
    /** 建立UI Thread使用的Handler，來接收其他Thread來的訊息 */
-
+   private String myuri= "http://r444b.ee.ntu.edu.tw/~markchang/dctest/index.php/user/login";
+   private String message;
    @Override
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -49,52 +48,56 @@ public class HttpPostTest extends Activity implements OnClickListener
       txtMessage = (EditText) findViewById(R.id.editText1);
       sendBtn = (Button) findViewById(R.id.button1);
 
-      mHandler = new Handler() {
-          @Override
-          public void handleMessage(Message msg)
-          {
-              switch (msg.what)
-              {
-              // 顯示網路上抓取的資料
-              case REFRESH_DATA:
-                 String result = null;
-                 if (msg.obj instanceof String)
-                    result = (String) msg.obj;
-                 if (result != null)
-                    // 印出網路回傳的文字
-                     if (progressDialog != null) {
-                         progressDialog.dismiss();
-                         progressDialog = null;
-                     }
-                    Toast.makeText(HttpPostTest.this, result, Toast.LENGTH_LONG).show();
-                 break;
-              }
-          }
-       };
-      
+
       if (sendBtn != null)
           sendBtn.setOnClickListener(this);
-      
-    //  final String msg = txtMessage.getEditableText().toString();
-
-     
-   }
-
- 
-
+          //  final String msg = txtMessage.getEditableText().toString();
+     }
    @Override
    public void onClick(View v){
-
       if (v == sendBtn){
           if (txtMessage != null) {
-        	  
+        	  List<NameValuePair> params = new ArrayList<NameValuePair>();
+		      params.add(new BasicNameValuePair("name", "mark"));
+		      params.add(new BasicNameValuePair("pwd", "900150983cd24fb0d6963f7d28e17f72"));
+
+		      progressDialog = ProgressDialog.show(HttpPostTest.this, "Loading", "please wait...", true);
+
+		      mHandler = new Handler() {
+	               @Override
+	               public void handleMessage(Message msg)
+	               {
+	                   switch (msg.what)
+	                   {
+	                   // 顯示網路上抓取的資料
+	                   case REFRESH_DATA:
+	                      String result = null;
+	                      if (msg.obj instanceof String){
+	                         result = (String) msg.obj;
+	                      }
+	                      if (result != null){
+	                    	  message=result;
+	                         // 印出網路回傳的文字
+	                          if (progressDialog != null) {
+	                              progressDialog.dismiss();
+	                              progressDialog = null;
+	                          }
+	                         Toast.makeText(HttpPostTest.this, result, Toast.LENGTH_LONG).show();
+	                         Log.d("result",message);
+	                      
+	                      }
+	                      break;
+	                   }
+	               }
+	            };
+	            
+			  HttpApplication httpapplication= new HttpApplication(myuri,params,mHandler);
+		      httpapplication.startHttp();
+
              // 擷取文字框上的文字
-             progressDialog = ProgressDialog.show(HttpPostTest.this, "Loading","please wait...", true);
-             String msg = txtMessage.getEditableText().toString();
+             // progressDialog = ProgressDialog.show(HttpPostTest.this, "Loading","please wait...", true);
+            // String msg = txtMessage.getEditableText().toString();
              
-             // 啟動一個Thread(執行緒)，將要傳送的資料放進Runnable中，讓Thread執行
-             Thread t = new Thread(new sendPostRunnable(msg));
-             t.start();
 
           }
       }
@@ -102,54 +105,6 @@ public class HttpPostTest extends Activity implements OnClickListener
 
  
 
-   private String sendPostDataToInternet(String strTxt){
 
-      /* 建立HTTP Post連線 */
-      HttpPost httpRequest = new HttpPost(uriAPI);
-
-      /*
-       * Post運作傳送變數必須用NameValuePair[]陣列儲存
-       */
-      List<NameValuePair> params = new ArrayList<NameValuePair>();
-      params.add(new BasicNameValuePair("name", strTxt));
-      params.add(new BasicNameValuePair("pwd", "900150983cd24fb0d6963f7d28e17f72"));
-
-       try {
-          /* 發出HTTP request */
-          httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-          /* 取得HTTP response */
-          HttpResponse httpResponse = new DefaultHttpClient().execute(httpRequest);
-          /* 若狀態碼為200 ok */
-          if (httpResponse.getStatusLine().getStatusCode() == 200) {
-             /* 取出回應字串 */
-             String strResult = EntityUtils.toString(httpResponse .getEntity());
-             // 回傳回應字串
-		     Log.d("raw_result",strResult);
-
-             return strResult;
-          }
-
-      } catch (Exception e){
-          e.printStackTrace();
-      }
-
-      return null;
-
-   }
-
- 
-
-   class sendPostRunnable implements Runnable {
-      String strTxt = null;
-      // 建構子，設定要傳的字串
-      public sendPostRunnable(String strTxt)  {
-         this.strTxt = strTxt;
-      }
-      @Override
-      public void run() {
-          String result = sendPostDataToInternet(strTxt);
-          mHandler.obtainMessage(REFRESH_DATA, result).sendToTarget();
-      }
-   }
 
 }
