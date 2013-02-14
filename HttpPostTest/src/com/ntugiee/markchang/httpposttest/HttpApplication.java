@@ -24,13 +24,15 @@ public class HttpApplication {
 	   protected static final int REFRESH_DATA = 0x00000001;
 	   private String uriAPI;// = "http://r444b.ee.ntu.edu.tw/~markchang/dctest/index.php/user/login";
 	   private String message;
+	   private ProgressDialog progressDialog;
 	   private List<NameValuePair> params=null;//new ArrayList<NameValuePair>();
 	   //private ProgressDialog progressDialog; 
-	   public HttpApplication(String url,List<NameValuePair> prms,Handler handler){
+	   public HttpApplication(String url,List<NameValuePair> prms,Handler handler,ProgressDialog pgs){
 		   //message=msg;
 		   params=prms;
 		   uriAPI=url;
 		   mHandler=handler;
+		   progressDialog=pgs;
 	   }
        public void startHttp(){          
        // 啟動一個Thread(執行緒)，將要傳送的資料放進Runnable中，讓Thread執行
@@ -50,6 +52,10 @@ public class HttpApplication {
 	      @Override
 	      public void run() {
 	          String result = sendPostDataToInternet(params);
+              if (progressDialog != null) {
+                  progressDialog.dismiss();
+                  progressDialog = null;
+              }
 	          handler.obtainMessage(REFRESH_DATA, result).sendToTarget();
 	      }
 	   }

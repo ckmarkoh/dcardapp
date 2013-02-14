@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+ 	android:orientation="vertical"    
+ 		android:background="@drawable/background"
+ 	
+ 	>
+	<TextView
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:text="@string/main_intro"
+	    android:textAppearance="?android:attr/textAppearanceMedium" 
+	    android:layout_weight="2"
+	    android:gravity="center"
+	    android:textColor="#FFFF00"
+	    />
+	<LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" 
+	    android:layout_weight="3"
+	    android:orientation="horizontal"   
+	    android:baselineAligned="false"
+	    android:gravity="center"
+	    >
+
+		<ImageView
+		    android:id="@+id/imageView1"
+		    android:layout_width="wrap_content"
+		    android:layout_height="fill_parent"
+		    android:src="@drawable/icon_white_large" />
+
+		<TextView
+		    android:id="@+id/textView1"
+		    android:layout_width="wrap_content"
+		    android:layout_height="fill_parent"
+		    android:text="@string/app_name"
+		    android:gravity="center"
+		    android:textSize="50sp"
+		    android:textAppearance="?android:attr/textAppearanceLarge" />
+	</LinearLayout>
+	<LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" 
+	    android:layout_weight="2"
+	    android:orientation="horizontal"   
+	    android:baselineAligned="false"
+	    >
+	    <LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" 
+	    android:layout_weight="1"
+ 		android:orientation="vertical"    
+	    >
+		    <Button
+		        android:id="@+id/EmailLoginActivity"
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent"
+		        android:layout_weight="1"
+		        android:layout_margin="10dp"
+		        android:background="@drawable/email_button" />
+
+		    <TextView
+			    android:layout_width="fill_parent"
+			    android:layout_height="fill_parent"
+			    android:layout_weight="3"
+				android:gravity="center"
+			    android:text="@string/login_by_email"
+			    android:textAppearance="?android:attr/textAppearanceMedium" 
+			/>
+   	    </LinearLayout>
+	    <LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" 
+	    android:layout_weight="1"
+	    android:orientation="vertical"    
+	    >
+		    <Button
+		        android:id="@+id/FbLoginActivity"
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent"
+		        android:layout_weight="1"
+		        android:layout_margin="10dp"
+		        android:background="@drawable/fb_icon_button" />
+
+		    <TextView
+			    android:layout_width="fill_parent"
+			    android:layout_height="fill_parent"
+			    android:layout_weight="3"
+			    android:gravity="center"
+			    android:text="@string/login_by_fb"
+			    android:textAppearance="?android:attr/textAppearanceMedium" 
+			/> 
+	    </LinearLayout>
+	</LinearLayout>
+    
+</LinearLayout>
+

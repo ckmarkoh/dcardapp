@@ -19,7 +19,7 @@ public class ShowActivity  extends Activity {
     private TextView show_message;
     private String message;
    // private Timer timer =null;
-    private Handler handler = new Handler();  
+    //private Handler handler = new Handler();  
 
     public String timeout_str;
     @Override

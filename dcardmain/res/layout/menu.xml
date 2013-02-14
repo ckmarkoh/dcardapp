@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="#ffffff"
+    >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical" 
+        android:background="#000000"
+        >
+
+        <TextView
+            android:id="@+id/MenuUserText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Button
+            android:id="@+id/ButtonConfirmFriend"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="朋友邀請" 
+            style="@style/button_text"
+            android:background="@drawable/blue_button"
+            />
+        
+        <Button
+            android:id="@+id/ButtonAddFriend"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="加朋友" 
+            style="@style/button_text"
+            android:background="@drawable/blue_button"
+            />
+        
+        <Button
+            android:id="@+id/ButtonLogout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="登出" 
+            style="@style/button_text"
+            android:background="@drawable/blue_button"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+			android:background="#3c5a76" >
+			
+			<Button
+            android:id="@+id/ButtonReceive"
+            android:layout_width="40dp"   
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/message_button_x" />
+
+			<Button
+			    android:id="@+id/ButtonOption"
+			    android:layout_width="40dp"
+			    android:layout_height="40dp"
+			    android:layout_centerVertical="true"
+			    android:layout_alignParentRight="true"
+			    android:layout_margin="5dp"
+			    android:background="@drawable/option_button_x" />
+
+			<Button
+			    android:id="@+id/ButtonSend"
+			    android:layout_width="70dp"
+			    android:layout_height="fill_parent"
+			    android:layout_alignParentTop="true"
+			    android:layout_centerHorizontal="true"
+			    android:background="@drawable/camera_button_x" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

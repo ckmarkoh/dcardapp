@@ -156,7 +156,6 @@ public class SendActivity extends Activity {
 					            			//Toast.makeText(getApplicationContext(), farray[item], Toast.LENGTH_SHORT).show();
 					            }
 					        }).show();							
-							
 						}
 						else{
 							String error=result_json.getString("error");

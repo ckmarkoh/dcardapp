@@ -20,7 +20,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.ntugiee.markchang.cameratest.MainActivity"
+            android:name="com.ntugiee.markchang.cameratest.CameraTestActivity"
             android:label="@string/app_name" 
             android:screenOrientation="portrait" >
             <intent-filter>

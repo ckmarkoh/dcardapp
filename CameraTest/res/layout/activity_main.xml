@@ -2,37 +2,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
+    
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
     <Button
         android:id="@+id/UploadButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:text="Upload" />
     <Button
         android:id="@+id/DownloadButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:text="Download" />
+    </LinearLayout>
+ <LinearLayout
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+ android:orientation="horizontal" >
     <Button
         android:id="@+id/CameraButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+        
         android:text="Take Picture" />
     <Button
         android:id="@+id/EditButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+                        android:layout_weight="1"
         android:text="Edit Picture" />
+    
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+    
+            <Button
+        android:id="@+id/UploadFileButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Upload File" />
+        <Button
+        android:id="@+id/DownloadFileButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Download File" />
+    
 
+</LinearLayout>
 
-    <EditText
+    
+    <!--  -<EditText
         android:id="@+id/fileEdit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:text="file" >
         <requestFocus />
-    </EditText>
+    </EditText>-->
 
     <ImageView
         android:id="@+id/ivTest"

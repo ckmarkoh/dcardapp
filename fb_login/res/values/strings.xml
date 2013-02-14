@@ -21,10 +21,21 @@
     <string name="login_using_custom_fragment">Login using Custom Fragment</string>
     <string name="login_using_usersettingsfragment">Login using UserSettingsFragment</string>
     <string name="hello">Hello World, SessionLoginSampleActivity!</string>
-    <string name="app_name">SessionLoginSample</string>
+    <string name="app_name">轉眼即逝</string>
     <string name="login">Login</string>
     <string name="instructions">Login to create a link to fetch account data</string>
     <string name="logout">Log out</string>
-    <string name="applicationId">380615018626574</string>
-
+    <string name="applicationId">102941529885272</string>
+    <string name="main_intro">
+    	將生活瞬間的大小事\n
+    	拍下告知朋友\n
+    	當...對方打開訊息的瞬間\n
+    	時間就會開始倒數\n
+    	照片會在對方看到後\n
+    	幾秒內自動瞬間銷毀消逝\n
+    	如流星劃過般轉眼即逝\n
+    </string>
+    <string name="login_by_fb">用fb登入</string>
+    <string name="login_by_email">用email登入</string>
+    
 </resources>

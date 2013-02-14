@@ -2,10 +2,27 @@ package com.ntugiee.markchang.cameratest;
 
 
 
+import java.io.File;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+
+import com.ntugiee.markchang.cameratest.CustomMultiPartEntity.ProgressListener;
+
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -13,12 +30,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+
 public class UploadImageActivity extends Activity {
 	
 	private Button b1;
 
 	private TextView tv;
-
+	private String m_userSelectedImagePath;
 	public static final int SELECT_FILE1=1;
 	public static final int SELECT_FILE2=2;
 	@Override
@@ -78,4 +97,6 @@ public void onActivityResult(int requestCode, int resultCode, Intent data) {
         return cursor.getString(column_index);
 
     }
+ 
+ 
 }

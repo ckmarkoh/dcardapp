@@ -48,7 +48,6 @@ public class HttpPostTest extends Activity implements OnClickListener
       txtMessage = (EditText) findViewById(R.id.editText1);
       sendBtn = (Button) findViewById(R.id.button1);
 
-
       if (sendBtn != null)
           sendBtn.setOnClickListener(this);
           //  final String msg = txtMessage.getEditableText().toString();
@@ -78,10 +77,6 @@ public class HttpPostTest extends Activity implements OnClickListener
 	                      if (result != null){
 	                    	  message=result;
 	                         // 印出網路回傳的文字
-	                          if (progressDialog != null) {
-	                              progressDialog.dismiss();
-	                              progressDialog = null;
-	                          }
 	                         Toast.makeText(HttpPostTest.this, result, Toast.LENGTH_LONG).show();
 	                         Log.d("result",message);
 	                      
@@ -91,7 +86,7 @@ public class HttpPostTest extends Activity implements OnClickListener
 	               }
 	            };
 	            
-			  HttpApplication httpapplication= new HttpApplication(myuri,params,mHandler);
+			  HttpApplication httpapplication= new HttpApplication(myuri,params,mHandler,progressDialog);
 		      httpapplication.startHttp();
 
              // 擷取文字框上的文字

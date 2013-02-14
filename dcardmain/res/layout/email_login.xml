@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="#3c5a76"
+    >
+<EditText 
+     	  android:id="@+id/etName" 
+	      android:hint="輸入你的信箱"	      
+    	  android:layout_width="match_parent" 
+    	  android:layout_height="wrap_content"
+    	      	android:background="@drawable/white_input_top" 
+    	  
+    	  android:layout_marginLeft="10dp"
+    	  android:layout_marginRight="10dp"
+    	  android:layout_marginTop="10dp"
+    	  android:layout_marginBottom="1dp"
+    	  android:textSize="30dp"
+    	  android:textStyle="bold"
+
+    	  >
+
+    <requestFocus></requestFocus>
+</EditText>
+<EditText 
+        android:id="@+id/etPassword"
+    	android:hint="密碼"     	
+    	android:inputType="textPassword"
+    	android:layout_width="match_parent" 
+    	android:layout_height="wrap_content"
+    	android:background="@drawable/white_input_bottom" 
+    	android:layout_marginLeft="10dp"
+    	android:layout_marginRight="10dp"
+    	android:layout_marginTop="1dp"
+    	android:layout_marginBottom="10dp"
+    	android:textSize="30dp"
+    	android:textStyle="bold"
+    	/>
+        <!--   
+        style="@style/button_text_black"   
+         -->
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+<Button
+    android:id="@+id/btnSignUp"
+    android:text="尚未註冊" 
+    
+    style="@style/button_text_black"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+        	  android:background="@drawable/white_button"
+    
+    />
+<Button 
+    android:id="@+id/btnLogin" 
+    android:text="登入" 
+    style="@style/button_text_black"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="10dp"
+    android:layout_height="wrap_content" 
+    android:layout_width="match_parent"
+    android:layout_weight="1" 
+    android:background="@drawable/white_button"
+    
+    />
+ 
+</LinearLayout>
+</LinearLayout>

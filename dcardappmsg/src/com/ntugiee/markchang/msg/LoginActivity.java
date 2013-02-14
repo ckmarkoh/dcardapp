@@ -73,8 +73,7 @@ public class LoginActivity extends Activity {
 				//params.add(new BasicNameValuePair("pwd", Global_Setting.md5(etPwd.getText().toString())));
 				//PostHTTP http_request=new PostHTTP();
 				JSONObject result_json=null;
-				global_setting.progressDialog = ProgressDialog.show(LoginActivity.this, "Loading",
-	            		"please wait...", true);
+				//global_setting.progressDialog = ProgressDialog.show(LoginActivity.this, "Loading", "please wait...", true);
 				//MySerialExecutor myserialexecutor=new MySerialExecutor();
 				try {
 					result_json=new JSONObject(new PostHTTP().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR,params).get());

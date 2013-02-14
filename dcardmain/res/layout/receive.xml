@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+ <RelativeLayout
+        android:id="@+id/ReceiveActRelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="#3c5a76"
+        android:orientation="horizontal" >
+
+     
+        <Button
+            android:id="@+id/ReceiveActBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/arrow_button_x" />
+        <ImageView
+            android:id="@+id/MsgChooseTopImgView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_white_small" />
+        <Button
+            android:id="@+id/ReceiveReloadBut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/ReceiveActBack"
+            android:layout_centerVertical="true"
+                        android:layout_margin="2dp"
+            android:background="@drawable/yellow_button"
+            
+            android:text="重新整理" />
+       <Button
+            android:id="@+id/ReceiveClearBut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+                        android:layout_margin="2dp"
+            android:background="@drawable/yellow_button"
+            
+            android:text="清除" />
+    </RelativeLayout>
+     
+   <ListView
+       android:id="@+id/msglist"
+       android:layout_width="match_parent"
+       android:layout_height="fill_parent" 
+       />    
+</LinearLayout>
