@@ -5,7 +5,7 @@
     android:orientation="vertical" 
     android:background="#ffffff"
     >
- <!--  <RelativeLayout
+ <RelativeLayout
         android:id="@+id/ReceiveActRelativeLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:src="@drawable/icon_white_small" />
-    </RelativeLayout>-->
+    </RelativeLayout>
 <LinearLayout 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
