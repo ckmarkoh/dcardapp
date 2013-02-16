@@ -55,8 +55,14 @@
                 android:screenOrientation="portrait"
                 android:theme="@android:style/Theme.NoTitleBar"
                 />
-              <activity
+       
+       <activity
                 android:name=".ShowActivity"
+                android:screenOrientation="portrait"
+                android:theme="@android:style/Theme.NoTitleBar"
+                />
+       <activity
+                android:name=".ConfirmFriendActivity"
                 android:screenOrientation="portrait"
                 android:theme="@android:style/Theme.NoTitleBar"
                 />

@@ -54,12 +54,12 @@ import org.json.JSONObject;
 
 public class ReceiveActivity extends Activity {
     
-	public static Button ReloadButton;
+	public  Button ReloadButton;
     private Button BackButton;
-
+    public  Button ReceiveClearBut;
 	//private TextView selected_text;
    // private TextView global_setting.userid_text;
-    public static String username;
+    public String username;
     //private String selected_msg;
     public static SimpleAdapter sAdapter;
     public static ListView mListView;
@@ -90,6 +90,8 @@ public class ReceiveActivity extends Activity {
 
         
         ReloadButton = (Button) this.findViewById(R.id.ReceiveReloadBut);
+        
+        ReceiveClearBut = (Button) this.findViewById(R.id.ReceiveClearBut);
         BackButton = (Button) this.findViewById(R.id.ReceiveActBack);
 
         mListView = (ListView) this.findViewById(R.id.msglist);
@@ -115,7 +117,32 @@ public class ReceiveActivity extends Activity {
 				get_msg();
 			}
 		});    
-        
+        ReceiveClearBut.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {  
+		    	HttpPost request = new HttpPost(global_setting.site_url+"msg/receiver_delete");
+				List<NameValuePair> params = new ArrayList<NameValuePair>();
+				
+				params.add(new BasicNameValuePair("session", global_setting.session));
+				params.add(new BasicNameValuePair("userid", global_setting.userid));
+				
+				params.add(new BasicNameValuePair("receiver", global_setting.userid));
+				Log.d("url",global_setting.site_url+"msg/receiver_delete");
+				try {
+					request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+					HttpResponse response = new DefaultHttpClient().execute(request);
+					if(response.getStatusLine().getStatusCode() == 200){
+						String result = EntityUtils.toString(response.getEntity());
+						//Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
+						Log.d("success",result);
+						get_msg();
+					}
+				} catch (Exception e) {
+					Toast.makeText(ReceiveActivity.this, "error: "+e.getMessage().toString(), Toast.LENGTH_LONG).show();
+					e.printStackTrace();
+					//Log.d("error",e.getMessage());
+				}
+			}
+		});    
         listener = new OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
                 long id) {      	

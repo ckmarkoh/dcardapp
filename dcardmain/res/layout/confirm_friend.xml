@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="#ffffff"
+    >
+ <!--  <RelativeLayout
+        android:id="@+id/ReceiveActRelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="#3c5a76"
+        android:orientation="horizontal" >
+        <Button
+            android:id="@+id/ConfirmFriendBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/arrow_button_x" />
+        <ImageView
+            android:id="@+id/MsgChooseTopImgView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_white_small" />
+    </RelativeLayout>-->
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:layout_weight="1" >
+		<TextView
+		    android:id="@+id/friendConfirmText"
+		    android:layout_width="fill_parent"
+		    android:text="新增的朋友邀請"
+		    android:gravity="center_vertical"
+		    android:paddingLeft="10dp"
+		    android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_height="fill_parent"
+		    android:layout_weight="5" 
+		    android:background="#976cb3"
+		    />
+		<ListView
+		    android:id="@+id/friendConfirmList"
+		    android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+		    android:layout_weight="1">
+		</ListView>
+		</LinearLayout>
+		    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:layout_weight="1" >
+		<TextView
+		    android:id="@+id/friendAddedText"
+		    android:layout_width="fill_parent"
+		    android:paddingLeft="10dp"
+		    android:text="你拒絕過的朋友邀請"
+		    android:gravity="center_vertical"
+		    android:textAppearance="?android:attr/textAppearanceMedium"
+		    android:layout_height="fill_parent" 
+		    android:layout_weight="5" 
+		    android:background="#976cb3"
+		    />
+		<ListView
+		    android:id="@+id/friendAddedList"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:layout_weight="1">
+		</ListView>
+			</LinearLayout>
+		
+	</LinearLayout>
+</LinearLayout>

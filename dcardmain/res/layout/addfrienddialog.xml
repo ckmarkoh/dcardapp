@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    >
+<Button
+    android:id="@+id/DialogAddFriendBack"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+    
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:background="@drawable/arrow_button_x" />
+<EditText
+    android:id="@+id/DialogAddFriendEdit"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/DialogAddFriendBack"
+    android:layout_centerHorizontal="true"
+    android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+    
+    android:layout_alignLeft="@+id/DialogAddFriendBack"
+    android:ems="10"
+    android:background="@drawable/white_button"
+    android:hint="輸入朋友ID" >
+    <requestFocus />
+</EditText>
+
+
+<Button
+    android:id="@+id/DialogAddFriendAdd"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_below="@+id/DialogAddFriendEdit"
+    android:layout_alignRight="@+id/DialogAddFriendEdit"
+    android:background="@drawable/yellow_button"
+    android:text="加好友" />
+
+
+
+
+</RelativeLayout>

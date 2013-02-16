@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -65,14 +66,17 @@ public class MsgChooseFriendActivity extends Activity {
 	
 	private Global_Setting global_setting;
 	private ListView mListView;
-	 
+	private RelativeLayout mcfRelativeLayout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.msg_choose_friend);
         global_setting = ((Global_Setting)getApplicationContext());
+        
 
+        mcfRelativeLayout=(RelativeLayout) this.findViewById(R.id.MCFrelativeLayout2);
+        mcfRelativeLayout.setVisibility(View.INVISIBLE);
 
         BackButton = (Button) this.findViewById(R.id.MsgChooseFriendBack);
 
@@ -125,6 +129,7 @@ public class MsgChooseFriendActivity extends Activity {
 			                    long id) {  	
 								Log.d("get friend id", String.valueOf(farray[position]));
 				            	receiverView.setText(farray[position]);
+				                mcfRelativeLayout.setVisibility(View.VISIBLE);
 
 							// TODO Auto-generated method stub
 							}
