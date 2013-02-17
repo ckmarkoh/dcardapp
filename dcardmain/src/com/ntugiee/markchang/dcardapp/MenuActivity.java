@@ -41,7 +41,7 @@ public class MenuActivity extends Activity {
     
 	private Button LogoutButton;
 //    private Button LogoutButton;
-    private Button SendButton;
+    private Button SendMsgButton;
     private Button ReceiveButton;
    // private Button SignUpButton;
     private Button AddFriendButton;
@@ -75,7 +75,7 @@ public class MenuActivity extends Activity {
 
         username_text = (TextView) this.findViewById(R.id.MenuUserText);				
         LogoutButton = (Button) this.findViewById(R.id.ButtonLogout);
-        SendButton = (Button) this.findViewById(R.id.ButtonSend);
+        SendMsgButton = (Button) this.findViewById(R.id.ButtonSend);
         ReceiveButton = (Button) this.findViewById(R.id.ButtonReceive);
         //SignUpButton = (Button) this.findViewById(R.id.ButtonSignUp);
         AddFriendButton = (Button) this.findViewById(R.id.ButtonAddFriend);
@@ -150,10 +150,11 @@ public class MenuActivity extends Activity {
 	        		DialogAddFriend.show();
 	        	}
 	        });        
-        SendButton.setOnClickListener(new View.OnClickListener() {
+        SendMsgButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
+	            	//final Intent intent = new Intent(MenuActivity.this, CameraImgActivity.class);
 	            	final Intent intent = new Intent(MenuActivity.this, MsgChooseFriendActivity.class);
-	                startActivity(intent);
+	            	startActivity(intent);
         		
         	}
         });

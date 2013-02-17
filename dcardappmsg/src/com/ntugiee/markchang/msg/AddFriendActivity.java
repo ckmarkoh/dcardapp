@@ -73,8 +73,6 @@ public class AddFriendActivity extends Activity {
 
         setContentView(R.layout.addfriend);
         
-        
-        
         addFriendadd = (Button) findViewById(R.id.AddFriendAdd);
         addFriendBack = (Button) findViewById(R.id.AddFriendBack);
         addFriendEdit = (EditText) findViewById(R.id.AddFriendEdit);
@@ -140,11 +138,13 @@ public class AddFriendActivity extends Activity {
     }
     
     public void reload_cf_friends(){
-    	HttpPost request = new HttpPost(global_setting.site_url+"friend/load_confirm_id2");
+    	HttpPost request = new HttpPost(global_setting.site_url+"friend/load_confirm");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		
 		params.add(new BasicNameValuePair("session", global_setting.session));
 		params.add(new BasicNameValuePair("userid", global_setting.userid));
+  		params.add(new BasicNameValuePair("type", "id2"));
+  		params.add(new BasicNameValuePair("confirm", "0"));
 		
 		params.add(new BasicNameValuePair("id2", global_setting.userid));
 		Log.d("url",global_setting.site_url+"friend/load_confirm_id2");
@@ -282,12 +282,16 @@ public class AddFriendActivity extends Activity {
       };
 
     public void reload_af_friends(){
-      	HttpPost request = new HttpPost(global_setting.site_url+"friend/load_confirm_id1");
+      	HttpPost request = new HttpPost(global_setting.site_url+"friend/load_confirm");
   		List<NameValuePair> params = new ArrayList<NameValuePair>();
   		
 		params.add(new BasicNameValuePair("session", global_setting.session));
 		params.add(new BasicNameValuePair("userid", global_setting.userid));
   		
+		
+  		params.add(new BasicNameValuePair("type", "id1"));
+  		params.add(new BasicNameValuePair("confirm", "0"));
+
   		params.add(new BasicNameValuePair("id1", global_setting.userid));
   		Log.d("url",global_setting.site_url+"friend/load_confirm_id1");
   		try {

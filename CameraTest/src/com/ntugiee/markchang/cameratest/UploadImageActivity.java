@@ -7,15 +7,9 @@ import java.io.File;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
-
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
-
-import com.ntugiee.markchang.cameratest.CustomMultiPartEntity.ProgressListener;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

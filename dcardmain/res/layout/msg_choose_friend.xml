@@ -65,7 +65,7 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/MFCSubmit"
+            android:id="@+id/MCFNextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -76,7 +76,7 @@
             />
 
         <TextView
-            android:id="@+id/MFCTextView"
+            android:id="@+id/MCFTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"

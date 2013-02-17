@@ -1,4 +1,4 @@
-package com.ntugiee.markchang.cameratest;
+package com.ntugiee.markchang.dcardapp.util;
 
 import java.util.ArrayList;
 
@@ -8,17 +8,16 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
-import com.ntugiee.markchang.cameratest.MyPair;
 public class MyCustomPanel extends View {
     private Paint paint;// = new Paint();
     public ArrayList<Long> pathData = new ArrayList<Long>();
-    public ArrayList<MyPair<String,Long> > textData = new ArrayList<MyPair<String,Long> >();
+    //public ArrayList<MyPair<String,Long> > textData = new ArrayList<MyPair<String,Long> >();
 
     public Bitmap bitmap;
     public Bitmap wallPaperBitmap;
@@ -26,7 +25,8 @@ public class MyCustomPanel extends View {
     
     private int this_height;
     private int this_width;
-    
+    //Rect bitmap_size;
+    //Rect canvas_size;
     public MyCustomPanel (Context context, AttributeSet attrs){//,int wallpaperWidth,int wallpaperHeight) {
         super(context,attrs);
         paint = new Paint();
@@ -42,18 +42,22 @@ public class MyCustomPanel extends View {
     public void onWindowFocusChanged(boolean hasFocus) {
        super.onWindowFocusChanged(hasFocus);
        wallPaperBitmap = Bitmap.createBitmap( getWidth (), getHeight(), Bitmap.Config.ARGB_8888);
+       
+       bitmapCanvas = new Canvas(wallPaperBitmap);    
        this_height=getHeight();
        this_width=getWidth ();
-       bitmapCanvas = new Canvas(wallPaperBitmap);    
+      // canvas_size= new Rect(0,0,getWidth (),getHeight());
    }
-    
+  /*  public void setBitMap(Bitmap bmp){
+    	bitmap=bmp;
+    }*/
     @Override
     public void onDraw(Canvas canvas) {
+    	//bitmap_size= new Rect(0,0,bitmap.getWidth(),bitmap.getHeight());
     	Rect bitmap_size= new Rect(0,0,bitmap.getWidth(),bitmap.getHeight());
     	Rect canvas_size= new Rect(0,0,this_width,this_height);
     	canvas.drawBitmap(bitmap,bitmap_size , canvas_size, null); 
     	bitmapCanvas.drawBitmap(bitmap, bitmap_size, canvas_size, null); 
-
     	
     	Path temp_path=new Path();
     	int i=0;
@@ -88,19 +92,18 @@ public class MyCustomPanel extends View {
     	i=0;
     	paint.setTextSize(25);
         paint.setStyle(Style.FILL); 
-        while(i<textData.size()){
+        /*while(i<textData.size()){
         	//Path temp_path=PathDate.get(i);
         	MyPair<String,Long> mypair = textData.get(i);
         	long positionXY =  mypair.getRight();
-        	        	/* 建立文字訊息 */
-        	/* drawText (String text, float x, float y, Paint paint)*/
+        	// drawText (String text, float x, float y, Paint paint)
         	canvas.drawText(mypair.getLeft(),(positionXY/10000),(positionXY%10000),paint);
         	bitmapCanvas.drawText(mypair.getLeft(),(positionXY/10000),(positionXY%10000),paint);
         	
 
         	
 			i++;
-        }
+        }*/
 
     }
 

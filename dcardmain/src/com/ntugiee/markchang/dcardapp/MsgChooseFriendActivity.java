@@ -51,7 +51,7 @@ import org.json.JSONObject;
 public class MsgChooseFriendActivity extends Activity {
     
     private Button BackButton;
-
+    private Button MCFNextButton;
     //private String global_setting.userid;
     private String receiver="";
 
@@ -79,11 +79,11 @@ public class MsgChooseFriendActivity extends Activity {
         mcfRelativeLayout.setVisibility(View.INVISIBLE);
 
         BackButton = (Button) this.findViewById(R.id.MsgChooseFriendBack);
-
+        MCFNextButton = (Button) this.findViewById(R.id.MCFNextButton);
         mListView = (ListView) this.findViewById(R.id.MsgChooseFriendListView);
         //msgEdit =(EditText) this.findViewById(R.id.MsgEdit);
         //receiverEdit =(EditText) this.findViewById(R.id.ReceiverEdit);
-        receiverView=(TextView) this.findViewById(R.id.MFCTextView);
+        receiverView=(TextView) this.findViewById(R.id.MCFTextView);
  
 		//Log.d("msg",msgEdit.getText().toString());
 		HttpPost request = new HttpPost(global_setting.site_url+"friend/get_friend_list");
@@ -151,7 +151,18 @@ public class MsgChooseFriendActivity extends Activity {
 
 			
 			*/
-        
+		MCFNextButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {    
+            	if(receiverView.getText().toString()!=""){
+	            	global_setting.target_receiver=receiverView.getText().toString();
+	            	final Intent intent = new Intent(MsgChooseFriendActivity.this, CameraTakeActivity.class);
+	                startActivity(intent);
+            	}
+            	else{
+					Toast.makeText(MsgChooseFriendActivity.this, "請選擇你要傳送給哪位朋友", Toast.LENGTH_LONG).show();
+            	}
+			}			
+		});
         BackButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {    
 				setResult(RESULT_OK);

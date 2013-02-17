@@ -52,13 +52,16 @@ V	session
 V	MD5
 X	即時通知(10秒reload)
 V	朋友列表()
-	facebook自動比對
+X	facebook自動比對
 X	截圖記錄
 V	按住幾秒
     	整合
 
-1.layout 哪一頁到哪一頁, back button
-2.訊息reload不要自動
+1.介面 哪一頁到哪一頁, back button
+2.訊息reload是否要自動
 3.圖片是否要先下載
 4.拍照界面是否要自訂
+5.facebook手動比對？
+6.hourglass how to choose time?
+7.每個dialog的介面, error message?
 

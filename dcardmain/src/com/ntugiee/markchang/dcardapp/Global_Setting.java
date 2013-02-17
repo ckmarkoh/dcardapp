@@ -40,7 +40,8 @@ public class Global_Setting extends Application{
 	public static ProgressDialog progressDialog;
 	public static boolean http_lock=true;
 	//public static PostHTTP mMyAsyncTask = null;
-
+	public static String target_receiver="";
+	
 	public static String md5(String string) {
 	    byte[] hash;
 	    try {

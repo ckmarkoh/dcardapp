@@ -80,7 +80,7 @@ public class CameraTestActivity extends Activity {
     	
        		String ba1=encode_bitmap();
     		
-			HttpPost request = new HttpPost("http://r444b.ee.ntu.edu.tw/upload_file_test/test_file.php");
+			HttpPost request = new HttpPost("http://r444b.ee.ntu.edu.tw/dctest/index.php?/msg/upload_img");
 	//		Toast.makeText(PhptestActivity.this, Global_Setting.site_url+"login", Toast.LENGTH_LONG).show();
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("image",ba1));
@@ -130,7 +130,7 @@ public class CameraTestActivity extends Activity {
 	    
 	    downloadFileButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
-        		String url="http://r444b.ee.ntu.edu.tw/~markchang/green_campus.jpg";
+        		String url="http://1.bp.blogspot.com/-bAswhDJvv1I/ULs1cemzETI/AAAAAAAAA4k/KnleZVVhlDo/s1600/wallpaper+desktop-nacozinhacomamalves.blogspot.com-moth_-_desktop_wallpaper.jpg";
         		String filename="greencampus";
         		DownloadFromUrl(url,filename);
                }
@@ -254,10 +254,17 @@ public class CameraTestActivity extends Activity {
 	               fos.close();
 	               Log.d("DownloadManager", "download ready in" + ((System.currentTimeMillis() - startTime) / 1000) + " sec");
 
+	               bitmap= BitmapFactory.decodeFile(root.getAbsolutePath() + "/mnt/sdcard/"+fileName);
+	               //IV.setImageBitmap(bMap);
+	        	   ivTest.setImageBitmap(bitmap);
+	        	   File filed = new File(root.getAbsolutePath() + "/mnt/sdcard/"+fileName);
+	        	 //  boolean deleted = filed.delete();
 	       } catch (IOException e) {
 	           Log.d("DownloadManager", "Error: " + e);
 	       }
+		//return bitmap;
 
 	    }
-	
+
+
 }

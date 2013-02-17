@@ -1,0 +1,107 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="#ffffff"
+
+    >
+<!--     <com.ntugiee.markchang.dcardapp.util.MyCustomPanel
+        android:id="@+id/ivTest"
+        android:layout_width="fill_parent"
+        android:layout_above="@+id/CIrelativeLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+      />--> 
+
+      <com.ntugiee.markchang.dcardapp.util.MyCustomPanel
+        android:id="@+id/ivTest"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/CIrelativeLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+  <!-- <com.ntugiee.markchang.dcardapp.util.MyCustomPanel
+    android:id="@+id/ivEdit"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" />-->
+
+     <RelativeLayout
+        android:id="@+id/CIrelativeLayout1"
+        
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+         >
+
+        <Button
+            android:id="@+id/CIDrawButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/pencil_button_x"
+            />
+        <Button
+            android:id="@+id/CICancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/cancel_button_x"
+            />
+
+    </RelativeLayout>
+    
+
+    <!--  -<EditText
+        android:id="@+id/fileEdit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="file" >
+        <requestFocus />
+    </EditText>-->
+
+        <RelativeLayout
+            android:id="@+id/CIrelativeLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="#3c5a76"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/CIHourGlasslButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/hourglass_button_x" />
+
+            <Button
+                android:id="@+id/CINextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/yellow_button"
+                android:text="送出" />
+
+            <TextView
+                android:id="@+id/CITextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/CIHourGlasslButton"
+                android:text="X秒"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#ffff00" />
+
+        </RelativeLayout>
+    
+</RelativeLayout>
