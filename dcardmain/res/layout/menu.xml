@@ -6,10 +6,10 @@
     >
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/MenuLinear1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/MenuRelative1"
         android:layout_alignParentLeft="true"
         android:orientation="vertical" 
         android:background="#000000"
@@ -48,10 +48,16 @@
             android:background="@drawable/blue_button"
             />
 
-        <RelativeLayout
+       
+
+    </LinearLayout>
+ <RelativeLayout
+     		android:id="@+id/MenuRelative1"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-			android:background="#3c5a76" >
+			android:background="#3c5a76"
+			android:layout_alignParentBottom="true"
+			 >
 			
 			<Button
             android:id="@+id/ButtonReceive"
@@ -80,7 +86,4 @@
 			    android:background="@drawable/camera_button_x" />
 
         </RelativeLayout>
-
-    </LinearLayout>
-
 </RelativeLayout>

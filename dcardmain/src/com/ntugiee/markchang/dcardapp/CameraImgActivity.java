@@ -24,19 +24,18 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.ByteArrayBuffer;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.ntugiee.markchang.dcardapp.util.MyCustomPanel;
-
-
-
-
 
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -93,23 +92,32 @@ public class CameraImgActivity extends Activity {
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
         String encodedString = bundle.getString("img");
-
 		panel_state=PANEL_STATE_NONE;
-
         mypanelview = (MyCustomPanel)findViewById(R.id.ivTest);
-
         byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
-
         Display display = getWindowManager().getDefaultDisplay();
         mypanelview.bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-		
+
 		
 		
 		
 		cancelButton.setOnClickListener( new View.OnClickListener() {
-			public void onClick( View v ) {    
-				setResult( RESULT_OK );
-				finish();
+			public void onClick( View v ) {  
+			        new AlertDialog.Builder(CameraImgActivity.this)
+			        .setMessage("Are you sure to confirm this friend?")
+			        .setPositiveButton("Yes" ,
+			                new DialogInterface.OnClickListener() {
+				                    public void onClick(DialogInterface dialog, int which) {
+				        				setResult( RESULT_OK );
+				        				finish();
+			                    }   
+			                })  
+			         .setNegativeButton("No",                    
+			                 new DialogInterface.OnClickListener() {
+			                    public void onClick(DialogInterface dialog, int which) {
+			                }   
+			         }) 
+			         .show();
 			}
 		});
 		
@@ -151,9 +159,10 @@ public class CameraImgActivity extends Activity {
 				if(response.getStatusLine().getStatusCode() == 200){
 					String raw_result = EntityUtils.toString(response.getEntity());
 					Toast.makeText(CameraImgActivity.this, "送出成功", Toast.LENGTH_LONG).show();
-
 					Log.d("success",raw_result);
-					setResult( RESULT_OK );
+					//mypanelview=null;
+					//bitmap=null;
+					setResult( RESULT_OK );					
 					finish();
 					//String result = EntityUtils.toString(response.getEntity());
 					//Toast.makeText(PhptestActivity.this, result, Toast.LENGTH_LONG).show();
@@ -229,5 +238,10 @@ public class CameraImgActivity extends Activity {
     private long store_coordinate(int x, int y){
     	
     	return (long) (x*10000+y);
+    }
+    @Override
+    public void onPause(){
+		super.onPause();
+
     }
 }

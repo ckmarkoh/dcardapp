@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Base64;
+import android.util.Log;
 
 public class CameraTakeActivity extends Activity {
 
@@ -37,7 +38,7 @@ public class CameraTakeActivity extends Activity {
 	@Override
 	 protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
 	  super.onActivityResult(requestCode, resultCode, data);
-	  
+	  Log.d("result code","result:"+resultCode);
 	  if (resultCode == RESULT_OK) {
 		    bitmap=(Bitmap) data.getExtras().getParcelable("data");
     		String ba1=encode_bitmap();
@@ -47,6 +48,10 @@ public class CameraTakeActivity extends Activity {
         	bundle.putString("img", ba1);
         	intent.putExtras(bundle);
             startActivity(intent);      
+			setResult( RESULT_OK );
+			finish();
+	  }
+	  else if (resultCode == RESULT_CANCELED){
 			setResult( RESULT_OK );
 			finish();
 	  }

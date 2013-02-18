@@ -78,7 +78,8 @@ public class ConfirmFriendActivity extends Activity {
         cfListView = (ListView) this.findViewById(R.id.friendConfirmList);
         afListView = (ListView) this.findViewById(R.id.friendAddedList);
         confirmFriendBack = (Button) this.findViewById(R.id.ConfirmFriendBack);
-        		
+       
+        
         reload_cf_friends(0);
         reload_cf_friends(2);
 

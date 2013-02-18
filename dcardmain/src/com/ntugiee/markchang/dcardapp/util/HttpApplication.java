@@ -80,10 +80,14 @@ public class HttpApplication {
 			     Log.d("raw_result",strResult);
 	             return strResult;
 	          }
+	          else{
+					String error="{\"error\": http status " +"\""+httpResponse.getStatusLine().getStatusCode()+"\"}";
+					return error;
+	          }
 	      } catch (Exception e){
-	          e.printStackTrace();
+				String error="{\"error\":" +"\""+e.getMessage().toString()+"\"}";
+				return error;
 	      }
-	      return null;
 	   }
 
 }

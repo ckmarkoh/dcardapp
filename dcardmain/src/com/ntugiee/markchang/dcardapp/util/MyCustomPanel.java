@@ -42,7 +42,6 @@ public class MyCustomPanel extends View {
     public void onWindowFocusChanged(boolean hasFocus) {
        super.onWindowFocusChanged(hasFocus);
        wallPaperBitmap = Bitmap.createBitmap( getWidth (), getHeight(), Bitmap.Config.ARGB_8888);
-       
        bitmapCanvas = new Canvas(wallPaperBitmap);    
        this_height=getHeight();
        this_width=getWidth ();

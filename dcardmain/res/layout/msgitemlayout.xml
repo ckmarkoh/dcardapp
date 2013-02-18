@@ -1,38 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
 	android:background="@drawable/white_list_item_1"
-    android:orientation="vertical" >
-<LinearLayout 
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="horizontal" >
-    <TextView
-        android:id="@+id/msgiSender"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="6dip"
-        android:layout_marginTop="6dip"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_weight="1"
-        android:textColor="#111111" >
-    </TextView>
-    <TextView
-        android:id="@+id/msgiStatus"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_weight="2"
-        android:textColor="#111111" >
-            </TextView>
-</LinearLayout>
-     <TextView
-        android:id="@+id/msgiTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#444444" >
-    </TextView>
+ >
 
-</LinearLayout>
+     <ImageView
+         android:id="@+id/imgStatus"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentLeft="true"
+         android:layout_alignParentTop="true"
+         android:layout_margin="10dp"
+         android:src="@android:drawable/btn_star_big_off" />
+
+     <TextView
+         android:id="@+id/msgiSender"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignTop="@+id/imgStatus"
+         android:layout_toRightOf="@+id/imgStatus"
+         android:text="SENDER"
+                  android:layout_marginBottom="5dp"
+         
+         android:textAppearance="?android:attr/textAppearanceMedium"
+         android:textColor="#111111" />
+
+     <TextView
+         android:id="@+id/msgiStatus"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_toRightOf="@+id/msgiTime"
+         android:layout_below="@+id/msgiSender"
+         android:text="status"
+                           android:layout_marginLeft="5dp"
+         
+         android:textAppearance="?android:attr/textAppearanceSmall"
+         android:textColor="#444444" />
+
+     <TextView
+         android:id="@+id/msgiTime"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBaseline="@+id/msgiStatus"
+         android:layout_alignBottom="@+id/msgiStatus"
+         android:layout_toRightOf="@+id/imgStatus"
+         android:text="time"
+         android:textAppearance="?android:attr/textAppearanceSmall"
+         android:textColor="#444444" />
+
+</RelativeLayout>
