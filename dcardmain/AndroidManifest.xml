@@ -45,7 +45,7 @@
                 android:theme="@style/TitleBarTheme"
                 />
         <activity
-                android:name=".MenuActivity"
+                android:name=".CameraMenuActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/TitleBarTheme"
                 />

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000000"
+                android:orientation="vertical" 
+        
+        >
+        <TextView
+            android:id="@+id/MenuUserText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge" 
+            android:gravity="center"
+            android:text="user id" 
+            />
+
+        <Button
+            android:id="@+id/MenuConfirmFriendBut"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="朋友邀請" 
+            style="@style/button_text"
+            android:background="@drawable/blue_button"
+            />
+        
+        <Button
+            android:id="@+id/MenuAddFriendBut"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="加朋友" 
+            style="@style/button_text"
+            android:background="@drawable/blue_button"
+            />
+        
+        <Button
+            android:id="@+id/MenuLogoutBut"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="登出" 
+            style="@style/button_text"
+            android:background="@drawable/blue_button"
+           />
+</LinearLayout>

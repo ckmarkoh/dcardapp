@@ -95,7 +95,7 @@ public class EmailLoginActivity extends Activity {
 	    						global_setting.userid=result_json.getString("userid");
 	    						global_setting.session=result_json.getString("session");
 	    						global_setting.islogin=true;
-	    		                Intent intent = new Intent(EmailLoginActivity.this, MenuActivity.class);
+	    		                Intent intent = new Intent(EmailLoginActivity.this, CameraMenuActivity.class);
 	    		                startActivity(intent);
 	    						setResult(RESULT_OK);
 	    						finish();

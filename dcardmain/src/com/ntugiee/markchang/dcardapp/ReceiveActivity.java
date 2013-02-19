@@ -212,7 +212,7 @@ public class ReceiveActivity extends Activity {
 							);
 		        }
 		        sAdapter = new SimpleAdapter(this, mList,
-		        		R.layout.msgitemlayout,
+		        		R.layout.receive_item,
 		        		new String[] { "sender","status" ,"time"},
 		        		new int[] {R.id.msgiSender, R.id.msgiStatus,R.id.msgiTime}
 		        );

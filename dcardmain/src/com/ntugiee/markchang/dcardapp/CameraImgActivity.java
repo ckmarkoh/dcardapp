@@ -88,18 +88,21 @@ public class CameraImgActivity extends Activity {
 		//cameraButton = (Button)findViewById(R.id.CameraButton);
 		drawButton = (Button)findViewById(R.id.CIDrawButton);
 		cancelButton = (Button)findViewById(R.id.CICancelButton);
-		
-        Intent intent = this.getIntent();
+		panel_state=PANEL_STATE_NONE;
+
+        /*Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
         String encodedString = bundle.getString("img");
-		panel_state=PANEL_STATE_NONE;
         mypanelview = (MyCustomPanel)findViewById(R.id.ivTest);
         byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
-        Display display = getWindowManager().getDefaultDisplay();
+        mypanelview.bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+		*/
+		Intent intent = this.getIntent();
+		String encodedString = intent.getStringExtra("img");
+        mypanelview = (MyCustomPanel)findViewById(R.id.ivTest);
+        byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
         mypanelview.bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
 
-		
-		
 		
 		cancelButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {  
@@ -138,12 +141,20 @@ public class CameraImgActivity extends Activity {
 			}
 		});*/
 		
-		
 	    nextButton.setOnClickListener(new View.OnClickListener() {
+    	public void onClick(View view) {
+        	final Intent intent = new Intent(CameraImgActivity.this, MsgChooseFriendActivity.class);
+        	String ba1=encode_bitmap();
+			intent.putExtra("img", ba1);
+			startActivity(intent);
+			setResult( RESULT_OK );
+			finish();
+    		}
+	    });	
+	    /*nextButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
        		String ba1=encode_bitmap();
 			HttpPost request = new HttpPost("http://r444b.ee.ntu.edu.tw/dctest/index.php?/msg/insert_img");
-	//		Toast.makeText(PhptestActivity.this, Global_Setting.site_url+"login", Toast.LENGTH_LONG).show();
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("image",ba1));
 			params.add(new BasicNameValuePair("session", global_setting.session));
@@ -173,8 +184,11 @@ public class CameraImgActivity extends Activity {
 			}
               
         	}
-        });
+        });*/
 	    
+		
+		
+		
 	    /*cameraButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
                }

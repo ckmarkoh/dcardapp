@@ -57,7 +57,7 @@ public class MsgChooseFriendActivity extends Activity {
 
    // private EditText msgEdit;
     private TextView receiverView;
-    
+    private String imgString;
     
     //private String timeout;
 	//ArrayList<HashMap<String,String>> mList = new ArrayList<HashMap<String,String>>();
@@ -74,6 +74,8 @@ public class MsgChooseFriendActivity extends Activity {
         setContentView(R.layout.msg_choose_friend);
         global_setting = ((Global_Setting)getApplicationContext());
         
+		Intent intent = this.getIntent();
+		imgString = intent.getStringExtra("img");
 
         mcfRelativeLayout=(RelativeLayout) this.findViewById(R.id.MCFrelativeLayout2);
         mcfRelativeLayout.setVisibility(View.INVISIBLE);
@@ -151,6 +153,41 @@ public class MsgChooseFriendActivity extends Activity {
 
 			
 			*/
+		
+		MCFNextButton.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View view) {
+			HttpPost request = new HttpPost("http://r444b.ee.ntu.edu.tw/dctest/index.php?/msg/insert_img");
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("image",imgString));
+			params.add(new BasicNameValuePair("session", global_setting.session));
+			params.add(new BasicNameValuePair("userid", global_setting.userid));			
+			params.add(new BasicNameValuePair("sender", global_setting.userid));
+			//params.add(new BasicNameValuePair("message", msgEdit.getText().toString()));
+			params.add(new BasicNameValuePair("receiver", receiverView.getText().toString()));
+			params.add(new BasicNameValuePair("timeout", "10"));
+			
+			try {
+				request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+				HttpResponse response = new DefaultHttpClient().execute(request);
+				if(response.getStatusLine().getStatusCode() == 200){
+					String raw_result = EntityUtils.toString(response.getEntity());
+					Toast.makeText(MsgChooseFriendActivity.this, "送出成功", Toast.LENGTH_LONG).show();
+					Log.d("success",raw_result);
+					//mypanelview=null;
+					//bitmap=null;
+					setResult( RESULT_OK );					
+					finish();
+					//String result = EntityUtils.toString(response.getEntity());
+					//Toast.makeText(PhptestActivity.this, result, Toast.LENGTH_LONG).show();
+				}
+			} catch (Exception e) {
+				Toast.makeText(MsgChooseFriendActivity.this, e.getMessage().toString(), Toast.LENGTH_LONG).show();
+				e.printStackTrace();
+			}
+              
+        	}
+        });
+		/*
 		MCFNextButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {    
             	if(receiverView.getText().toString()!=""){
@@ -162,7 +199,7 @@ public class MsgChooseFriendActivity extends Activity {
 					Toast.makeText(MsgChooseFriendActivity.this, "請選擇你要傳送給哪位朋友", Toast.LENGTH_LONG).show();
             	}
 			}			
-		});
+		});*/
         BackButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {    
 				setResult(RESULT_OK);

@@ -41,6 +41,7 @@ public class Global_Setting extends Application{
 	public static boolean http_lock=true;
 	//public static PostHTTP mMyAsyncTask = null;
 	public static String target_receiver="";
+	//public static Bitmap bitmap;
 	
 	public static String md5(String string) {
 	    byte[] hash;

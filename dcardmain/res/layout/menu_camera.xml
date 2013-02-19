@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="#ffffff"
+    >
+
+    
+      <SurfaceView
+      android:id="@+id/surfaceView1"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_alignParentTop="true"
+      android:layout_above="@+id/MenuRelative1"
+      />
+    
+    <LinearLayout
+        android:id="@+id/MenuLinear1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/MenuRelative1"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical" 
+        android:background="#000000"
+        >
+
+    </LinearLayout>
+ <RelativeLayout
+     		android:id="@+id/MenuRelative1"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+			android:background="#3c5a76"
+			android:layout_alignParentBottom="true"
+			 >
+			
+			<Button
+            android:id="@+id/ButtonReceive"
+            android:layout_width="40dp"   
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/message_button_x" />
+
+			<Button
+			    android:id="@+id/ButtonOption"
+			    android:layout_width="40dp"
+			    android:layout_height="40dp"
+			    android:layout_centerVertical="true"
+			    android:layout_alignParentRight="true"
+			    android:layout_margin="5dp"
+			    android:background="@drawable/option_button_x" />
+
+			<Button
+			    android:id="@+id/ButtonSend"
+			    android:layout_width="70dp"
+			    android:layout_height="fill_parent"
+			    android:layout_alignParentTop="true"
+			    android:layout_centerHorizontal="true"
+			    android:background="@drawable/camera_button_x" />
+
+        </RelativeLayout>
+</RelativeLayout>
