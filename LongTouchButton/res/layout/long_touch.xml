@@ -1,18 +1,45 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-    <TextView
+    android:background="#000000"
+    >
+   <!--  <Button
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/long_touch_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world" />
-
-    <Button
-        android:id="@+id/long_touch_button"
+        android:text="Button" /> -->
+    
+    
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_below="@+id/long_touch_button"
         android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    </ListView>
+    
+      <ImageView
+        android:id="@+id/imageView1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:src="@drawable/ic_launcher" 
+        android:background="#ffffff"
+       />
+      
+         <TextView
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:id="@+id/countdown_textview2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:textColor="#000000"
+        android:background="#ffffff"
+        android:text="time" 
+		android:textAppearance="?android:attr/textAppearanceLarge" />
+      
+      
 
-</LinearLayout>
+</RelativeLayout>
