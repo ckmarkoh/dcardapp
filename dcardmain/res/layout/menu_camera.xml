@@ -5,27 +5,14 @@
     android:background="#ffffff"
     >
 
-    
-      <SurfaceView
-      android:id="@+id/surfaceView1"
+       <SurfaceView
+      android:id="@+id/MenuSurfaceView"
       android:layout_width="fill_parent"
       android:layout_height="fill_parent"
       android:layout_alignParentTop="true"
       android:layout_above="@+id/MenuRelative1"
       />
-    
-    <LinearLayout
-        android:id="@+id/MenuLinear1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/MenuRelative1"
-        android:layout_alignParentLeft="true"
-        android:orientation="vertical" 
-        android:background="#000000"
-        >
-
-    </LinearLayout>
- <RelativeLayout
+    <RelativeLayout
      		android:id="@+id/MenuRelative1"
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -60,4 +47,17 @@
 			    android:background="@drawable/camera_button_x" />
 
         </RelativeLayout>
+        
+ 
+
+      <LinearLayout
+        android:id="@+id/LinearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/MenuRelative1"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical" 
+        android:background="#000000"
+      />
+
 </RelativeLayout>

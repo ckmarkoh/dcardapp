@@ -4,11 +4,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
@@ -45,7 +47,6 @@ public class CameraTakeTestActivity extends Activity{
 	//設為横向顯示。因為攝影頭會自動翻轉90度，所以如果不横向顯示，看到的畫面就是翻轉的。
 	
 	surfaceView1=(SurfaceView)findViewById(R.id.surfaceView1);
-	//imageView1=(ImageView)findViewById(R.id.imageView1);
 	surfaceHolder=surfaceView1.getHolder();
 	surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 	msholder=new MySurfaceHolder();
@@ -76,6 +77,24 @@ public class CameraTakeTestActivity extends Activity{
 			public void onPictureTaken(byte[] data, Camera camera) {
 			
 				global_setting.bitmap=BitmapFactory.decodeByteArray(data, 0, data.length);
+        	    float width = (float) global_setting.bitmap.getWidth();
+        	    float height = (float) global_setting.bitmap.getHeight();
+        	    int newWidth = 200;
+        	    int newHeight = (int) ( 200*(height / width)) ;
+        	    // calculate the scale - in this case = 0.4f
+        	    float scaleWidth = ((float) newWidth) / width;
+        	    float scaleHeight = ((float) newHeight) / height;
+        	    // createa matrix for the manipulation
+        	    Matrix matrix = new Matrix();
+        	    matrix.postScale(scaleWidth, scaleHeight);
+        	    matrix.postRotate(90);
+        	    Bitmap resizedBitmap = Bitmap.createBitmap(global_setting.bitmap, 0, 0,
+        	    						(int) width, (int) height, matrix, true);
+        	    // make a Drawable from Bitmap to allow to set the BitMap
+        	    // to the ImageView, ImageButton or what ever
+        	    //BitmapDrawable bmd = new BitmapDrawable(resizedBitmap);
+        	    global_setting.bitmap=resizedBitmap;
+	
 				Intent intent= new Intent(CameraTakeTestActivity.this,EditImgActivity.class);
 				startActivity(intent);
 				//byte數组轉換成Bitmap
@@ -110,11 +129,13 @@ public class CameraTakeTestActivity extends Activity{
 		public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 			Log.d("surface","surface change");
 			camera=Camera.open();
-	
 			try {
 				Camera.Parameters parameters=camera.getParameters();
+			    List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
+			    Camera.Size pS=previewSizes.get(previewSizes.size()-1);
+			    
 				parameters.setPictureFormat(PixelFormat.JPEG);
-				parameters.setPreviewSize(320, 200);
+				parameters.setPreviewSize(pS.width, pS.height);
 				camera.setParameters(parameters);
 				//設置參數
 				camera.setPreviewDisplay(surfaceHolder);

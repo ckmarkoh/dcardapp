@@ -39,6 +39,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Display;
@@ -58,7 +59,6 @@ public class CameraImgActivity extends Activity {
 	private Button drawButton;
 	private Button cancelButton;
 
-	private Bitmap bitmap;
 	private ImageView ivTest;
 	
 	private Global_Setting global_setting;
@@ -81,6 +81,7 @@ public class CameraImgActivity extends Activity {
 		setContentView(R.layout.camera_img);
 		
         global_setting = ((Global_Setting)getApplicationContext());
+		Bitmap bitmap=global_setting.bitmap;
 
 		//ivTest = (ImageView)findViewById(R.id.ivTest);
 		//filename=(EditText)findViewById(R.id.fileEdit);
@@ -89,6 +90,7 @@ public class CameraImgActivity extends Activity {
 		drawButton = (Button)findViewById(R.id.CIDrawButton);
 		cancelButton = (Button)findViewById(R.id.CICancelButton);
 		panel_state=PANEL_STATE_NONE;
+        mypanelview = (MyCustomPanel)findViewById(R.id.ivTest);
 
         /*Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
@@ -97,13 +99,8 @@ public class CameraImgActivity extends Activity {
         byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
         mypanelview.bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
 		*/
-		Intent intent = this.getIntent();
-		String encodedString = intent.getStringExtra("img");
-        mypanelview = (MyCustomPanel)findViewById(R.id.ivTest);
-        byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
-        mypanelview.bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-
-		
+        mypanelview.bitmap=bitmap;//BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        
 		cancelButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {  
 			        new AlertDialog.Builder(CameraImgActivity.this)
@@ -143,7 +140,7 @@ public class CameraImgActivity extends Activity {
 		
 	    nextButton.setOnClickListener(new View.OnClickListener() {
     	public void onClick(View view) {
-        	final Intent intent = new Intent(CameraImgActivity.this, MsgChooseFriendActivity.class);
+        	final Intent intent = new Intent(CameraImgActivity.this, CameraFriendActivity.class);
         	String ba1=encode_bitmap();
 			intent.putExtra("img", ba1);
 			startActivity(intent);
@@ -185,9 +182,7 @@ public class CameraImgActivity extends Activity {
               
         	}
         });*/
-	    
-		
-		
+    	
 		
 	    /*cameraButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
@@ -242,6 +237,20 @@ public class CameraImgActivity extends Activity {
 	}
 	
 	public String encode_bitmap(){
+		
+	    float width = (float) mypanelview.wallPaperBitmap.getWidth();
+	    float height = (float) mypanelview.wallPaperBitmap.getHeight();
+	    int newWidth = 200;
+	    int newHeight = (int) ( 200*(height / width)) ;
+	    // calculate the scale - in this case = 0.4f
+	    float scaleWidth = ((float) newWidth) / width;
+	    float scaleHeight = ((float) newHeight) / height;
+	    // createa matrix for the manipulation
+	    Matrix matrix = new Matrix();
+	    matrix.postScale(scaleWidth, scaleHeight);
+	    Bitmap resizedBitmap = Bitmap.createBitmap(mypanelview.wallPaperBitmap, 0, 0,
+	    		(int) width, (int) height, matrix, true);
+	    mypanelview.wallPaperBitmap=resizedBitmap;
 		ByteArrayOutputStream bao = new ByteArrayOutputStream();
    		mypanelview.wallPaperBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bao);
    		byte [] ba = bao.toByteArray();

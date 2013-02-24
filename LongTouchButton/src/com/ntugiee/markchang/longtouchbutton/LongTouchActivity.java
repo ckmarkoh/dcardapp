@@ -1,7 +1,5 @@
 package com.ntugiee.markchang.longtouchbutton;
 
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import android.os.Bundle;

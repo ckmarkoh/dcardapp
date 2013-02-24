@@ -73,7 +73,6 @@ public class ConfirmFriendActivity extends Activity {
         setContentView(R.layout.confirm_friend);
         
         global_setting = ((Global_Setting)getApplicationContext());
-
         
         cfListView = (ListView) this.findViewById(R.id.friendConfirmList);
         afListView = (ListView) this.findViewById(R.id.friendAddedList);

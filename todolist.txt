@@ -64,4 +64,4 @@ V	按住幾秒
 5.facebook手動比對？
 6.hourglass how to choose time?
 7.每個dialog的介面, error message?
-
+8.註冊順序?

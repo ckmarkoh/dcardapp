@@ -36,6 +36,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -80,7 +82,7 @@ public class CameraTestActivity extends Activity {
     	
        		String ba1=encode_bitmap();
     		
-			HttpPost request = new HttpPost("http://r444b.ee.ntu.edu.tw/dctest/index.php?/msg/upload_img");
+			HttpPost request = new HttpPost("http://r444b.ee.ntu.edu.tw/upload_file_test/test_file.php");
 	//		Toast.makeText(PhptestActivity.this, Global_Setting.site_url+"login", Toast.LENGTH_LONG).show();
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("image",ba1));
@@ -138,8 +140,30 @@ public class CameraTestActivity extends Activity {
 	    
 	    uploadFileButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
+        	    // load the origial BitMap (500 x 500 px)
+
+        	    int width = bitmap.getWidth();
+        	    int height = bitmap.getHeight();
+        	    int newWidth = 240;
+        	    int newHeight = 400;
+
+        	    // calculate the scale - in this case = 0.4f
+        	    float scaleWidth = ((float) newWidth) / width;
+        	    float scaleHeight = ((float) newHeight) / height;
+
+        	    // createa matrix for the manipulation
+        	    Matrix matrix = new Matrix();
+        	    matrix.postScale(scaleWidth, scaleHeight);
+        	    matrix.postRotate(90);
+        	    Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
+        	                      width, height, matrix, true);
+
+        	    bitmap=resizedBitmap;
         		//DownloadFromUrl("http://r444b.ee.ntu.edu.tw/~markchang/green_campus.jpg","greencampus");
-               }
+        	    ivTest.setImageBitmap(bitmap);
+
+        	
+        	}
         });
 
 	}

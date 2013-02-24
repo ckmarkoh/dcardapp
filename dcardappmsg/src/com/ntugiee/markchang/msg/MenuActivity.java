@@ -16,6 +16,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +39,6 @@ public class MenuActivity extends Activity {
    // private String global_setting.userid;
  //   private boolean islogin=false;
     
-    
     private static final int LOGIN=1;
 
 	private Global_Setting global_setting;
@@ -53,7 +53,6 @@ public class MenuActivity extends Activity {
         //setProgressBarIndeterminateVisibility(true);
 
         global_setting = ((Global_Setting)getApplicationContext());
-
         
         username_text = (TextView) this.findViewById(R.id.MenuUserText);				
         LoginButton = (Button) this.findViewById(R.id.ButtonLogin);

@@ -16,11 +16,14 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
@@ -51,16 +54,16 @@ import android.widget.AdapterView.OnItemClickListener;
 
 //import togeather.history.R;
 
-public class CameraMenuActivity extends Activity implements SurfaceHolder.Callback{
+public class CameraMenuActivity extends Activity{
     
 	private Button MenuLogoutBut;
 //    private Button MenuLogoutBut;
-    private Button SendMsgButton;
-    private Button ReceiveButton;
+    private Button cameraButton;
+    private Button receiveButton;
    // private Button SignUpButton;
     private Button MenuAddFriendBut;
     private Button MenuConfirmFriendBut;
-    private Button OptionButton;
+    private Button optionButton;
     
     private TextView menu_username;
 
@@ -80,11 +83,14 @@ public class CameraMenuActivity extends Activity implements SurfaceHolder.Callba
 
 	private Global_Setting global_setting;
 
+	
+	private MySurfaceHolder msholder;
+
 	private SurfaceHolder surfaceHolder;
 	private SurfaceView surfaceView1;
 	//private Button button1;
 	//ImageView imageView1;
-	private Camera camera;
+	//private Camera camera;
 
 	
 	
@@ -94,6 +100,7 @@ public class CameraMenuActivity extends Activity implements SurfaceHolder.Callba
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_camera);
+		Log.d("CameraMenuActivity","on_create");
 
         global_setting = ((Global_Setting)getApplicationContext());
         
@@ -101,21 +108,21 @@ public class CameraMenuActivity extends Activity implements SurfaceHolder.Callba
     	setRequestedOrientation(1);
     	//設為横向顯示。因為攝影頭會自動翻轉90度，所以如果不横向顯示，看到的畫面就是翻轉的。
     	
-    	surfaceView1=(SurfaceView)findViewById(R.id.surfaceView1);
-    	//imageView1=(ImageView)findViewById(R.id.imageView1);
+    	surfaceView1=(SurfaceView)findViewById(R.id.MenuSurfaceView);
     	surfaceHolder=surfaceView1.getHolder();
     	surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-    	surfaceHolder.addCallback(this);
+    	msholder=new MySurfaceHolder();
+    	surfaceHolder.addCallback(msholder);
 
     	
 
         
-        SendMsgButton = (Button) this.findViewById(R.id.ButtonSend);
-        ReceiveButton = (Button) this.findViewById(R.id.ButtonReceive);
+        cameraButton = (Button) this.findViewById(R.id.ButtonSend);
+        receiveButton = (Button) this.findViewById(R.id.ButtonReceive);
         //SignUpButton = (Button) this.findViewById(R.id.ButtonSignUp);
-        OptionButton = (Button) this.findViewById(R.id.ButtonOption);
-		llayout=(LinearLayout)this.findViewById(R.id.MenuLinear1);
-		llayout.setVisibility(View.INVISIBLE);
+        optionButton = (Button) this.findViewById(R.id.ButtonOption);
+		llayout=(LinearLayout)this.findViewById(R.id.LinearLayout1);
+		//llayout.setVisibility(View.INVISIBLE);
 		
 		LayoutInflater inflater = LayoutInflater.from(CameraMenuActivity.this);
 		addFriendView = inflater.inflate(R.layout.menu_addfriend,null);
@@ -136,19 +143,20 @@ public class CameraMenuActivity extends Activity implements SurfaceHolder.Callba
 		
 		llayout_add_view(menuOptionView);
 		
-    	SendMsgButton.setOnClickListener(new OnClickListener(){
-        	
+    	cameraButton.setOnClickListener(new OnClickListener(){
     		public void onClick(View v) {
     			//自動對焦
-    			camera.autoFocus(afcb);
-    			camera.takePicture( null, piccallback, null);
+        		if(llayout.getVisibility()==View.VISIBLE){
+        			//Log.d("llayout","vi->in");
+        			llayout.setVisibility(View.INVISIBLE);
+        		}
+        		else{
+    			msholder.takePicture();
+    			
     			}
-    		});
-		//addFriendView = inflater.inflate(R.layout.addfrienddialog,null);
-		//AlertDialog.Builder builder= new AlertDialog.Builder(MenuActivity.this);
-		//builder.setView(addFriendView);
-		//DialogAddFriend = builder.create();
-		
+        	}
+    	});
+    	
 		DialogAddFriendButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
 				HttpPost request = new HttpPost(global_setting.site_url+"friend/add_friend");
@@ -194,10 +202,7 @@ public class CameraMenuActivity extends Activity implements SurfaceHolder.Callba
 		
 		DialogCloseButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
-				//llayout.removeAllViews();
-		        //llayout.addView(menuOptionView);
         		llayout_add_view(menuOptionView);
-				//DialogAddFriend.dismiss();
         	}
         });        
 		
@@ -212,18 +217,7 @@ public class CameraMenuActivity extends Activity implements SurfaceHolder.Callba
 	        	}
 	        });
 		
-		
-		
-		
-        /*SendMsgButton.setOnClickListener(new View.OnClickListener() {
-        	public void onClick(View view) {
-	            	//final Intent intent = new Intent(MenuActivity.this, CameraImgActivity.class);
-	            	final Intent intent = new Intent(CameraMenuActivity.this, MsgChooseFriendActivity.class);
-	            	startActivity(intent);
-        		
-        	}
-        });*/
-        ReceiveButton.setOnClickListener(new View.OnClickListener() {
+        receiveButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
 	            	final Intent intent = new Intent(CameraMenuActivity.this, ReceiveActivity.class);
 	                startActivity(intent);
@@ -235,16 +229,16 @@ public class CameraMenuActivity extends Activity implements SurfaceHolder.Callba
 	                startActivity(intent);
         	}
         });    
-        OptionButton.setOnClickListener(new View.OnClickListener() {
+        optionButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
-        		if(llayout.getVisibility()==View.VISIBLE){
-        			//Animation fadeOutAnim = AnimationUtils.loadAnimation(MenuActivity.this, R.anim.fadeout);
-        			//llayout.startAnimation(fadeOutAnim);
-        			//llayout.setVisibility(View.GONE);
+    			Log.d("OptionButton","onclick");
 
+        		if(llayout.getVisibility()==View.VISIBLE){
+        			Log.d("llayout","vi->in");
         			llayout.setVisibility(View.INVISIBLE);
         		}
         		else if(llayout.getVisibility()==View.INVISIBLE){
+        			Log.d("llayout","in->vi");
         			llayout.setVisibility(View.VISIBLE);
         		}
         	}
@@ -258,6 +252,7 @@ public class CameraMenuActivity extends Activity implements SurfaceHolder.Callba
     }
 
     private void llayout_add_view(View view){
+		Log.d("llayout","addview");
 		llayout.removeAllViews();
         llayout.addView(view);
     }
@@ -285,7 +280,7 @@ public class CameraMenuActivity extends Activity implements SurfaceHolder.Callba
 	@Override
 	public void onResume(){
 		super.onResume();
-		Log.d(CameraMenuActivity.this.getClass().getName(),"on_resume");
+		Log.d("CameraMenuActivity","on_resume");
 		//global_setting.bitmap=null;
 		
 	}
@@ -295,92 +290,110 @@ public class CameraMenuActivity extends Activity implements SurfaceHolder.Callba
 		global_setting.userid="";
 		global_setting.islogin=false;     
 		global_setting.session="";
-		Log.d("activity","on destroy");
+		//global_setting.bitmap=null;
+		Log.d("CameraMenuActivity","on_destroy");
     }
-    
-	PictureCallback piccallback =new PictureCallback(){
+	@Override
+	public void onStop(){
+		super.onStop();
+		Log.d("CameraMenuActivity","on_stop");
+		//global_setting.bitmap=null;
 		
-		public void onPictureTaken(byte[] data, Camera camera) {
-		
-			//global_setting.bitmap=BitmapFactory.decodeByteArray(data, 0, data.length);
+	}
+	
+	
+	private class MySurfaceHolder implements SurfaceHolder.Callback{
+		public Camera camera;
+
+		public void create_camera(){
 			
-	   		String ba1=Base64.encodeToString(data, Base64.DEFAULT);
-			Intent intent= new Intent(CameraMenuActivity.this,CameraImgActivity.class);
-			intent.putExtra("img", ba1);
-			startActivity(intent);
-			//byte數组轉換成Bitmap
-			//imageView1.setImageBitmap(bmp);
-			//拍下圖片顯示在下面的ImageView裡
-			/* FileOutputStream fop;
+			camera=Camera.open();
+
 			try {
-				fop=new FileOutputStream("/sdcard/dd.jpg");
-				//實例化FileOutputStream，參數是生成路徑
-				bmp.compress(Bitmap.CompressFormat.JPEG, 100, fop);
-				//壓缩bitmap寫進outputStream 參數：輸出格式輸出質量目標OutputStream
-				//格式可以為jpg,png,jpg不能存儲透明
-				fop.close();
-				System.out.println("拍照成功");
-				//關閉流
-			} catch (FileNotFoundException e) {
-				
-				e.printStackTrace();
-				System.out.println("FileNotFoundException");
-				
+				Camera.Parameters parameters=camera.getParameters();
+			    List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
+			    Camera.Size pS=previewSizes.get(previewSizes.size()-1);
+				parameters.setPictureFormat(PixelFormat.JPEG);
+				parameters.setPreviewSize(pS.width, pS.height);
+				camera.setParameters(parameters);
+				//設置參數
+				camera.setPreviewDisplay(surfaceHolder);
+				//鏡頭的方向和手機相差90度，所以要轉向
+				camera.setDisplayOrientation(90);
+				//攝影頭畫面顯示在Surface上
+				camera.startPreview();
 			} catch (IOException e) {
-				
 				e.printStackTrace();
-				System.out.println("IOException");
-			}*/
-			camera.startPreview();
-		//需要手動重新startPreview，否則停在拍下的瞬間
-		}
-		
-	};
-	
-	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-		Log.d("surface","surface change");
-		camera=Camera.open();
-
-		try {
-			Camera.Parameters parameters=camera.getParameters();
-			parameters.setPictureFormat(PixelFormat.JPEG);
-			parameters.setPreviewSize(320, 200);
-			camera.setParameters(parameters);
-			//設置參數
-			camera.setPreviewDisplay(surfaceHolder);
-			//鏡頭的方向和手機相差90度，所以要轉向
-			camera.setDisplayOrientation(90);
-			//攝影頭畫面顯示在Surface上
-			camera.startPreview();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	
-	}
-	public void surfaceCreated(SurfaceHolder holder) {
-		Log.d("surface","surface create");
-
-	}
-	
-	public void surfaceDestroyed(SurfaceHolder holder) {
-		
-		System.out.println("surfaceDestroyed");
-		camera.stopPreview();
-		//關閉預覽
-		camera.release();
-		camera=null;
-		//
-	}
-
-	//自動對焦監聽式
-	AutoFocusCallback afcb= new AutoFocusCallback(){
-		public void onAutoFocus(boolean success, Camera camera) {
-			if(success){
-			//對焦成功才拍照
-			camera.takePicture(null, null, piccallback);
 			}
 		}
-	};
+		
+		
+		public void takePicture(){
+			if(camera==null){
 
+				create_camera();
+				
+			}
+			
+			camera.autoFocus(afcb);
+		}
+		
+		public PictureCallback piccallback =new PictureCallback(){
+			public void onPictureTaken(byte[] data, Camera camera) {
+			
+		   		//String ba1=Base64.encodeToString(data, Base64.DEFAULT);
+				global_setting.bitmap=BitmapFactory.decodeByteArray(data, 0, data.length);
+        	    float width = (float) global_setting.bitmap.getWidth();
+        	    float height = (float) global_setting.bitmap.getHeight();
+        	    int newWidth = 200;
+        	    int newHeight = (int) ( 200*(height / width)) ;
+        	    // calculate the scale - in this case = 0.4f
+        	    float scaleWidth = ((float) newWidth) / width;
+        	    float scaleHeight = ((float) newHeight) / height;
+        	    // createa matrix for the manipulation
+        	    Matrix matrix = new Matrix();
+        	    matrix.postScale(scaleWidth, scaleHeight);
+        	    matrix.postRotate(90);
+        	    global_setting.bitmap = Bitmap.createBitmap(global_setting.bitmap, 0, 0,
+        	    						(int) width, (int) height, matrix, true);
+
+        	    Intent intent= new Intent(CameraMenuActivity.this,CameraImgActivity.class);
+				//intent.putExtra("img", ba1);
+				startActivity(intent);
+				//camera.startPreview();
+			//需要手動重新startPreview，否則停在拍下的瞬間
+			}
+			
+		};
+	
+		public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+			Log.d("surface","surface change");
+			//camera=Camera.open();
+	
+		
+		}
+		public void surfaceCreated(SurfaceHolder holder) {
+			Log.d("surface","surface create");
+			create_camera();
+		}
+		
+		public void surfaceDestroyed(SurfaceHolder holder) {
+			System.out.println("surfaceDestroyed");
+			camera.stopPreview();
+			//關閉預覽
+			camera.release();
+			camera=null;
+			//
+		}
+	
+		//自動對焦監聽式
+		AutoFocusCallback afcb= new AutoFocusCallback(){
+			public void onAutoFocus(boolean success, Camera camera) {
+				if(success){
+				//對焦成功才拍照
+				camera.takePicture(null, null, piccallback);
+				}
+			}
+		};
+	}
 }

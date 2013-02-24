@@ -25,13 +25,14 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.Application;
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
 
 public class Global_Setting extends Application{
-	public static final String site_url="http://r444b.ee.ntu.edu.tw/~markchang/dctest/index.php/";
+	public static final String site_url="http://r444b.ee.ntu.edu.tw/dctest/index.php/";
 	public static String userid="";//="http://r444b.ee.ntu.edu.tw/~markchang/dctest/index.php/";
 	public static String session="";
 	public static boolean islogin=false;
@@ -41,7 +42,7 @@ public class Global_Setting extends Application{
 	public static boolean http_lock=true;
 	//public static PostHTTP mMyAsyncTask = null;
 	public static String target_receiver="";
-	//public static Bitmap bitmap;
+	public static Bitmap bitmap;
 	
 	public static String md5(String string) {
 	    byte[] hash;
@@ -59,6 +60,9 @@ public class Global_Setting extends Application{
 	        hex.append(Integer.toHexString(b & 0xFF));
 	    }
 	    return hex.toString();
+	}
+	public static void show_progress_dialog(Activity activity,String title,String message,boolean b){
+		progressDialog = ProgressDialog.show(activity, title, message, b);
 	}
 	public static void close_progress_dialog(){
         if (progressDialog != null) {

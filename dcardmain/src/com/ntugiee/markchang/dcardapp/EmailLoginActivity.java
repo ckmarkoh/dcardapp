@@ -82,6 +82,7 @@ public class EmailLoginActivity extends Activity {
 	                        //Toast.makeText(EmailLoginActivity.this, result, Toast.LENGTH_LONG).show();
 	                        //Log.d("result",message);
 	                 	JSONObject result_json=null;
+						global_setting.close_progress_dialog();
 	    				//MySerialExecutor myserialexecutor=new MySerialExecutor();
 	    				try {
 	    					result_json=new JSONObject( (String) msg.obj);
@@ -101,7 +102,6 @@ public class EmailLoginActivity extends Activity {
 	    						finish();
 	    					}
 	    				} catch (Exception e) {
-	    					// TODO Auto-generated catch block
 	    			//		e.printStackTrace();
 	    					Toast.makeText(EmailLoginActivity.this, "ERROR:"+e.toString(), Toast.LENGTH_LONG).show();
 	    				}
@@ -111,7 +111,7 @@ public class EmailLoginActivity extends Activity {
               }
            };
           
-           
+        
         
         btnLogin.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -119,8 +119,10 @@ public class EmailLoginActivity extends Activity {
 				params.add(new BasicNameValuePair("name", etName.getText().toString()));
 				params.add(new BasicNameValuePair("pwd", Global_Setting.md5(etPwd.getText().toString())));
 
-				global_setting.progressDialog = ProgressDialog.show(EmailLoginActivity.this, "Loading", "please wait...", true);
-				new HttpApplication(Global_Setting.site_url+"user/login",params,mHandler,global_setting.progressDialog,HTTP_EMAIL_LOGIN).startHttp();
+				//global_setting.progressDialog = ProgressDialog.show(EmailLoginActivity.this, "Loading", "please wait...", true);
+				global_setting.show_progress_dialog(EmailLoginActivity.this, "Loading", "please wait...", true);
+
+				new HttpApplication(Global_Setting.site_url+"user/login",params,mHandler,HTTP_EMAIL_LOGIN).startHttp();
 			    //httpapplication.startHttp();
 			}
 		});
