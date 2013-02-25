@@ -37,6 +37,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.SyncStateContract.Constants;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -48,10 +49,13 @@ import android.widget.Toast;
 
 import com.facebook.LoggingBehavior;
 import com.facebook.Request;
+import com.facebook.Request.GraphUserListCallback;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.Settings;
+import com.facebook.android.AsyncFacebookRunner;
+import com.facebook.android.Facebook;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.ProfilePictureView;
 
@@ -161,7 +165,7 @@ public class FacebookLoginActivity extends Activity {
 					}              	  
 
                   break;
-                  case GET_FB_FRIEND:
+                  /*case GET_FB_FRIEND:
 					friend_result=(String) msg.obj;
 					Log.d("raw_result_1",friend_result);
                  	JSONObject result_json1=null;
@@ -180,7 +184,7 @@ public class FacebookLoginActivity extends Activity {
 						Toast.makeText(FacebookLoginActivity.this, "error:"+e1.getMessage().toString(), Toast.LENGTH_LONG).show();
     				}
     				
-    			  break;
+    			  break;*/
                   case SYNC_FB_FRIEND:
     					global_setting.close_progress_dialog();
 						Log.d("raw_result_2",(String) msg.obj);
@@ -198,15 +202,18 @@ public class FacebookLoginActivity extends Activity {
          
          getFriendButton2.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
-					fb_user_signup();
+					get_fb_friend_start();
+
+					//fb_user_signup();
 				}
          });      
          
          syncFbFriend.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
-					get_fb_friend_start();
+					sync_fb_friend_start();
 				}
          });     
+         onClickLogin();
     }
     
     private void fb_user_login(){
@@ -223,11 +230,48 @@ public class FacebookLoginActivity extends Activity {
 		new HttpApplication(global_setting.site_url+"user/fb_signup",params,mHandler,FB_SIGNUP).startHttp();
     }
     
-    private void get_fb_friend_start(){
+    private void get_fb_friend_start(){/*
 		global_setting.show_progress_dialog(FacebookLoginActivity.this, null, "同步facebook好友中", true);
 		new HttpApplication(URL_PREFIX_FRIENDS+access_token,mHandler,GET_FB_FRIEND).startHttp();
+    */
+    	
+    	Session activeSession = Session.getActiveSession();
+        if(activeSession.getState().isOpened()){
+            Request request = Request.newMyFriendsRequest(activeSession, 
+                new GraphUserListCallback(){
+                    @Override
+                    public void onCompleted(List<GraphUser> users, Response response){
+                    	Log.d("list length","size:"+users.size());
+                    	friend_result="[";
+                    	for(int i=0;i<users.size();i++){
+                    		friend_result+="{";
+                    		friend_result+=(    "\"id\": \""+users.get(i).getId()+"\",");
+                    		friend_result+=(    "\"name\": \""+users.get(i).getId()+"\"");
+                    		friend_result+=  "}";
+                    		if(i<users.size()-1){
+                    			friend_result+=  ",";
+                    		}
+                    	}
+                    	friend_result+="]";
+                    	//JSONArray jsArray = new JSONArray(users);
+                    	Log.d("ALL user",friend_result);
+                       /* GraphUser user = users.get(0);
+                        JSONObject friendLikes = user.getInnerJSONObject();
+                        try {
+                            JSONArray data = friendLikes.getJSONObject("friends").getJSONArray("data");
+                            Log.i("JSON", friendLikes.toString());
+                            //addInterests(data, 0);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }*/
+                    }
+            });
+            Bundle bundle = new Bundle();
+            bundle.putString("fields", "id,name");
+            request.setParameters(bundle);
+            request.executeAsync();    
+      }
     }
-    
     private void sync_fb_friend_start(){
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("id1", "mark" ));
