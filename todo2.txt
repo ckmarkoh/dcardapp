@@ -56,7 +56,7 @@
 
 1. 	fb sign up 
 V2. 	選timeout時間
-3. 	圖片編輯器
+V3. 	圖片編輯器
 4. 	朋友邀請和訊息要reload並在首頁更新
 5. 	Long touch整合進去
 6. 	error message用中文

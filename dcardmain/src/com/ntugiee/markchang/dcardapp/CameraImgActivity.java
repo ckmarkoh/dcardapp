@@ -71,10 +71,10 @@ public class CameraImgActivity extends Activity {
 	
 	private Global_Setting global_setting;
 
-    private final static int PANEL_STATE_NONE=0;
+    //private final static int PANEL_STATE_NONE=0;
     private final static int PANEL_STATE_DRAW=1;
     private final static int PANEL_STATE_TEXT=2;
-    private static int panel_state=PANEL_STATE_NONE;
+    private static int panel_state=PANEL_STATE_DRAW;
 
     private MyCustomPanel mypanelview;
     private OnTouchListener panel_on_touch;
@@ -111,7 +111,7 @@ public class CameraImgActivity extends Activity {
     private View colorPickerView;
     private OnSeekBarChangeListener OnSeekBarProgress;
     
-    private String text_content;
+//    private String text_content;
     private AlertDialog textEditDialog;
 	private EditText drawEditText;
     private int pos_x;
@@ -129,19 +129,15 @@ public class CameraImgActivity extends Activity {
 		setContentView(R.layout.camera_img);
 		
         global_setting = ((Global_Setting)getApplicationContext());
-		//ivTest = (ImageView)findViewById(R.id.ivTest);
-		//filename=(EditText)findViewById(R.id.fileEdit);
 		nextButton = (Button)findViewById(R.id.CINextButton);
-		//cameraButton = (Button)findViewById(R.id.CameraButton);
 		drawButton = (Button)findViewById(R.id.CIDrawButton);
 		hourGlasslButton = (Button)findViewById(R.id.CIHourGlasslButton);
-		//textBut = (Button)findViewById(R.id.CITextButton);
 		colorBut = (Button)findViewById(R.id.CIColorButton);
 
 		
 		
 		clearButton = (Button)findViewById(R.id.CICancelButton);
-		panel_state=PANEL_STATE_NONE;
+		panel_state=PANEL_STATE_DRAW;
         mypanelview = (MyCustomPanel)findViewById(R.id.ivTest);
         mypanelview.bitmap=global_setting.bitmap;
 
@@ -255,6 +251,7 @@ public class CameraImgActivity extends Activity {
         
         dismissInvalidate=new DialogInterface.OnDismissListener(){
         	public void onDismiss(DialogInterface dialog){
+        		Log.d("dialog","dismiss");
         		mypanelview.invalidate();
         	}
         };
@@ -265,8 +262,9 @@ public class CameraImgActivity extends Activity {
 	        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 		    // do something when the button is clicked
 		    public void onClick(DialogInterface arg0, int arg1) {
-		    		text_content=drawEditText.getText().toString();  
-		    		mypanelview.addText( pos_x ,pos_y , Color.rgb(color_r, color_g, color_b),text_content);
+//		    		text_content=drawEditText.getText().toString();  
+		    		mypanelview.addText( pos_x ,pos_y , Color.rgb(color_r, color_g, color_b),drawEditText.getText().toString());
+		    		drawEditText.setText("");
 		    		//text_content=editText.getText().toString();  
 		    		}
 	        	}
@@ -296,40 +294,6 @@ public class CameraImgActivity extends Activity {
         clearDrawDialog=clearDrawBuilder.create();
         clearDrawDialog.setOnDismissListener(dismissInvalidate);
 
-        
-        /*textBut.setOnClickListener(new View.OnClickListener() {
-        	public void onClick(View view) {
-      		   final EditText editText = new EditText(CameraImgActivity.this);
-   		        new AlertDialog.Builder(CameraImgActivity.this)
-         		.setTitle("加入文字")
-         		.setMessage("請輸入你想要加入的文字：")
-         		.setView(editText)
-   		        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-         		    // do something when the button is clicked
-         		    public void onClick(DialogInterface arg0, int arg1) {
-         		    	text_content=editText.getText().toString();
-                 		panel_state=PANEL_STATE_TEXT;
-         		     	}
-         		    })
-         	    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-         		          // do something when the button is clicked
-         		    public void onClick(DialogInterface arg0, int arg1) {
-         		    	//...
-         		     	}
-         		    })
-         		.show();
-         		
-         	}
-         });*/
-        /*Intent intent = this.getIntent();
-        Bundle bundle = intent.getExtras();
-        String encodedString = bundle.getString("img");
-        mypanelview = (MyCustomPanel)findViewById(R.id.ivTest);
-        byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
-        mypanelview.bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-		*/
-        //BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        
 		clearButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {  
 				if(mypanelview.drawData.isEmpty()){
@@ -337,20 +301,7 @@ public class CameraImgActivity extends Activity {
     				finish();
 				}
 				else{
-					new AlertDialog.Builder(CameraImgActivity.this)
-			        .setMessage("你確定要清掉所有筆跡？")
-			        .setPositiveButton("是" ,
-			                new DialogInterface.OnClickListener() {
-				                    public void onClick(DialogInterface dialog, int which) {
-				                    	mypanelview.drawData.clear();
-				                    }   
-			                })  
-			         .setNegativeButton("否",                    
-			                 new DialogInterface.OnClickListener() {
-			                    public void onClick(DialogInterface dialog, int which) {
-			                }   
-			         }) 
-			         .show();       
+					clearDrawDialog.show();		
 				}
 			}
 		});

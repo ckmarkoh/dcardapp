@@ -29,6 +29,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -41,6 +42,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,17 +59,18 @@ import com.ntugiee.markchang.dcardapp.util.HttpApplication;
 
 
 public class FacebookLoginActivity extends Activity {
-    private static final String URL_PREFIX_FRIENDS = "https://graph.facebook.com/me/friends?fields=id&access_token=";
+    private static final String URL_PREFIX_FRIENDS = "https://graph.facebook.com/me/friends?fields=id,name&access_token=";
 
     private TextView textInstructionsOrLink;
     private Button buttonLoginLogout;
     private Session.StatusCallback statusCallback = new SessionStatusCallback();
-	//private Button getFriendButton;
-	//private Button getFriendButton2;
+	private Button getFriendButton;
+	private Button getFriendButton2;
 	private Button syncFbFriend;
-
+	private EditText signupEdit;
 	private String friend_result="";
 	private String access_token="";
+	private String fbid="";
     private ProfilePictureView profilePictureView;
     private TextView userNameView;
 	private Global_Setting global_setting;
@@ -75,6 +78,8 @@ public class FacebookLoginActivity extends Activity {
 	
 	protected static final int GET_FB_FRIEND = 0x00000001;
 	protected static final int SYNC_FB_FRIEND = 0x00000002;
+	protected static final int FB_LOGIN=0x00000003;
+	protected static final int FB_SIGNUP=0x00000004;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,15 +91,16 @@ public class FacebookLoginActivity extends Activity {
         buttonLoginLogout = (Button)findViewById(R.id.buttonLoginLogout);
         textInstructionsOrLink = (TextView)findViewById(R.id.instructionsOrLink);
 
-        //getFriendButton = (Button) findViewById(R.id.getFbFriendButton);
-        //getFriendButton2 = (Button) findViewById(R.id.getFbFriendButton2);
+        getFriendButton = (Button) findViewById(R.id.getFbFriendButton);
+        getFriendButton2 = (Button) findViewById(R.id.getFbFriendButton2);
         userNameView = (TextView) findViewById(R.id.selection_user_name);
         profilePictureView = (ProfilePictureView) findViewById(R.id.selection_profile_pic);
         profilePictureView.setCropped(true);
         global_setting = ((Global_Setting)getApplicationContext());
         syncFbFriend = (Button) findViewById(R.id.syncFbFriend);
         Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
-
+        signupEdit  = (EditText) findViewById(R.id.SignUpID);
+        
         Session session = Session.getActiveSession();
         if (session == null) {
             if (savedInstanceState != null) {
@@ -114,36 +120,87 @@ public class FacebookLoginActivity extends Activity {
             @Override
             public void handleMessage(Message msg)
             {
-	                  switch (msg.what)
-	                  {
-	                  // 顯示網路上抓取的資料
-	                  case GET_FB_FRIEND:
-						global_setting.close_progress_dialog();
-						friend_result=(String) msg.obj;
-						Log.d("raw_result_1",friend_result);
-	                 	JSONObject result_json=null;
-	    				try {
-	    					result_json=new JSONObject( friend_result);
-	    					if(result_json.has("error")){
-		    					global_setting.close_progress_dialog();
-	    						Toast.makeText(FacebookLoginActivity.this, "error:"+result_json.getString("error"), Toast.LENGTH_LONG).show();
-	    					}
-	    					else{
-	    						sync_fb_friend_start();
-	    					}
-	    				} catch (Exception e) {
-	    					global_setting.close_progress_dialog();
-	    					e.printStackTrace();
-    						Toast.makeText(FacebookLoginActivity.this, "error:"+e.getMessage().toString(), Toast.LENGTH_LONG).show();
-	    				}
-	    			  break;
-	                  case SYNC_FB_FRIEND:
-	    					global_setting.close_progress_dialog();
-							Log.d("raw_result_2",(String) msg.obj);
-		    		  break;
-                }
+                  switch (msg.what)
+                  {
+                  case FB_LOGIN:
+                	global_setting.close_progress_dialog();
+                   	JSONObject result_json=null;
+					try {
+						result_json=new JSONObject( (String) msg.obj);
+						if(result_json.has("error")){
+    						Toast.makeText(FacebookLoginActivity.this, "error:"+result_json.getString("error"), Toast.LENGTH_LONG).show();
+						}
+						else if(Boolean.parseBoolean(result_json.getString("signup"))){
+							Log.d("login","has signup");
+						}
+						else{
+							Log.d("login","haven't signup");
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+						Toast.makeText(FacebookLoginActivity.this, "error:"+e.getMessage().toString(), Toast.LENGTH_LONG).show();
+					
+					}              	  
+                  break;
+                  case FB_SIGNUP:
+                	global_setting.close_progress_dialog();
+					JSONObject result_json2 = null;
+  					try {
+  						 result_json2 = new JSONObject( (String) msg.obj);
+						if(result_json2.has("error")){
+    						Toast.makeText(FacebookLoginActivity.this, "error:"+result_json2.getString("error"), Toast.LENGTH_LONG).show();
+						}
+						else {
+    						Toast.makeText(FacebookLoginActivity.this, "signup success", Toast.LENGTH_LONG).show();
+
+						}
+					} catch (JSONException e2) {
+						e2.printStackTrace();
+						Toast.makeText(FacebookLoginActivity.this, "error:"+e2.getMessage().toString(), Toast.LENGTH_LONG).show();
+					
+					}              	  
+
+                  break;
+                  case GET_FB_FRIEND:
+					friend_result=(String) msg.obj;
+					Log.d("raw_result_1",friend_result);
+                 	JSONObject result_json1=null;
+    				try {
+    					result_json1=new JSONObject( friend_result);
+    					if(result_json1.has("error")){
+    						global_setting.close_progress_dialog();
+    						Toast.makeText(FacebookLoginActivity.this, "error:"+result_json1.getString("error"), Toast.LENGTH_LONG).show();
+    					}
+    					else{
+    						sync_fb_friend_start();
+    					}
+    				} catch (Exception e1) {
+    					global_setting.close_progress_dialog();
+    					e1.printStackTrace();
+						Toast.makeText(FacebookLoginActivity.this, "error:"+e1.getMessage().toString(), Toast.LENGTH_LONG).show();
+    				}
+    				
+    			  break;
+                  case SYNC_FB_FRIEND:
+    					global_setting.close_progress_dialog();
+						Log.d("raw_result_2",(String) msg.obj);
+	    		  break;
+                  }
             }
          };
+         
+         
+         getFriendButton.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					fb_user_login();
+				}
+         });     
+         
+         getFriendButton2.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					fb_user_signup();
+				}
+         });      
          
          syncFbFriend.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
@@ -152,10 +209,25 @@ public class FacebookLoginActivity extends Activity {
          });     
     }
     
+    private void fb_user_login(){
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("fbid", fbid ));
+		params.add(new BasicNameValuePair("fb_access", access_token ));
+		new HttpApplication(global_setting.site_url+"user/fb_login",params,mHandler,FB_LOGIN).startHttp();
+    }
+    private void fb_user_signup(){
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("fbid", fbid ));
+		params.add(new BasicNameValuePair("fb_access", access_token ));
+		params.add(new BasicNameValuePair("id", signupEdit.getText().toString() ));
+		new HttpApplication(global_setting.site_url+"user/fb_signup",params,mHandler,FB_SIGNUP).startHttp();
+    }
+    
     private void get_fb_friend_start(){
 		global_setting.show_progress_dialog(FacebookLoginActivity.this, null, "同步facebook好友中", true);
 		new HttpApplication(URL_PREFIX_FRIENDS+access_token,mHandler,GET_FB_FRIEND).startHttp();
     }
+    
     private void sync_fb_friend_start(){
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("id1", "mark" ));
@@ -194,16 +266,15 @@ public class FacebookLoginActivity extends Activity {
         if (session.isOpened()) {
             
         	
-        	textInstructionsOrLink.setText(URL_PREFIX_FRIENDS + session.getAccessToken());
+        	//textInstructionsOrLink.setText(URL_PREFIX_FRIENDS + session.getAccessToken());
         	access_token=session.getAccessToken();
-            
             buttonLoginLogout.setText(R.string.logout);
             buttonLoginLogout.setOnClickListener(new OnClickListener() {
             	
             	public void onClick(View view) { onClickLogout(); }
             });
         } else {
-            textInstructionsOrLink.setText(R.string.instructions);
+            //textInstructionsOrLink.setText(R.string.instructions);
             buttonLoginLogout.setText(R.string.login);
             buttonLoginLogout.setOnClickListener(new OnClickListener() {
                 public void onClick(View view) { onClickLogin(); }
@@ -252,6 +323,7 @@ public class FacebookLoginActivity extends Activity {
                         if (user != null) {
                             profilePictureView.setProfileId(user.getId());
                             userNameView.setText(user.getName());
+                            fbid=user.getId();
                         }
                     }
                     if (response.getError() != null) {

@@ -31,7 +31,7 @@ public class MyCustomPanel extends View {
     private int df_size_text;
     private int df_size_dot;
     
-    
+    //private boolean path_complete=false;
     
     public MyCustomPanel (Context context, AttributeSet attrs){
         super(context,attrs);
@@ -66,14 +66,16 @@ public class MyCustomPanel extends View {
     	
     	bitmapCanvas.drawBitmap(bitmap, bitmap_size, canvas_size, null); 
 
-    	temp_path=new Path();
+    	//temp_path=new Path();
     	
+    	temp_path=null;
+
     	for(int i=0;i<drawData.size();i++){
     		drawData.get(i).mydraw();
     	}
-
-    	bitmapCanvas.drawPath(temp_path, pathPaint);
-
+    	if(temp_path!=null){
+    		bitmapCanvas.drawPath(temp_path, pathPaint);
+    	}
     	canvas.drawBitmap(wallPaperBitmap,wbitmap_size , canvas_size, null); 
 
     }
@@ -114,6 +116,7 @@ public class MyCustomPanel extends View {
 		}
     	public void mydraw(){
         	temp_path=new Path();
+        	//path_complete=false;
     		Log.d("draw start","x:"+x+" y"+y);
             pathPaint.setStrokeWidth((float) width);
             pathPaint.setStyle(Style.STROKE); 
@@ -129,6 +132,8 @@ public class MyCustomPanel extends View {
     	public void mydraw(){
     		super.mydraw();
     		bitmapCanvas.drawPath(temp_path, pathPaint);
+        	//path_complete=true;
+        	temp_path=null;
     	}
     }
     public class MyText extends MyCustomPanel.MyDot {
@@ -150,7 +155,7 @@ public class MyCustomPanel extends View {
     		y-=bounds.centerY();
     	}
     	public void mydraw(){
-    		temp_path=new Path();
+    		//temp_path=new Path();
         	pathPaint.setTextSize(size);
             pathPaint.setStyle(Style.FILL); 
             pathPaint.setColor(c);
