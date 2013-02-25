@@ -158,25 +158,9 @@ public class ReceiveActivity extends Activity {
 			                    Toast.makeText(ReceiveActivity.this, "error: "+e.getMessage().toString(), Toast.LENGTH_LONG).show();
 							}
 
-        			        /*new AlertDialog.Builder(ReceiveActivity.this)
-        			        .setMessage("Are you sure to open this message?")
-        			        .setPositiveButton("Yes" ,
-        			                new DialogInterface.OnClickListener() {
-        			                    public void onClick(DialogInterface dialog, int which) {
-        			                    	        			                    }   
-        			                })  
-        			         .setNegativeButton("No",                    
-        			                 new DialogInterface.OnClickListener() {
-        			                    public void onClick(DialogInterface dialog, int which) {
-        			                }   
-        			         }) 
-        			         .show();*/
-                    		//Log.d("this_status","long_click_true");
-
         			        return true;
                         }                    
                 } catch (JSONException e) {
-                        // TODO Auto-generated catch block
                         Toast.makeText(ReceiveActivity.this, "error: "+e.getMessage().toString(), Toast.LENGTH_LONG).show();
                 }
         		//Log.d("this_status","long_click_false");

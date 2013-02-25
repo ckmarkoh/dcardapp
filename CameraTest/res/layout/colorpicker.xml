@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+<View android:id="@+id/ColorPreView"
+        android:layout_width="fill_parent" 
+    	android:layout_height="40dp"
+    />
+<TableLayout  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:stretchColumns="1">
+	<TableRow android:id="@+id/TableRowRed" 
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content" >
+	<TextView android:layout_margin="5dp" 
+	    android:text="R" 
+	    android:id="@+id/TextViewRed" 
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"></TextView>
+	<SeekBar  android:layout_margin="5dp"  
+	    android:max="255"  
+	    android:id="@+id/SeekBarRed" 
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"></SeekBar>
+	<TextView android:layout_margin="5dp" 
+	    android:text="" 
+	    android:id="@+id/EditTextRed" 
+	    android:layout_width="40dp" 
+	    android:layout_height="40dp"/>
+</TableRow>
+
+<TableRow android:id="@+id/TableRowGreen" 
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content" >
+	<TextView android:layout_margin="5dp" 
+	    android:text="G" 
+	    android:id="@+id/TextViewGreen" 
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"></TextView>
+	<SeekBar  android:layout_margin="5dp" 
+	    android:max="255"
+	    android:id="@+id/SeekBarGreen" 
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"></SeekBar>
+	<TextView android:layout_margin="5dp" 
+	    android:text="" 
+	    android:id="@+id/EditTextGreen" 
+	    android:layout_width="40dp" 
+	    android:layout_height="40dp"/>
+</TableRow>
+
+<TableRow android:id="@+id/TableRowBlue" 
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content" >
+	<TextView android:layout_margin="5dp" 
+	    android:text="B" 
+	    android:id="@+id/TextViewBlue" 
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"></TextView>
+	<SeekBar  android:layout_margin="5dp" 
+	    android:max="255" 
+	    android:id="@+id/SeekBarBlue" 
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"></SeekBar>
+	<TextView android:layout_margin="5dp" 
+	    android:text="" 
+	    android:id="@+id/EditTextBlue" 
+	    android:layout_width="40dp" 
+	    android:layout_height="40dp"/>
+</TableRow>
+</TableLayout>
+</LinearLayout>

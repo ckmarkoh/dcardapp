@@ -16,26 +16,34 @@ import android.view.Display;
 import android.view.View;
 import com.ntugiee.markchang.cameratest.MyPair;
 public class MyCustomPanel extends View {
-    private Paint paint;// = new Paint();
+    private Paint pathPaint;
+   // private Paint textPaint;
     public ArrayList<Long> pathData = new ArrayList<Long>();
     public ArrayList<MyPair<String,Long> > textData = new ArrayList<MyPair<String,Long> >();
+    public ArrayList<MyDot > drawData = new ArrayList<MyDot >();
 
     public Bitmap bitmap;
     public Bitmap wallPaperBitmap;
     public Canvas bitmapCanvas;
-    
+    public Path temp_path;
     private int this_height;
     private int this_width;
+    private int df_size_text;
+    private int df_size_dot;
     
-    public MyCustomPanel (Context context, AttributeSet attrs){//,int wallpaperWidth,int wallpaperHeight) {
+    
+    
+    public MyCustomPanel (Context context, AttributeSet attrs){
         super(context,attrs);
-        paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setColor(Color.BLACK);
-        paint.setStrokeWidth((float) 3.0);
-        paint.setStyle(Style.STROKE); 
-
+        pathPaint = new Paint();
+        pathPaint.setAntiAlias(true);
         
+      //  textPaint = new Paint();
+      //  textPaint.setAntiAlias(true);
+        //Dotpaint.setColor(Color.BLACK);
+        //Dotpaint.setStrokeWidth((float) 3.0);
+        //Dotpaint.setStyle(Style.STROKE); 
+
     }
 
     @Override
@@ -45,64 +53,109 @@ public class MyCustomPanel extends View {
        this_height=getHeight();
        this_width=getWidth ();
        bitmapCanvas = new Canvas(wallPaperBitmap);    
+       df_size_text=(this_width+this_height)/15;
+       df_size_dot=(this_width+this_height)/150;
    }
+    
     
     @Override
     public void onDraw(Canvas canvas) {
     	Rect bitmap_size= new Rect(0,0,bitmap.getWidth(),bitmap.getHeight());
+    	Rect wbitmap_size= new Rect(0,0,wallPaperBitmap.getWidth(),wallPaperBitmap.getHeight());
     	Rect canvas_size= new Rect(0,0,this_width,this_height);
-    	canvas.drawBitmap(bitmap,bitmap_size , canvas_size, null); 
+    	
     	bitmapCanvas.drawBitmap(bitmap, bitmap_size, canvas_size, null); 
 
+    	temp_path=new Path();
     	
-    	Path temp_path=new Path();
-    	int i=0;
-        paint.setStyle(Style.STROKE); 
-        
-        while(i<pathData.size()){
-        	//Path temp_path=PathDate.get(i);
-        	long positionXY = pathData.get(i);
-			if(positionXY==9999){
-				i++;
-            	positionXY = pathData.get(i);
+    	for(int i=0;i<drawData.size();i++){
+    		drawData.get(i).mydraw();
+    	}
 
-            	temp_path.moveTo((int)(positionXY/10000), (int) (positionXY%10000));
-            	temp_path.lineTo((int)(positionXY/10000), (int) (positionXY%10000));
-            	i++;
-			}
-			else{
-				positionXY = pathData.get(i);
+    	bitmapCanvas.drawPath(temp_path, pathPaint);
 
-				temp_path.lineTo((int)(positionXY/10000), (int) (positionXY%10000));
-
-				i++;
-			}
-        }
-    	//canvas.drawBitmap(bitmap, 0, 0, null); 
-    	canvas.drawPath(temp_path, paint);
-    	
-    	//bitmapCanvas.drawBitmap(bitmap, 0, 0, null); 
-    	bitmapCanvas.drawPath(temp_path, paint);
-    	
-    	
-    	i=0;
-    	paint.setTextSize(25);
-        paint.setStyle(Style.FILL); 
-        while(i<textData.size()){
-        	//Path temp_path=PathDate.get(i);
-        	MyPair<String,Long> mypair = textData.get(i);
-        	long positionXY =  mypair.getRight();
-        	        	/* 建立文字訊息 */
-        	/* drawText (String text, float x, float y, Paint paint)*/
-        	canvas.drawText(mypair.getLeft(),(positionXY/10000),(positionXY%10000),paint);
-        	bitmapCanvas.drawText(mypair.getLeft(),(positionXY/10000),(positionXY%10000),paint);
-        	
-
-        	
-			i++;
-        }
+    	canvas.drawBitmap(wallPaperBitmap,wbitmap_size , canvas_size, null); 
 
     }
+    
+    public void addStart(int x, int y,int c){
+    	drawData.add(new MyStart(x,y,c));
+    }
+    public void addDot(int x, int y){
+    	drawData.add(new MyDot(x,y));
+    }
+    public void addEnd(int x, int y){
+    	drawData.add(new MyEnd(x,y));
+    }
+    public void addText(int x, int y,int c,String s){
+    	drawData.add(new MyText(x,y,c,s));
+    }
 
-
+    public class MyDot {
+    	protected int x;
+    	protected int y;
+    	MyDot(int x,int y){
+    		this.x=x;
+    		this.y=y;
+    	}
+    	public void mydraw(){
+    		temp_path.lineTo(x,y);
+    		Log.d("draw","x:"+x+" y"+y);
+    	}
+    }
+    public class MyStart extends MyCustomPanel.MyDot {
+    	//private a;
+    	private int c;
+    	private int width;
+		MyStart(int x, int y,int c) {
+			super(x, y);
+			this.c=c;
+			this.width=df_size_dot;
+		}
+    	public void mydraw(){
+        	temp_path=new Path();
+    		Log.d("draw start","x:"+x+" y"+y);
+            pathPaint.setStrokeWidth((float) width);
+            pathPaint.setStyle(Style.STROKE); 
+            pathPaint.setColor(c);
+			temp_path.moveTo(x,y);
+    		super.mydraw();
+    	}
+    }
+    public class MyEnd extends MyCustomPanel.MyDot {
+    	MyEnd(int x, int y) {
+			super(x, y);
+		}
+    	public void mydraw(){
+    		super.mydraw();
+    		bitmapCanvas.drawPath(temp_path, pathPaint);
+    	}
+    }
+    public class MyText extends MyCustomPanel.MyDot {
+    	private String s;
+    	private int c;
+    	private int size;
+    	MyText(int x, int y,int c,String s) {
+			super(x, y);
+			this.s=s;
+			this.c=c;
+			this.size=df_size_text;
+			toCenter();
+		}
+    	public void toCenter(){
+        	Rect bounds=new Rect();
+        	pathPaint.setTextSize(size);
+        	pathPaint.getTextBounds(s, 0, s.length(), bounds);
+    		x-=bounds.centerX();
+    		y-=bounds.centerY();
+    	}
+    	public void mydraw(){
+    		temp_path=new Path();
+        	pathPaint.setTextSize(size);
+            pathPaint.setStyle(Style.FILL); 
+            pathPaint.setColor(c);
+            bitmapCanvas.drawText(s,x,y,pathPaint);
+    		Log.d("draw","text x:"+x+" y"+y);
+    	}
+    }
 }

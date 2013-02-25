@@ -39,10 +39,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -50,14 +52,20 @@ import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class CameraImgActivity extends Activity {
 	private Uri outputFileUri;
 	private Button nextButton;
 
 	private Button drawButton;
-	private Button cancelButton;
+	private Button clearButton;
+	private Button hourGlasslButton;
+	private Button textBut;
+	private Button colorBut;
 
 	private ImageView ivTest;
 	
@@ -70,10 +78,50 @@ public class CameraImgActivity extends Activity {
 
     private MyCustomPanel mypanelview;
     private OnTouchListener panel_on_touch;
+    private String timeout=null;
     private int x=0;
     private int y=0;
-
+    
+    
+    private SeekBar setTimeOutBar;
+    private TextView setTimeOutValue;
+    private TextView timeOutValue;
 	
+    private AlertDialog timeoutDialog;
+    private View timeoutDialogView;
+
+    
+    private int color_r=0;
+    private int color_g=0;
+    private int color_b=0;
+	private SeekBar redSeekBar;
+	private SeekBar greenSeekBar;
+	private SeekBar blueSeekBar;
+	private TextView redEditText;
+	private TextView greenEditText;
+	private TextView blueEditText;
+	private View colorPreView;
+	
+	private int redProgress = 0;
+	private int greenProgress = 0;
+	private int  blueProgress = 0;
+  
+    
+    private AlertDialog colorChooseDialog;
+    private View colorPickerView;
+    private OnSeekBarChangeListener OnSeekBarProgress;
+    
+    private String text_content;
+    private AlertDialog textEditDialog;
+	private EditText drawEditText;
+    private int pos_x;
+    private int pos_y;
+
+    
+    private AlertDialog clearDrawDialog;
+
+    
+    private DialogInterface.OnDismissListener dismissInvalidate;
 	//private EditText filename; 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,17 +129,198 @@ public class CameraImgActivity extends Activity {
 		setContentView(R.layout.camera_img);
 		
         global_setting = ((Global_Setting)getApplicationContext());
-		Bitmap bitmap=global_setting.bitmap;
-
 		//ivTest = (ImageView)findViewById(R.id.ivTest);
 		//filename=(EditText)findViewById(R.id.fileEdit);
 		nextButton = (Button)findViewById(R.id.CINextButton);
 		//cameraButton = (Button)findViewById(R.id.CameraButton);
 		drawButton = (Button)findViewById(R.id.CIDrawButton);
-		cancelButton = (Button)findViewById(R.id.CICancelButton);
+		hourGlasslButton = (Button)findViewById(R.id.CIHourGlasslButton);
+		//textBut = (Button)findViewById(R.id.CITextButton);
+		colorBut = (Button)findViewById(R.id.CIColorButton);
+
+		
+		
+		clearButton = (Button)findViewById(R.id.CICancelButton);
 		panel_state=PANEL_STATE_NONE;
         mypanelview = (MyCustomPanel)findViewById(R.id.ivTest);
+        mypanelview.bitmap=global_setting.bitmap;
 
+        
+        LayoutInflater inflater = LayoutInflater.from(CameraImgActivity.this);
+        timeoutDialogView = inflater.inflate(R.layout.image_timeout,null);
+        
+        setTimeOutBar = (SeekBar)timeoutDialogView.findViewById(R.id.SetTimeOutBar);  
+        setTimeOutValue = (TextView)timeoutDialogView.findViewById(R.id.SetTimeOutView);  
+        timeOutValue =  (TextView)findViewById(R.id.CITextView);  
+
+        
+        
+        AlertDialog.Builder timeoutBuilder=new AlertDialog.Builder(CameraImgActivity.this)
+	      .setMessage("請選擇圖片消逝的時間")
+	      .setView(timeoutDialogView)
+	      .setPositiveButton("確定" ,
+              new DialogInterface.OnClickListener() {
+	                    public void onClick(DialogInterface dialog, int which) {
+  	      	    		 timeOutValue.setText(timeout+"秒"); 
+                  }   
+              })  
+       .setNegativeButton("取消",                    
+               new DialogInterface.OnClickListener() {
+                  public void onClick(DialogInterface dialog, int which) {
+              }   
+       }) ;
+        timeoutDialog=timeoutBuilder.create();
+        
+        setTimeOutBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){  
+        	   public void onProgressChanged(SeekBar seekBar, int progress,  
+        	     boolean fromUser) {  
+        		   timeout=String.valueOf(progress+1);
+        		   setTimeOutValue.setText(timeout+"秒"); 
+        	   }  
+        	   public void onStartTrackingTouch(SeekBar seekBar) {  
+        		   
+        	   }  
+        	   public void onStopTrackingTouch(SeekBar seekBar) {  
+
+        	   }  
+        });  	
+        
+        
+        
+        
+        colorPickerView = inflater.inflate(R.layout.colorpicker,null);
+        
+        AlertDialog.Builder colorChooseBuilder=new AlertDialog.Builder(CameraImgActivity.this)
+	      .setMessage("請選擇顏色")
+	      .setView(colorPickerView)
+	      .setPositiveButton("確定" ,
+              new DialogInterface.OnClickListener() {
+	                    public void onClick(DialogInterface dialog, int which) {
+	                    	color_r=redProgress;
+	                    	color_g=greenProgress;
+	                    	color_b=blueProgress;
+	                    }
+              })  
+       .setNegativeButton("取消",                    
+               new DialogInterface.OnClickListener() {
+                  public void onClick(DialogInterface dialog, int which) {
+              }   
+       }) ;
+        colorChooseDialog=colorChooseBuilder.create();
+
+        colorPreView = (View) colorPickerView.findViewById(R.id.ColorPreView);
+        //Seekbars
+        redSeekBar = (SeekBar) colorPickerView.findViewById(R.id.SeekBarRed);
+        greenSeekBar = (SeekBar) colorPickerView.findViewById(R.id.SeekBarGreen);
+        blueSeekBar = (SeekBar) colorPickerView.findViewById(R.id.SeekBarBlue);
+        //EditTexts
+        redEditText = (TextView) colorPickerView.findViewById(R.id.EditTextRed);
+        greenEditText = (TextView) colorPickerView.findViewById(R.id.EditTextGreen);
+        blueEditText = (TextView) colorPickerView.findViewById(R.id.EditTextBlue);
+        OnSeekBarProgress =new OnSeekBarChangeListener() {
+            	public void onProgressChanged(SeekBar s, int progress, boolean touch){
+                	if(touch){
+                	if(s == redSeekBar){
+	            		redProgress = progress;
+	            		redEditText.setText(Integer.toString(redProgress));
+                	}
+                	if(s == greenSeekBar ){
+	            		greenProgress = progress;
+	            		greenEditText.setText(Integer.toString(greenProgress));
+                	}
+                	if(s == blueSeekBar ){
+	            		blueProgress = progress;
+	            		blueEditText.setText(Integer.toString(blueProgress));
+                	}
+	                	int color = Color.rgb(redProgress, greenProgress, blueProgress);
+	                	colorPreView.setBackgroundColor(color);
+                	}
+            	}
+            	public void onStartTrackingTouch(SeekBar s){
+            	}
+
+            	public void onStopTrackingTouch(SeekBar s){
+            	}
+            };
+        redSeekBar.setOnSeekBarChangeListener(OnSeekBarProgress);
+        greenSeekBar.setOnSeekBarChangeListener(OnSeekBarProgress);
+        blueSeekBar.setOnSeekBarChangeListener(OnSeekBarProgress);
+        colorBut.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View view) {
+        			colorChooseDialog.show();
+		        }
+        }); 
+        drawEditText = new EditText(CameraImgActivity.this);
+
+        
+        dismissInvalidate=new DialogInterface.OnDismissListener(){
+        	public void onDismiss(DialogInterface dialog){
+        		mypanelview.invalidate();
+        	}
+        };
+        AlertDialog.Builder drawTextBuilder=new AlertDialog.Builder(CameraImgActivity.this)
+   		.setTitle("加入文字")
+   		.setMessage("請輸入你想要加入的文字：")
+   		.setView(drawEditText)
+	        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+		    // do something when the button is clicked
+		    public void onClick(DialogInterface arg0, int arg1) {
+		    		text_content=drawEditText.getText().toString();  
+		    		mypanelview.addText( pos_x ,pos_y , Color.rgb(color_r, color_g, color_b),text_content);
+		    		//text_content=editText.getText().toString();  
+		    		}
+	        	}
+		    )
+   	    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		          // do something when the button is clicked
+		    public void onClick(DialogInterface arg0, int arg1) {
+		    	//...
+		     	}
+		    });
+        textEditDialog=drawTextBuilder.create();
+        textEditDialog.setOnDismissListener(dismissInvalidate);
+
+        AlertDialog.Builder clearDrawBuilder=new AlertDialog.Builder(CameraImgActivity.this)
+        .setMessage("你確定要清掉所有筆跡？")
+        .setPositiveButton("是" ,
+                new DialogInterface.OnClickListener() {
+	                    public void onClick(DialogInterface dialog, int which) {
+	                    	mypanelview.drawData.clear();
+	                    }   
+                })  
+         .setNegativeButton("否",                    
+                 new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                }   
+         }) ;
+        clearDrawDialog=clearDrawBuilder.create();
+        clearDrawDialog.setOnDismissListener(dismissInvalidate);
+
+        
+        /*textBut.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View view) {
+      		   final EditText editText = new EditText(CameraImgActivity.this);
+   		        new AlertDialog.Builder(CameraImgActivity.this)
+         		.setTitle("加入文字")
+         		.setMessage("請輸入你想要加入的文字：")
+         		.setView(editText)
+   		        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+         		    // do something when the button is clicked
+         		    public void onClick(DialogInterface arg0, int arg1) {
+         		    	text_content=editText.getText().toString();
+                 		panel_state=PANEL_STATE_TEXT;
+         		     	}
+         		    })
+         	    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+         		          // do something when the button is clicked
+         		    public void onClick(DialogInterface arg0, int arg1) {
+         		    	//...
+         		     	}
+         		    })
+         		.show();
+         		
+         	}
+         });*/
         /*Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
         String encodedString = bundle.getString("img");
@@ -99,37 +328,57 @@ public class CameraImgActivity extends Activity {
         byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
         mypanelview.bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
 		*/
-        mypanelview.bitmap=bitmap;//BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        //BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         
-		cancelButton.setOnClickListener( new View.OnClickListener() {
+		clearButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {  
-			        new AlertDialog.Builder(CameraImgActivity.this)
-			        .setMessage("Are you sure to confirm this friend?")
-			        .setPositiveButton("Yes" ,
+				if(mypanelview.drawData.isEmpty()){
+    				setResult( RESULT_OK );
+    				finish();
+				}
+				else{
+					new AlertDialog.Builder(CameraImgActivity.this)
+			        .setMessage("你確定要清掉所有筆跡？")
+			        .setPositiveButton("是" ,
 			                new DialogInterface.OnClickListener() {
 				                    public void onClick(DialogInterface dialog, int which) {
-				        				setResult( RESULT_OK );
-				        				finish();
-			                    }   
+				                    	mypanelview.drawData.clear();
+				                    }   
 			                })  
-			         .setNegativeButton("No",                    
+			         .setNegativeButton("否",                    
 			                 new DialogInterface.OnClickListener() {
 			                    public void onClick(DialogInterface dialog, int which) {
 			                }   
 			         }) 
-			         .show();
+			         .show();       
+				}
 			}
 		});
 		
 		
 		drawButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
-        		panel_state=PANEL_STATE_DRAW;
-       
+        		if(panel_state==PANEL_STATE_DRAW){
+        			panel_state=PANEL_STATE_TEXT;
+        			drawButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.keyboard_button_x));
                 }
-        });   
-		
+        		else if(panel_state==PANEL_STATE_TEXT){
+        			drawButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.pencil_button_x));
+            		panel_state=PANEL_STATE_DRAW;
+            		
+        		}
+        		else{
+        			drawButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.pencil_button_x));
+            		panel_state=PANEL_STATE_DRAW;
 
+        		}
+        	}
+        });   
+		hourGlasslButton.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View view) {
+        			timeoutDialog.show();
+		        }
+        });  
 		
 	/*	nextButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {    
@@ -143,88 +392,54 @@ public class CameraImgActivity extends Activity {
         	final Intent intent = new Intent(CameraImgActivity.this, CameraFriendActivity.class);
         	String ba1=encode_bitmap();
 			intent.putExtra("img", ba1);
+			intent.putExtra("timeout", timeout);
+			
 			startActivity(intent);
 			setResult( RESULT_OK );
 			finish();
     		}
 	    });	
-	    /*nextButton.setOnClickListener(new View.OnClickListener() {
-        	public void onClick(View view) {
-       		String ba1=encode_bitmap();
-			HttpPost request = new HttpPost("http://r444b.ee.ntu.edu.tw/dctest/index.php?/msg/insert_img");
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("image",ba1));
-			params.add(new BasicNameValuePair("session", global_setting.session));
-			params.add(new BasicNameValuePair("userid", global_setting.userid));			
-			params.add(new BasicNameValuePair("sender", global_setting.userid));
-			//params.add(new BasicNameValuePair("message", msgEdit.getText().toString()));
-			params.add(new BasicNameValuePair("receiver", global_setting.target_receiver));
-			params.add(new BasicNameValuePair("timeout", "5"));
-			
-			try {
-				request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-				HttpResponse response = new DefaultHttpClient().execute(request);
-				if(response.getStatusLine().getStatusCode() == 200){
-					String raw_result = EntityUtils.toString(response.getEntity());
-					Toast.makeText(CameraImgActivity.this, "送出成功", Toast.LENGTH_LONG).show();
-					Log.d("success",raw_result);
-					//mypanelview=null;
-					//bitmap=null;
-					setResult( RESULT_OK );					
-					finish();
-					//String result = EntityUtils.toString(response.getEntity());
-					//Toast.makeText(PhptestActivity.this, result, Toast.LENGTH_LONG).show();
-				}
-			} catch (Exception e) {
-				Toast.makeText(CameraImgActivity.this, e.getMessage().toString(), Toast.LENGTH_LONG).show();
-				e.printStackTrace();
-			}
-              
-        	}
-        });*/
-    	
-		
-	    /*cameraButton.setOnClickListener(new View.OnClickListener() {
-        	public void onClick(View view) {
-               }
-        });*/ 
+	    
         panel_on_touch= new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
             	//long positionXY;
+            	
             	switch (panel_state){
             	case PANEL_STATE_DRAW:
                     switch(event.getAction())
                     {
                     case MotionEvent.ACTION_DOWN:
                         //positionXY=(long) (9999);
-                        mypanelview.pathData.add((long) (9999));
+                        mypanelview.addStart(  (int) event.getX(), (int)event.getY(),Color.rgb(color_r, color_g, color_b));
                         //x =(int) event.getX();
                         //y = (int)event.getY();
                         //positionXY=store_coordinate((int) event.getX(),(int)event.getY());
-                        mypanelview.pathData.add(store_coordinate((int) event.getX(),(int)event.getY()));
+                        mypanelview.addDot(  (int) event.getX(), (int)event.getY());
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        mypanelview.pathData.add(store_coordinate((int) event.getX(),(int)event.getY()));
-        				v.invalidate();
+                        mypanelview.addDot(  (int) event.getX(), (int)event.getY());
+                        mypanelview.invalidate();
                         break;
                     case MotionEvent.ACTION_UP:
-                    	v.invalidate();
+                        mypanelview.addEnd(  (int) event.getX(), (int)event.getY());
+                        mypanelview.invalidate();
                         break;
                     }
                     break;
-            	/*case PANEL_STATE_TEXT:
+            	case PANEL_STATE_TEXT:
                     switch(event.getAction())
                     {
                     case MotionEvent.ACTION_DOWN:
-                    	
-                    	MyPair<String,Long> mypair= 
-                    		new MyPair<String,Long>(text_content,store_coordinate((int) event.getX(),(int)event.getY()));
-                    		mypanelview.textData.add(mypair);
-                    		v.invalidate();
+                    	pos_x=(int) event.getX();
+                    	pos_y=(int)event.getY();
+                    	textEditDialog.show();
+	               		//.show();
+                        break;
+                    case MotionEvent.ACTION_UP:
                         break;
                     } 		
-                    break;*/
+                    break;
             	default:
             		break;
             	}
@@ -267,4 +482,14 @@ public class CameraImgActivity extends Activity {
 		super.onPause();
 
     }
+    @Override
+    public void onResume(){
+		super.onResume();
+		   timeout="5";
+		   setTimeOutValue.setText(timeout+"秒"); 
+		   timeOutValue.setText(timeout+"秒"); 
+
+    }
+     
+
 }

@@ -11,9 +11,10 @@
         android:layout_above="@+id/CIrelativeLayout2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        
       />--> 
 
-      <com.ntugiee.markchang.dcardapp.util.MyCustomPanel
+              <com.ntugiee.markchang.dcardapp.util.MyCustomPanel
         android:id="@+id/ivTest"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -51,10 +52,29 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/cancel_button_x"
             />
+                <!--  <Button
+            android:id="@+id/CITextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="80dp"
+            android:text="text"
+            />-->
+        
+
+                
 
     </RelativeLayout>
     
-
+        <Button
+            android:id="@+id/CIColorButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+        	android:layout_above="@+id/CIrelativeLayout2"
+            android:background="@drawable/palette_button_x"
+            />
     <!--  -<EditText
         android:id="@+id/fileEdit"
         android:layout_width="fill_parent"

@@ -36,6 +36,7 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -44,8 +45,12 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+
 import com.ntugiee.markchang.cameratest.MyCustomPanel;
 
 public class EditImageActivity extends Activity {
@@ -55,6 +60,7 @@ public class EditImageActivity extends Activity {
 	private Button b1;
 	private Button b2;
 	private Button b3;
+	private Button b4;
 
     //private MyCustomPanel ivEdit;
     //private Bitmap bitmap;
@@ -75,7 +81,33 @@ public class EditImageActivity extends Activity {
     private int panel_state;
     
     private String text_content;
+    
+    private int color_r=0;
+    private int color_g=0;
+    private int color_b=0;
+	private SeekBar redSeekBar;
+	private SeekBar greenSeekBar;
+	private SeekBar blueSeekBar;
+	private TextView redEditText;
+	private TextView greenEditText;
+	private TextView blueEditText;
+	private View colorPreView;
+	private int redProgress = 0;
+	private int greenProgress = 0;
+	private int  blueProgress = 0;
+  
+    
+    private AlertDialog colorChooseDialog;
+    private AlertDialog textEditDialog;
+	private EditText drawEditText;
+    private int pos_x;
+    private int pos_y;
+
+    private View colorPickerView;
+
+    
     /** Called when the activity is first created. */
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +115,8 @@ public class EditImageActivity extends Activity {
         b1 = (Button)findViewById(R.id.EditButton1);
         b2 = (Button)findViewById(R.id.EditButton2);
         b3 = (Button)findViewById(R.id.EditButton3);
-        
+        b4 = (Button)findViewById(R.id.EditButton4);
+
         
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
@@ -99,6 +132,76 @@ public class EditImageActivity extends Activity {
         mypanelview.bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
 
         
+        
+        
+        LayoutInflater inflater = LayoutInflater.from(EditImageActivity.this);
+        colorPickerView = inflater.inflate(R.layout.colorpicker,null);
+        
+        AlertDialog.Builder builder=new AlertDialog.Builder(EditImageActivity.this)
+	      .setMessage("請選擇顏色")
+	      .setView(colorPickerView)
+	      .setPositiveButton("確定" ,
+              new DialogInterface.OnClickListener() {
+	                    public void onClick(DialogInterface dialog, int which) {
+	                    	color_r=redProgress;
+	                    	color_g=greenProgress;
+	                    	color_b=blueProgress;
+	                    }
+              })  
+       .setNegativeButton("取消",                    
+               new DialogInterface.OnClickListener() {
+                  public void onClick(DialogInterface dialog, int which) {
+              }   
+       }) ;
+		   
+        drawEditText = new EditText(EditImageActivity.this);
+
+        AlertDialog.Builder builder2=new AlertDialog.Builder(EditImageActivity.this)
+   		.setTitle("加入文字")
+   		.setMessage("請輸入你想要加入的文字：")
+   		.setView(drawEditText)
+	        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+		    // do something when the button is clicked
+		    public void onClick(DialogInterface arg0, int arg1) {
+		    		text_content=drawEditText.getText().toString();  
+		    		mypanelview.addText( pos_x ,pos_y , Color.rgb(color_r, color_g, color_b),text_content);
+		    		//text_content=editText.getText().toString();  
+		    		}
+	        	}
+		    )
+   	    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		          // do something when the button is clicked
+		    public void onClick(DialogInterface arg0, int arg1) {
+		    	//...
+		     	}
+		    });
+        textEditDialog=builder2.create();
+        textEditDialog.setOnDismissListener(new DialogInterface.OnDismissListener(){
+        	public void onDismiss(DialogInterface dialog){
+        		mypanelview.invalidate();
+        	}
+        });
+        colorPreView = (View) colorPickerView.findViewById(R.id.ColorPreView);
+        //Seekbars
+        redSeekBar = (SeekBar) colorPickerView.findViewById(R.id.SeekBarRed);
+        greenSeekBar = (SeekBar) colorPickerView.findViewById(R.id.SeekBarGreen);
+        blueSeekBar = (SeekBar) colorPickerView.findViewById(R.id.SeekBarBlue);
+        //EditTexts
+        redEditText = (TextView) colorPickerView.findViewById(R.id.EditTextRed);
+        greenEditText = (TextView) colorPickerView.findViewById(R.id.EditTextGreen);
+        blueEditText = (TextView) colorPickerView.findViewById(R.id.EditTextBlue);
+        redSeekBar.setOnSeekBarChangeListener(OnSeekBarProgress);
+        greenSeekBar.setOnSeekBarChangeListener(OnSeekBarProgress);
+        blueSeekBar.setOnSeekBarChangeListener(OnSeekBarProgress);
+        colorChooseDialog=builder.create();
+        
+        
+		b4.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View view) {
+        			colorChooseDialog.show();
+		        }
+        });  
+        
         panel_on_touch= new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -110,18 +213,19 @@ public class EditImageActivity extends Activity {
                     {
                     case MotionEvent.ACTION_DOWN:
                         //positionXY=(long) (9999);
-                        mypanelview.pathData.add((long) (9999));
+                        mypanelview.addStart(  (int) event.getX(), (int)event.getY(),Color.rgb(color_r, color_g, color_b));
                         //x =(int) event.getX();
                         //y = (int)event.getY();
                         //positionXY=store_coordinate((int) event.getX(),(int)event.getY());
-                        mypanelview.pathData.add(store_coordinate((int) event.getX(),(int)event.getY()));
+                        mypanelview.addDot(  (int) event.getX(), (int)event.getY());
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        mypanelview.pathData.add(store_coordinate((int) event.getX(),(int)event.getY()));
-        				v.invalidate();
+                        mypanelview.addDot(  (int) event.getX(), (int)event.getY());
+                        mypanelview.invalidate();
                         break;
                     case MotionEvent.ACTION_UP:
-                    	v.invalidate();
+                        mypanelview.addEnd(  (int) event.getX(), (int)event.getY());
+                        mypanelview.invalidate();
                         break;
                     }
                     break;
@@ -129,11 +233,12 @@ public class EditImageActivity extends Activity {
                     switch(event.getAction())
                     {
                     case MotionEvent.ACTION_DOWN:
-                    	
-                    	MyPair<String,Long> mypair= 
-                    		new MyPair<String,Long>(text_content,store_coordinate((int) event.getX(),(int)event.getY()));
-                    		mypanelview.textData.add(mypair);
-                    		v.invalidate();
+                    	pos_x=(int) event.getX();
+                    	pos_y=(int)event.getY();
+                    	textEditDialog.show();
+	               		//.show();
+                        break;
+                    case MotionEvent.ACTION_UP:
                         break;
                     } 		
                     break;
@@ -160,25 +265,9 @@ public class EditImageActivity extends Activity {
         
         b2.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
-     		   final EditText editText = new EditText(EditImageActivity.this);
-  		        new AlertDialog.Builder(EditImageActivity.this)
-        		.setTitle("加入文字")
-        		.setMessage("請輸入你想要加入的文字：")
-        		.setView(editText)
-  		        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-        		    // do something when the button is clicked
-        		    public void onClick(DialogInterface arg0, int arg1) {
-        		    	text_content=editText.getText().toString();
-                		panel_state=PANEL_STATE_TEXT;
-        		     	}
-        		    })
-        	    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-        		          // do something when the button is clicked
-        		    public void onClick(DialogInterface arg0, int arg1) {
-        		    	//...
-        		     	}
-        		    })
-        		.show();
+        		panel_state=PANEL_STATE_TEXT;
+
+
         		
         	}
         });
@@ -218,5 +307,44 @@ public class EditImageActivity extends Activity {
     	
     	return (long) (x*10000+y);
     }
+    OnSeekBarChangeListener OnSeekBarProgress =
+        	new OnSeekBarChangeListener() {
+
+        	public void onProgressChanged(SeekBar s, int progress, boolean touch){
+        	
+            	if(touch){
+        	
+            	if(s == redSeekBar){
+        		
+        		redProgress = progress;
+        		redEditText.setText(Integer.toString(redProgress));
+            	}
+
+            	if(s == greenSeekBar ){
+        		greenProgress = progress;
+        		greenEditText.setText(Integer.toString(greenProgress));
+            	}
+
+            	if(s == blueSeekBar ){
+        		blueProgress = progress;
+        		blueEditText.setText(Integer.toString(blueProgress));
+            	}
+
+            	int color = Color.rgb(redProgress, greenProgress, blueProgress);
+        	
+            	colorPreView.setBackgroundColor(color);
+
+            	}
+            	
+        	}
+
+        	public void onStartTrackingTouch(SeekBar s){
+
+        	}
+
+        	public void onStopTrackingTouch(SeekBar s){
+
+        	}
+        };
 
 }

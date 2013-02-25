@@ -55,10 +55,10 @@ public class CameraFriendActivity extends Activity {
     //private String global_setting.userid;
     private String receiver="";
 
-   // private EditText msgEdit;
     private TextView receiverView;
     private String imgString;
-    
+    private String timeout;
+
     //private String timeout;
 	//ArrayList<HashMap<String,String>> mList = new ArrayList<HashMap<String,String>>();
 	ArrayList<String> fList=new ArrayList<String>();
@@ -76,6 +76,7 @@ public class CameraFriendActivity extends Activity {
         
 		Intent intent = this.getIntent();
 		imgString = intent.getStringExtra("img");
+		timeout = intent.getStringExtra("timeout");
 
         mcfRelativeLayout=(RelativeLayout) this.findViewById(R.id.MCFrelativeLayout2);
         mcfRelativeLayout.setVisibility(View.INVISIBLE);
@@ -170,7 +171,7 @@ public class CameraFriendActivity extends Activity {
 			params.add(new BasicNameValuePair("sender", global_setting.userid));
 			//params.add(new BasicNameValuePair("message", msgEdit.getText().toString()));
 			params.add(new BasicNameValuePair("receiver", receiverView.getText().toString()));
-			params.add(new BasicNameValuePair("timeout", "10"));
+			params.add(new BasicNameValuePair("timeout", timeout));
 			
 			try {
 				request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
