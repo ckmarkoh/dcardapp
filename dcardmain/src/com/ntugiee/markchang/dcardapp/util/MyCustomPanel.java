@@ -3,6 +3,8 @@ package com.ntugiee.markchang.dcardapp.util;
 import java.util.ArrayList;
 
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.MemoryInfo;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -48,9 +50,13 @@ public class MyCustomPanel extends View {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
        super.onWindowFocusChanged(hasFocus);
+              
        wallPaperBitmap = Bitmap.createBitmap( getWidth (), getHeight(), Bitmap.Config.ARGB_8888);
        this_height=getHeight();
        this_width=getWidth ();
+       
+       
+       
        bitmapCanvas = new Canvas(wallPaperBitmap);    
        df_size_text=(this_width+this_height)/15;
        df_size_dot=(this_width+this_height)/150;

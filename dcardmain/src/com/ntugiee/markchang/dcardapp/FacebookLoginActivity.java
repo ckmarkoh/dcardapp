@@ -44,6 +44,7 @@ import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,7 +71,7 @@ public class FacebookLoginActivity extends Activity {
     private Session.StatusCallback statusCallback = new SessionStatusCallback();
 	private Button getFriendButton;
 	private Button getFriendButton2;
-	private Button syncFbFriend;
+	private Button signUpFbButton;
 	private EditText signupEdit;
 	private String friend_result="";
 	private String access_token="";
@@ -79,7 +80,7 @@ public class FacebookLoginActivity extends Activity {
     private TextView userNameView;
 	private Global_Setting global_setting;
 	private Handler mHandler;
-	
+	private LinearLayout llayout;
 	protected static final int GET_FB_FRIEND = 0x00000001;
 	protected static final int SYNC_FB_FRIEND = 0x00000002;
 	protected static final int FB_LOGIN=0x00000003;
@@ -90,21 +91,25 @@ public class FacebookLoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.fb_login);
+		Log.d("FacebookLoginActivity","on_create");
+
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
 
-        buttonLoginLogout = (Button)findViewById(R.id.buttonLoginLogout);
-        textInstructionsOrLink = (TextView)findViewById(R.id.instructionsOrLink);
+        //buttonLoginLogout = (Button)findViewById(R.id.buttonLoginLogout);
+        //textInstructionsOrLink = (TextView)findViewById(R.id.instructionsOrLink);
 
-        getFriendButton = (Button) findViewById(R.id.getFbFriendButton);
-        getFriendButton2 = (Button) findViewById(R.id.getFbFriendButton2);
+        //getFriendButton = (Button) findViewById(R.id.getFbFriendButton);
+        signUpFbButton = (Button) findViewById(R.id.SignUpSubmit);
         userNameView = (TextView) findViewById(R.id.selection_user_name);
         profilePictureView = (ProfilePictureView) findViewById(R.id.selection_profile_pic);
         profilePictureView.setCropped(true);
         global_setting = ((Global_Setting)getApplicationContext());
-        syncFbFriend = (Button) findViewById(R.id.syncFbFriend);
+        //syncFbFriend = (Button) findViewById(R.id.syncFbFriend);
         Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
         signupEdit  = (EditText) findViewById(R.id.SignUpID);
-        
+        llayout = (LinearLayout) findViewById(R.id.FBSignUpLayout);
+		llayout.setVisibility(View.INVISIBLE);
+
         Session session = Session.getActiveSession();
         if (session == null) {
             if (savedInstanceState != null) {
@@ -136,14 +141,21 @@ public class FacebookLoginActivity extends Activity {
 						}
 						else if(Boolean.parseBoolean(result_json.getString("signup"))){
 							Log.d("login","has signup");
+    						Toast.makeText(FacebookLoginActivity.this, "Login success", Toast.LENGTH_LONG).show();
+    						global_setting.userid=result_json.getString("userid");
+    						global_setting.session=result_json.getString("session");
+    						global_setting.islogin=true;
+    						global_setting.isFBlogin=true;
+    						sync_fb_friend_start();
 						}
 						else{
+							llayout.setVisibility(View.VISIBLE);
+							
 							Log.d("login","haven't signup");
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
 						Toast.makeText(FacebookLoginActivity.this, "error:"+e.getMessage().toString(), Toast.LENGTH_LONG).show();
-					
 					}              	  
                   break;
                   case FB_SIGNUP:
@@ -156,10 +168,15 @@ public class FacebookLoginActivity extends Activity {
 						}
 						else {
     						Toast.makeText(FacebookLoginActivity.this, "signup success", Toast.LENGTH_LONG).show();
-
+    						global_setting.userid=result_json2.getString("userid");
+    						global_setting.session=result_json2.getString("session");
+    						global_setting.islogin=true;
+    						global_setting.isFBlogin=true;
+    						sync_fb_friend_start();
 						}
 					} catch (JSONException e2) {
 						e2.printStackTrace();
+						Log.d("error","error:"+e2.getMessage().toString());
 						Toast.makeText(FacebookLoginActivity.this, "error:"+e2.getMessage().toString(), Toast.LENGTH_LONG).show();
 					
 					}              	  
@@ -188,11 +205,40 @@ public class FacebookLoginActivity extends Activity {
                   case SYNC_FB_FRIEND:
     					global_setting.close_progress_dialog();
 						Log.d("raw_result_2",(String) msg.obj);
+						JSONObject result_json3 = null;
+	  					try {
+	  						 result_json3 = new JSONObject( (String) msg.obj);
+							if(result_json3.has("error")){
+	    						Toast.makeText(FacebookLoginActivity.this, "error:"+result_json3.getString("error"), Toast.LENGTH_LONG).show();
+							}
+							else if(Boolean.parseBoolean(result_json3.getString("status"))){
+								Log.d("status","has friends");
+				                Intent intent = new Intent(FacebookLoginActivity.this, FacebookFriendActivity.class);
+				                intent.putExtra("friends", result_json3.getString("content"));
+				                startActivity(intent);
+								setResult( RESULT_OK );					
+								finish();
+
+							}
+							else{
+								Log.d("status","has no friend");
+				                Intent intent = new Intent(FacebookLoginActivity.this, CameraMenuActivity.class);
+				                startActivity(intent);
+								setResult( RESULT_OK );					
+								finish();
+
+							}
+						} catch (JSONException e3) {
+							e3.printStackTrace();
+							Toast.makeText(FacebookLoginActivity.this, "error:"+e3.getMessage().toString(), Toast.LENGTH_LONG).show();
+						
+						}              	  
+
 	    		  break;
                   }
             }
          };
-         
+         /*
          
          getFriendButton.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
@@ -202,15 +248,16 @@ public class FacebookLoginActivity extends Activity {
          
          getFriendButton2.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
-					get_fb_friend_start();
+					//get_fb_friend_start();
 
 					//fb_user_signup();
 				}
          });      
-         
-         syncFbFriend.setOnClickListener(new View.OnClickListener() {
+         */
+         signUpFbButton.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
-					sync_fb_friend_start();
+					//sync_fb_friend_start();
+					fb_user_signup();
 				}
          });     
          onClickLogin();
@@ -223,6 +270,8 @@ public class FacebookLoginActivity extends Activity {
 		new HttpApplication(global_setting.site_url+"user/fb_login",params,mHandler,FB_LOGIN).startHttp();
     }
     private void fb_user_signup(){
+		global_setting.show_progress_dialog(FacebookLoginActivity.this, "Loading", "正在送出註冊資訊...", true);
+
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("fbid", fbid ));
 		params.add(new BasicNameValuePair("fb_access", access_token ));
@@ -230,51 +279,11 @@ public class FacebookLoginActivity extends Activity {
 		new HttpApplication(global_setting.site_url+"user/fb_signup",params,mHandler,FB_SIGNUP).startHttp();
     }
     
-    private void get_fb_friend_start(){/*
-		global_setting.show_progress_dialog(FacebookLoginActivity.this, null, "同步facebook好友中", true);
-		new HttpApplication(URL_PREFIX_FRIENDS+access_token,mHandler,GET_FB_FRIEND).startHttp();
-    */
-    	
-    	Session activeSession = Session.getActiveSession();
-        if(activeSession.getState().isOpened()){
-            Request request = Request.newMyFriendsRequest(activeSession, 
-                new GraphUserListCallback(){
-                    @Override
-                    public void onCompleted(List<GraphUser> users, Response response){
-                    	Log.d("list length","size:"+users.size());
-                    	friend_result="[";
-                    	for(int i=0;i<users.size();i++){
-                    		friend_result+="{";
-                    		friend_result+=(    "\"id\": \""+users.get(i).getId()+"\",");
-                    		friend_result+=(    "\"name\": \""+users.get(i).getId()+"\"");
-                    		friend_result+=  "}";
-                    		if(i<users.size()-1){
-                    			friend_result+=  ",";
-                    		}
-                    	}
-                    	friend_result+="]";
-                    	//JSONArray jsArray = new JSONArray(users);
-                    	Log.d("ALL user",friend_result);
-                       /* GraphUser user = users.get(0);
-                        JSONObject friendLikes = user.getInnerJSONObject();
-                        try {
-                            JSONArray data = friendLikes.getJSONObject("friends").getJSONArray("data");
-                            Log.i("JSON", friendLikes.toString());
-                            //addInterests(data, 0);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }*/
-                    }
-            });
-            Bundle bundle = new Bundle();
-            bundle.putString("fields", "id,name");
-            request.setParameters(bundle);
-            request.executeAsync();    
-      }
-    }
     private void sync_fb_friend_start(){
+    	
+		global_setting.show_progress_dialog(FacebookLoginActivity.this, "Loading", "正在讀取使用者的Facebook好友...", true);
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("id1", "mark" ));
+		params.add(new BasicNameValuePair("id1",  global_setting.userid));
 		params.add(new BasicNameValuePair("fb_friend_json", friend_result ));
 		new HttpApplication(global_setting.site_url+"friend/get_fb_friend",params,mHandler,SYNC_FB_FRIEND).startHttp();
     }
@@ -283,15 +292,24 @@ public class FacebookLoginActivity extends Activity {
     @Override
     public void onStart() {
         super.onStart();
+		Log.d("FacebookLoginActivity","on_start");
+
         Session.getActiveSession().addCallback(statusCallback);
     }
 
     @Override
     public void onStop() {
         super.onStop();
+		Log.d("FacebookLoginActivity","on_stop");
+
         Session.getActiveSession().removeCallback(statusCallback);
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+		Log.d("FacebookLoginActivity","on_destroy");
 
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -312,17 +330,17 @@ public class FacebookLoginActivity extends Activity {
         	
         	//textInstructionsOrLink.setText(URL_PREFIX_FRIENDS + session.getAccessToken());
         	access_token=session.getAccessToken();
-            buttonLoginLogout.setText(R.string.logout);
-            buttonLoginLogout.setOnClickListener(new OnClickListener() {
+            //buttonLoginLogout.setText(R.string.logout);
+            /*buttonLoginLogout.setOnClickListener(new OnClickListener() {
             	
             	public void onClick(View view) { onClickLogout(); }
-            });
+            });*/
         } else {
             //textInstructionsOrLink.setText(R.string.instructions);
-            buttonLoginLogout.setText(R.string.login);
-            buttonLoginLogout.setOnClickListener(new OnClickListener() {
+            //buttonLoginLogout.setText(R.string.login);
+            /*buttonLoginLogout.setOnClickListener(new OnClickListener() {
                 public void onClick(View view) { onClickLogin(); }
-            });
+            });*/
         }
     }
 
@@ -355,6 +373,8 @@ public class FacebookLoginActivity extends Activity {
                 if (state.equals(SessionState.OPENED_TOKEN_UPDATED)) {
                  //   tokenUpdated();
                 } else {
+    				global_setting.show_progress_dialog(FacebookLoginActivity.this, "Loading", "正在讀取使用者的Facebook資訊...", true);
+    				
                     makeMeRequest(session);
                 }
             }
@@ -368,6 +388,7 @@ public class FacebookLoginActivity extends Activity {
                             profilePictureView.setProfileId(user.getId());
                             userNameView.setText(user.getName());
                             fbid=user.getId();
+                            get_fb_friend_start(session);
                         }
                     }
                     if (response.getError() != null) {
@@ -376,9 +397,35 @@ public class FacebookLoginActivity extends Activity {
                 }
             });
             request.executeAsync();
-
         }
-        
+        private void get_fb_friend_start(final Session session){
+                Request request = Request.newMyFriendsRequest(session, 
+                    new GraphUserListCallback(){
+                        @Override
+                        public void onCompleted(List<GraphUser> users, Response response){
+                        	Log.d("list length","size:"+users.size());
+                        	friend_result="[";
+                        	for(int i=0;i<users.size();i++){
+                        		friend_result+="{";
+                        		friend_result+=(    "\"id\": \""+users.get(i).getId()+"\",");
+                        		friend_result+=(    "\"name\": \""+users.get(i).getName()+"\"");
+                        		friend_result+=  "}";
+                        		if(i<users.size()-1){
+                        			friend_result+=  ",";
+                        		}
+                        	}
+                        	friend_result+="]";
+                        	//JSONArray jsArray = new JSONArray(users);
+                        	Log.d("ALL user",friend_result);
+                        	fb_user_login();
+
+                        }
+                });
+                Bundle bundle = new Bundle();
+                bundle.putString("fields", "id,name");
+                request.setParameters(bundle);
+                request.executeAsync();    
+          }
     }
     
 }

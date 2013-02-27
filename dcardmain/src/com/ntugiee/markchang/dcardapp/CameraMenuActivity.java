@@ -16,6 +16,8 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import com.facebook.Session;
+
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -113,8 +115,6 @@ public class CameraMenuActivity extends Activity{
     	surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     	msholder=new MySurfaceHolder();
     	surfaceHolder.addCallback(msholder);
-
-    	
 
         
         cameraButton = (Button) this.findViewById(R.id.ButtonSend);
@@ -245,8 +245,20 @@ public class CameraMenuActivity extends Activity{
         });    
         MenuLogoutBut.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
-					setResult( RESULT_OK );
-					finish();
+        		
+        		if(global_setting.isFBlogin==true){
+	                Session session = Session.getActiveSession();
+	                if (!session.isClosed()) {
+	                    session.closeAndClearTokenInformation();
+	                }
+        		}
+				global_setting.userid="";
+				global_setting.session="";
+				global_setting.islogin=false;
+				global_setting.isFBlogin=false;
+				setResult( RESULT_OK );
+				finish();
+        		
         	}
         });
     }
@@ -288,7 +300,9 @@ public class CameraMenuActivity extends Activity{
     public void onDestroy(){
     	super.onDestroy();
 		global_setting.userid="";
-		global_setting.islogin=false;     
+		global_setting.islogin=false;    
+		global_setting.isFBlogin=false;     
+
 		global_setting.session="";
 		//global_setting.bitmap=null;
 		Log.d("CameraMenuActivity","on_destroy");
@@ -350,7 +364,6 @@ public class CameraMenuActivity extends Activity{
         	    // calculate the scale - in this case = 0.4f
         	    float scaleWidth = ((float) newWidth) / width;
         	    float scaleHeight = ((float) newHeight) / height;
-        	    // createa matrix for the manipulation
         	    Matrix matrix = new Matrix();
         	    matrix.postScale(scaleWidth, scaleHeight);
         	    matrix.postRotate(90);

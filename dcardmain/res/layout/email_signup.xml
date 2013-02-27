@@ -5,9 +5,19 @@
     android:orientation="vertical" 
     android:background="#3c5a76"
     >
-<EditText 
-     	  android:id="@+id/etName" 
-	      android:hint="輸入你的信箱"	      
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="個人專屬ID作為加好友用"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#FFFF00" />
+
+		<EditText 
+     	  android:id="@+id/SignUpID" 
+	      android:hint="輸入你的專屬註冊ID"	      
     	  android:layout_width="match_parent" 
     	  android:layout_height="wrap_content"
     	  android:background="@drawable/white_input_top" 
@@ -16,14 +26,27 @@
     	  android:layout_marginTop="10dp"
     	  android:layout_marginBottom="1dp"
     	  android:textSize="30dp"
+    	  android:textStyle="bold">
+            <requestFocus></requestFocus>
+
+		</EditText>
+
+		<EditText 
+     	  android:id="@+id/SignUpMail" 
+	      android:hint="輸入你的信箱"	      
+    	  android:layout_width="match_parent" 
+    	  android:layout_height="wrap_content"
+    	  android:background="@drawable/white_input_middle" 
+    	  android:layout_marginLeft="10dp"
+    	  android:layout_marginRight="10dp"
+    	  android:layout_marginTop="1dp"
+    	  android:layout_marginBottom="1dp"
+    	  android:textSize="30dp"
     	  android:textStyle="bold"
+    	  />
 
-    	  >
-
-    <requestFocus></requestFocus>
-</EditText>
-<EditText 
-        android:id="@+id/etPassword"
+		<EditText 
+        android:id="@+id/SignUpPassword"
     	android:hint="密碼"     	
     	android:inputType="textPassword"
     	android:layout_width="match_parent" 
@@ -36,29 +59,18 @@
     	android:textSize="30dp"
     	android:textStyle="bold"
     	/>
-        <!--   
-        style="@style/button_text_black"   
-         -->
 
 
-<LinearLayout
+<LinearLayout 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" >
-<Button
-    android:id="@+id/btnSignUp"
-    android:text="尚未註冊" 
-    style="@style/button_text_black"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="5dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:background="@drawable/white_button"
-    />
+
+  
+
 <Button 
-    android:id="@+id/btnLogin" 
-    android:text="登入" 
+    android:id="@+id/SignUpSubmit" 
+    android:text="送出" 
     style="@style/button_text_black"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="10dp"
@@ -67,6 +79,16 @@
     android:layout_weight="1" 
     android:background="@drawable/white_button"
     />
- 
+ <Button 
+    android:id="@+id/SignUpBack" 
+    android:text="返回" 
+    style="@style/button_text_black"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="10dp"
+    android:layout_height="wrap_content" 
+    android:layout_width="match_parent"
+    android:layout_weight="1" 
+    android:background="@drawable/white_button"
+    />
 </LinearLayout>
 </LinearLayout>

@@ -35,7 +35,7 @@
                 android:theme="@style/TitleBarTheme"
                 />
         <activity
-                android:name=".SignUpActivity"
+                android:name=".EmailSignUpActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/TitleBarTheme"
                 />
@@ -80,12 +80,18 @@
                 android:screenOrientation="portrait"
                 android:theme="@android:style/Theme.NoTitleBar"
                 />
-       
+      <activity
+                android:name=".FacebookFriendActivity"
+                android:screenOrientation="portrait"
+                android:theme="@android:style/Theme.NoTitleBar"
+                />
+      
         <activity android:name="com.facebook.LoginActivity"
                   android:theme="@android:style/Theme.Translucent.NoTitleBar"
                   android:label="@string/app_name" 
                   android:screenOrientation="portrait"
                   />
+        
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/applicationId" />
     </application>
 

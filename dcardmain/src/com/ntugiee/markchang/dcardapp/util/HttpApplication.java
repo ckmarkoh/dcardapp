@@ -102,7 +102,7 @@ public class HttpApplication {
 	             return strResult;
 	          }
 	          else{
-					String error="{\"error\": http status " +"\""+httpResponse.getStatusLine().getStatusCode()+"\"}";
+					String error="{\"error\": \" http status "+httpResponse.getStatusLine().getStatusCode()+"\"}";
 					return error;
 	          }
 	      } catch (Exception e){

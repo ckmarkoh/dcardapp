@@ -109,7 +109,6 @@ public class CameraFriendActivity extends Activity {
 					//msgEdit.setText("");
 					String result_content=result_json.getString("content");
 					fList.clear();
-				//	fList.clear();
 					fjson_array = new JSONArray(result_content);
 					for(int i=0;i<fjson_array.length();i++){
 						fList.add(fjson_array.getJSONObject(i).getString("id2"));

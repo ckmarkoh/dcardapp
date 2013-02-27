@@ -48,8 +48,6 @@ public class EmailLoginActivity extends Activity {
  
 	private Global_Setting global_setting;
 	//private ProgressDialog progressDialog = null;
-
-	
 	
 	private Handler mHandler;
 	protected static final int HTTP_EMAIL_LOGIN = 0x00000001;
@@ -96,6 +94,8 @@ public class EmailLoginActivity extends Activity {
 	    						global_setting.userid=result_json.getString("userid");
 	    						global_setting.session=result_json.getString("session");
 	    						global_setting.islogin=true;
+	    						global_setting.isFBlogin=false;
+
 	    		                Intent intent = new Intent(EmailLoginActivity.this, CameraMenuActivity.class);
 	    		                startActivity(intent);
 	    						setResult(RESULT_OK);
@@ -129,11 +129,10 @@ public class EmailLoginActivity extends Activity {
         
         btnSignUp.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-                Intent intent = new Intent(EmailLoginActivity.this, SignUpActivity.class);
+                Intent intent = new Intent(EmailLoginActivity.this, EmailSignUpActivity.class);
                 startActivity(intent);
-
-			//	setResult(RESULT_OK);
-			//	finish();			
+				setResult(RESULT_OK);
+				finish();
 			}
 		});   
 	}

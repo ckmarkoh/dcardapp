@@ -36,6 +36,8 @@ public class Global_Setting extends Application{
 	public static String userid="";//="http://r444b.ee.ntu.edu.tw/~markchang/dctest/index.php/";
 	public static String session="";
 	public static boolean islogin=false;
+	public static boolean isFBlogin=false;
+
 	//private static ProgressDialog pDialog = null;
 	public static JSONObject http_result=null;
 	public static ProgressDialog progressDialog;

@@ -14,16 +14,22 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:facebook="http://schemas.android.com/apk/res-auto"
-    
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    	    android:background="#3c5a76"
+    
+    >
 
-
-
+<LinearLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    	    android:background="#3c5a76"
+    
+    >
             <com.facebook.widget.ProfilePictureView
                 android:id="@+id/selection_profile_pic"
                 android:layout_height="wrap_content"
@@ -38,9 +44,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center"
-                android:textColor="#333"
-                android:textSize="18sp" />
-    <TextView
+                android:textSize="18sp" 
+                android:textColor="#ffffff"
+                />
+    <!--  <TextView
         android:id="@+id/instructionsOrLink"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -90,5 +97,64 @@
     	  android:textStyle="bold">
             <requestFocus></requestFocus>
 
+		</EditText>!-->
+		</LinearLayout>
+		
+	<LinearLayout 
+	    android:id="@+id/FBSignUpLayout"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" 
+	    android:background="#3c5a76"
+	    >
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="個人專屬ID作為加好友用"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#FFFF00" />
+
+		<EditText 
+     	  android:id="@+id/SignUpID" 
+	      android:hint="輸入你的專屬註冊ID"	      
+    	  android:layout_width="match_parent" 
+    	  android:layout_height="wrap_content"
+    	  android:background="@drawable/white_button" 
+    	  android:layout_marginLeft="10dp"
+    	  android:layout_marginRight="10dp"
+    	  android:layout_marginTop="10dp"
+    	  android:layout_marginBottom="10dp"
+    	  android:textSize="30dp"
+    	  android:textStyle="bold"
+    	  >
+            <requestFocus></requestFocus>
 		</EditText>
+		<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="horizontal" >
+	    <TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:gravity="center"
+	        android:text=""
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textColor="#FFFF00" />
+		<Button 
+		    android:id="@+id/SignUpSubmit" 
+		    android:text="送出" 
+		    style="@style/button_text_black"
+		    android:layout_marginLeft="5dp"
+		    android:layout_marginRight="10dp"
+		    android:layout_height="wrap_content" 
+		    android:layout_width="match_parent"
+		    android:layout_weight="1" 
+		    android:background="@drawable/white_button"
+	    />
+		</LinearLayout>
+</LinearLayout>
 </LinearLayout>
