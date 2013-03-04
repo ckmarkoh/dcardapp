@@ -122,7 +122,7 @@ public class EmailLoginActivity extends Activity {
 				//global_setting.progressDialog = ProgressDialog.show(EmailLoginActivity.this, "Loading", "please wait...", true);
 				global_setting.show_progress_dialog(EmailLoginActivity.this, "Loading", "please wait...", true);
 
-				new HttpApplication(Global_Setting.site_url+"user/login",params,mHandler,HTTP_EMAIL_LOGIN).startHttp();
+				new HttpApplication(global_setting.site_url+"user/login",params,mHandler,HTTP_EMAIL_LOGIN).startHttp();
 			    //httpapplication.startHttp();
 			}
 		});

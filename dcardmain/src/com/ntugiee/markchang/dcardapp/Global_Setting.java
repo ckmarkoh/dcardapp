@@ -32,6 +32,8 @@ import android.widget.Toast;
 
 
 public class Global_Setting extends Application{
+	public static final String site_base_url="http://r444b.ee.ntu.edu.tw/dctest/";
+
 	public static final String site_url="http://r444b.ee.ntu.edu.tw/dctest/index.php/";
 	public static String userid="";//="http://r444b.ee.ntu.edu.tw/~markchang/dctest/index.php/";
 	public static String session="";

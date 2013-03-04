@@ -115,17 +115,7 @@ public class ShowActivity  extends Activity {
              			dismissDialog(progress_bar_type);
                         //Toast.makeText(ShowActivity.this, result, Toast.LENGTH_LONG).show();
                         Log.d("result",result);
-     		            //File root = android.os.Environment.getExternalStorageDirectory();
-     		            //String filepath=root.getAbsolutePath() + "/mnt/sdcard/"+message+".jpg";
-    	                //Bitmap bitmap= BitmapFactory.decodeFile(filepath);                        
-                       /* wallPaperBitmap = Bitmap.createBitmap( this_width, this_height, Bitmap.Config.ARGB_8888);
-                        bitmapCanvas = new Canvas(wallPaperBitmap);    
-                    	Rect bitmap_size= new Rect(0,0,bitmap.getWidth(),bitmap.getHeight());
-                    	Rect canvas_size= new Rect(0,0,this_width,this_height);
-                    	bitmapCanvas.drawBitmap(bitmap, bitmap_size, canvas_size, null);*/ 
     	        	    ivTest.setImageBitmap(bitmap);
-    		        	//File filed = new File(filepath);
-    			        //boolean deleted = filed.delete();
                         cdtimer.start();
                      }
                      break;

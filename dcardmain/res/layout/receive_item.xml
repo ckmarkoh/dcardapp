@@ -3,6 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
 	android:background="@drawable/white_list_item_1"
+	         android:id="@+id/ReceiveRelative"
+	
  >
 
      <ImageView
@@ -48,5 +50,15 @@
          android:text="time"
          android:textAppearance="?android:attr/textAppearanceSmall"
          android:textColor="#444444" />
-
+         <TextView
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:id="@+id/countdown_textview2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:background="#ffffff"
+        android:text="" 
+		android:textAppearance="?android:attr/textAppearanceLarge" />
+     
 </RelativeLayout>
